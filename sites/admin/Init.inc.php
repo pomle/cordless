@@ -1,6 +1,6 @@
 <?
 require __DIR__ . '/Settings.inc.php';
-require __DIR__ . '/../../Init.inc.php';
+require __DIR__ . '/../Init.inc.php';
 
 foreach
 (

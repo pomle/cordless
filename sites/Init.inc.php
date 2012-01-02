@@ -1,5 +1,5 @@
 <?
-require __DIR__ . '/../framework/Init.inc.php';
+require __DIR__ . '/../Init.inc.php';
 
 define('DIR_SYSTEM', DIR_ROOT . 'system/');
 
