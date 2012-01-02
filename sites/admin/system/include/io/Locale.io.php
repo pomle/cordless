@@ -1,6 +1,4 @@
 <?
-require_once(DIR_ADMIN_COMMON.'Locale.common.php');
-
 $status = 'notice';
 
 interport('action', 'localeID');
