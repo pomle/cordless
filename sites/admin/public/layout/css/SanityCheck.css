@@ -1,0 +1,2 @@
+table.sanityCheck tr.success { background-color: #9aff16; color: #000000; }
+table.sanityCheck tr.failed { background-color: #e63100; color: #ffffff; }

@@ -1,0 +1,33 @@
+.fileUpload {
+	min-width: 400px;
+	width: auto;
+}
+
+.fileUpload .dropbox {
+	background: url('/layout/dropbox.png') center no-repeat;
+	border: solid 1px #aaa;
+	float: left;
+	height: 100px;
+	margin: 0 5px 5px 0;
+	width: 100px;
+}
+
+.fileUpload .fileList {
+	font-size: smaller;
+	overflow: hidden;
+}
+.fileUpload .fileList .item {
+	margin-bottom: 4px;
+}
+.fileUpload .fileList .progressBar {
+	border: solid 1px #aaa;
+}
+.fileUpload .fileList .progress {
+	background: #42a5ef;
+	height: 5px;
+	width: 0%;
+}
+
+.fileUpload .messageBox {
+	clear: both;
+}

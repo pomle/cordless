@@ -1,0 +1,44 @@
+.tabs {
+
+}
+
+.tabs .tabIndex {
+	border-bottom-width: 1px;
+	list-style-type: none;
+	margin-bottom: 8px;
+	overflow: hidden;
+	padding-top: 2px;
+}
+.tabs .tabIndex li {
+	display: inline-block;
+}
+
+.tabs .tabIndex a {
+	display: inline-block;
+	margin: -2px 6px 0 0;
+	border-bottom: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	padding: 2px 8px 6px 7px;
+
+}
+
+.tabs .tabIndex .tab.active {
+	background-color: #c1e1f8;
+}
+.tabs .tabIndex .tab:hover {
+	background-color: #ebffb0;
+}
+
+
+.tabs .tabIndex .tab .icon {
+	margin: 0 3px 0 0;
+	position: relative; top: 3px;
+}
+
+.tabs .tab {
+	display: none;
+}
+.tabs .tab.visible {
+	display: block;
+}

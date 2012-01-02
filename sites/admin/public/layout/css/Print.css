@@ -1,0 +1,126 @@
+* {
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	margin: 0; padding: 0;
+	background-repeat: no-repeat;
+}
+
+body {
+	color: #000000;
+	font-size: 10pt;
+}
+
+div { clear: both; }
+img { border: 0; }
+li#progress, div#menu, ul.pref, ul.tabs, ul.actions, div.menu, img#logo, h1.title, #session_data { display: none; }
+div#pager { min-width: 700px; }
+
+h1, h2, h3 { margin: 0; }
+h2 { font-size: 14pt; }
+h3 { font-size: 13pt; padding-left: 6px; }
+.headbread { font-size: 8pt; }
+
+div.part { margin-bottom: 20px; }
+
+ul { list-style-type: none; }
+
+table { border-collapse: collapse; }
+table.spread { width: 100%; }
+
+table.split td {
+	width: 33%;
+	vertical-align: top;
+}
+
+th, td {
+	padding: 0.15em 0.5em;
+	text-align: left;
+}
+
+.l { text-align: left; }
+.c { text-align: center; }
+.r { text-align: right; }
+.j { text-align: justify; }
+.int { text-align: center; width: 40px; }
+.num { text-align: center; width: 3em; }
+.price { text-align: rigth; width: 3em; }
+.text { width: auto; }
+.s1 { font-size: smaller; line-height: 1.2; }
+
+a {
+	color: #000000;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+form {
+	margin: 0; padding: 0;
+	margin-top: 1em;
+}
+
+fieldset {
+	border: solid 1px #ededed;
+	padding: 8px;
+	padding-top: 3px;
+	margin-bottom: 1em;
+}
+
+fieldset legend {
+	padding: 0 0.4em;
+	font-size: 12pt;
+	color: #ff9c00;
+}
+
+fieldset label {
+	margin-right: 1em;
+	font-size: 10pt;
+}
+
+fieldset.fixed input[type='text'] {
+	margin-right: 2em;
+}
+
+fieldset#customer_data input {
+	background: transparent;
+	border: 0;
+	border-bottom: dashed 1px #e2e2e2;
+	width: 20em;
+}
+
+div#prices input {	border-width: 0; border-bottom-width: 1px; margin-bottom: 5px; }
+
+div.tab { display: none; }
+
+table.items { width: 600px; table-layout: fixed; }
+
+div.pinky {
+	display: block;
+	margin: 4px auto;
+	width: 50px;
+	height: 50px;
+	background-color: transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	border: solid 1px #c3bcab;
+}
+
+
+ol.sort {
+	width: 12em;
+	margin-left: 30px;
+	list-style-type: numeric; 
+	list-style-position: outside; 	
+}
+
+ol.sort li {
+	cursor: default;
+	margin-bottom: 4px;
+	padding: 3px;
+	background-color: #f3f3f3;
+	border: solid 1px #e4e4e4;
+}
+
+.mark { background-color: #e8e2db; }
+.shade { background-color: #f4f2ed; }
+.highlight { background-color: #ebffb0; }
+.disabled { color: #cacaca; }
+.maba { font-size: larger; }

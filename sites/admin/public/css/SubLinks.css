@@ -1,0 +1,8 @@
+.sublinks {
+	list-style: none outside none;
+	margin: 6px 0;
+}
+.sublinks .sublink {
+	display: inline-block;
+	margin-right: 4px;
+}

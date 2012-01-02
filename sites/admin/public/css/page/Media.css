@@ -1,0 +1,11 @@
+.preview {
+	background-image: url('/layout/diag_bands.png');
+	background-repeat: repeat;
+	border: solid 1px black;
+	margin: 0 5px 5px 0;
+}
+
+.preview>* {
+	background-position: center;
+	background-repeat: no-repeat;
+}

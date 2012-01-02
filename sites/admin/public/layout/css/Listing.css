@@ -1,0 +1,25 @@
+table.listing th { text-align: left;  padding: 0 10px; }
+table.listing td { padding: 3px 10px; }
+
+table.listing .INTEGER,
+table.listing .FLOAT,
+table.listing .CURRENCY,
+table.listing .CURRENCY_LONG,
+table.listing .PERCENTAGE
+{ 
+	text-align: right; 
+}
+
+
+table.listing td.message { padding: 0.2em 0.2em 0.2em 24px; }
+table.listing th.additionals { text-align: right; }
+
+table.listing td.summary {
+	font-size: smaller;
+	color: #b8b8b8;
+	text-align: center;
+}
+
+table.listing span.red {
+	color: #c00000;
+}

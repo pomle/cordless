@@ -1,0 +1,29 @@
+<?
+### Settings Config
+error_reporting(E_ALL & ~E_NOTICE);
+date_default_timezone_set('Europe/Berlin');
+
+define('FORCE_SSL', false);
+
+### Dir Config
+define('DIR_ROOT', '/path/to/root/dir/');
+define('DIR_MEDIA', DIR_ROOT . 'media/'); ### Make this writeable by webserver
+#define('DIR_ASENINE', DIR_ROOT . 'framework/'); ### This constant can be guessed by system but it is recommended to point this to AsenineFramework dir
+
+### Asenine Cache Config
+define('CACHE_PREFIX', 'ASENINE'); ### Namespace for Cache
+define('CACHE_ENABLED', true);
+define('CACHE_HOST', 'localhost');
+define('CACHE_PORT', 11211);
+
+### Asenine Database Config
+define('DB_HOST',	'127.0.0.1');
+define('DB_PORT',	3306);
+define('DB_USER',	'asenine');
+define('DB_PASS',	'asenine');
+define('DB_NAME',	'asenine');
+define('DB_CHARSET','utf8');
+
+### Asenone Mail Config
+define('SMTP_HOST', 'localhost');
+define('SMTP_PORT', 25);

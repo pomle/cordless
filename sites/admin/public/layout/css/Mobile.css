@@ -1,0 +1,77 @@
+body {
+	margin: .5em;
+	font-family: sans-serif;
+	font-size: 10pt;
+	width: 200px;
+}
+
+h1 {
+	margin: 0 0 0 0;
+	font-size: 12pt;
+	font-weight: normal;
+	border-bottom: solid 1px #ff6600;
+}
+
+ul, li {
+	margin: 0;
+	padding: 0;
+	margin-left
+}
+
+a {
+	color: #ff6600;
+}
+
+ul {
+	margin-left: 1em;
+	margin-bottom: .5em;
+}
+
+table { 
+	width: 100%; 
+}
+table th, table td {
+	text-align: left;
+}
+table .num, table .num input {
+	text-align: right;
+}
+
+.messages .message {
+	color: 
+	margin-top: .3em; 
+	padding: .2em .4em; 
+	border-left-width: 10px; 
+	display: none;
+}
+.notice	{ background-color: #ccdff6;	border: solid 1px #b1cff5; }
+.alert	{ background-color: #f7ead4;	border: solid 1px #fdc88a; }
+.error	{ background-color: #ffc0c0;	border: solid 1px #e46969; }
+
+
+input {
+	border: solid 1px #CCCCCC;
+}
+
+div.ajaxSuggest {
+	display: none;
+	position: absolute;
+	background-color: #ffffff;
+	font-size: smaller;
+	padding: 0.2em;
+	border: solid 1px #d9d9d9;
+}
+	div.ajaxSuggest .item {
+		cursor: pointer;
+	}
+
+.shade { 
+	background-color: #f4f2ed;
+}
+.highlight {
+	background-color: #9acef2;
+}
+
+form.transmitting input {
+	background-color: #9acef2;
+}

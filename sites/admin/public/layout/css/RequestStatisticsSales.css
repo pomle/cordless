@@ -1,0 +1,7 @@
+table .integer {
+	text-align: center;
+}
+
+table .currency {
+	text-align: right;
+}

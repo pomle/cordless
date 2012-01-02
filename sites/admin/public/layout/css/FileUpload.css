@@ -1,0 +1,10 @@
+.uploadStatus div { display: none; }
+.uploadStatus img { position: relative; top: 5px; }
+
+ul.fileQueue li { float: left; list-style: none; padding-left: 20px; margin-right: 1em; background-image: url('../disk.png'); background-repeat: no-repeat; }
+ul.fileQueue li.progress { background-image: url('../indicator.gif'); }
+ul.fileQueue li.complete { background-image: url('../accept.png'); }
+ul.fileQueue li.failed { background-image: url('../exclamation.png'); }
+
+table.controls { width: 100%; }
+table.controls td.details { text-align: right; }
