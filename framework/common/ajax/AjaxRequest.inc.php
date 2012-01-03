@@ -1,7 +1,4 @@
 <?
-require_once DIR_SYSTEM_CLASS . 'Message.class.php';
-require_once DIR_SYSTEM_CLASS . 'AjaxIO.class.php';
-
 function exception_error_handler($errno, $errstr, $errfile, $errline )
 {
 	switch($errno)
@@ -24,7 +21,7 @@ try
 {
 	$action = $result = $call = null;
 
-	\DB::autocommit(false);
+	\DB::transactionStart();
 
 	try
 	{
@@ -36,9 +33,9 @@ try
 		if( !file_exists($include) )
 		{
 			if( DEBUG )
-				throw New Exception(sprintf(_('Fil saknas: "%s"'), $include));
+				throw New Exception(sprintf('File Missing: "%s"', $include));
 			else
-				throw New Exception(_('Begäran kunde ej färdigställas'));
+				throw New Exception('AjaxRequest Failed');
 		}
 
 		require $include;
@@ -53,12 +50,12 @@ try
 		);
 	}
 
-	\DB::commit();
+	\DB::transactionCommit();
 }
 catch(Exception $e) ### Any uncaught exception will trickle down here
 {
 	$action = 'error';
-	\DB::rollback();
+	\DB::transacationRollback();
 	\Message::addError($e->getMessage());
 }
 
