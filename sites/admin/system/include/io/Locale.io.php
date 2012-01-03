@@ -24,7 +24,7 @@ switch($action)
 			Message::addNotice(MESSAGE_ROW_CREATED);
 		}
 
-		$query = DB::prepareQuery("UPDATE Locales SET isEnabled = %d, ident = '%s', country = '%s', language = '%s', currency = '%s', domain = '%s', locale = '%s', collation = '%s', conversionRate = %F, mailName = '%s', mailAddress = '%s', timestampFormat = '%s', dateFormat = '%s', timeFormat = '%s', moneyFormat = '%s', moneyFormatShort = '%s', customerServiceEmail = '%s', customerServicePhone = '%s' WHERE ID = %d", $isEnabled, $ident, $country, $language, $currency, $domain, $locale, $collation, $conversionRate, $mailName, $mailAddress, $timestampFormat, $dateFormat, $timeFormat, $moneyFormat, $moneyFormatShort, $customerServiceEmail, $customerServicePhone, $localeID);
+		$query = DB::prepareQuery("UPDATE Locales SET isEnabled = %d, ident = %s, country = %s, language = %s, currency = %s, domain = %s, locale = %s, collation = %s, conversionRate = %F, mailName = %s, mailAddress = %s, timestampFormat = %s, dateFormat = %s, timeFormat = %s, moneyFormat = %s, moneyFormatShort = %s, customerServiceEmail = %s, customerServicePhone = %s WHERE ID = %d", $isEnabled, $ident, $country, $language, $currency, $domain, $locale, $collation, $conversionRate, $mailName, $mailAddress, $timestampFormat, $dateFormat, $timeFormat, $moneyFormat, $moneyFormatShort, $customerServiceEmail, $customerServicePhone, $localeID);
 		DB::queryAndCountAffected($query);
 		Message::addNotice(MESSAGE_ROW_UPDATED);
 

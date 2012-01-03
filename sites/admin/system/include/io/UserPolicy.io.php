@@ -39,7 +39,7 @@ switch($action) {
 	case 'add':
 		if( strlen($policy) == 0 ) throw New Exception(_('Ingen rättighet angiven'));
 		
-		if($policyID = DB::pick(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = '%s'", $policy))) {
+		if($policyID = DB::pick(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy))) {
 			
 			if( !$user->isAdministrator() && !$user->getPolicy($policy) ) throw New Exception(_('Användare kan endast lägga till rättigheter de själva besitter'));
 

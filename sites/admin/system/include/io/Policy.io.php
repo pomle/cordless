@@ -12,14 +12,14 @@ switch($action) {
 		if( !$policyID)
 		{
 			ensurePolicies('AllowCreatePolicy');
-			$query = DB::prepareQuery("INSERT INTO Policies (policy, description) VALUES('%s', '%s')", $policy, $description);
+			$query = DB::prepareQuery("INSERT INTO Policies (policy, description) VALUES(%s, %s)", $policy, $description);
 			$policyID = DB::queryAndGetID($query);
 			Message::addNotice(MESSAGE_ROW_CREATED);
 		}
 		else
 		{
 			ensurePolicies('AllowEditPolicy');
-			$query = DB::prepareQuery("UPDATE Policies SET policy = '%s', description = '%s' WHERE ID = %d", $policy, $description, $policyID);
+			$query = DB::prepareQuery("UPDATE Policies SET policy = %s, description = %s WHERE ID = %d", $policy, $description, $policyID);
 			DB::queryAndCountAffected($query);
 			Message::addNotice(MESSAGE_ROW_UPDATED);
 		}

@@ -17,7 +17,7 @@ switch($action) {
 		$ipAsLong = ip2long($hostAddress);
 		if( $ipAsLong === false ) throw New Exception('Ogiltig IP-adress angiven');
 
-		$query = DB::prepareQuery("REPLACE INTO SecurityBlockedIPs (timeCreated, isEnabled, hostAddress, comment) VALUES(UNIX_TIMESTAMP(), %d, %u, '%s')", $isEnabled, $ipAsLong, $comment);
+		$query = DB::prepareQuery("REPLACE INTO SecurityBlockedIPs (timeCreated, isEnabled, hostAddress, comment) VALUES(UNIX_TIMESTAMP(), %d, %u, %s)", $isEnabled, $ipAsLong, $comment);
 		DB::queryAndCountAffected($query);
 		Message::addNotice(MESSAGE_ROW_UPDATED);
 		activate();
