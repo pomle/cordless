@@ -20,6 +20,16 @@ class DB
 		return $Result->fetch_assoc();
 	}
 
+	public static function row($Result)
+	{
+		return $Result->fetch_row();
+	}
+
+	public static function countRows($Result)
+	{
+		return $Result->num_rows;
+	}
+
 	public static function fetch($query)
 	{
 		return self::queryAndFetchResult($query);
@@ -149,9 +159,9 @@ class DB
 
 		if( $Result->num_rows > 0 ) {
 
-			$values = $Result->fetch_assoc(); // Adds keyword-based values
+			$values = $Result->fetch_assoc(); ### Adds keyword-based values
 
-			if( count($values) == 1 ) return reset($values);
+			if( count($values) == 1 ) return reset($values); ### Return first value if only one
 
 			return $values;
 		}
@@ -162,10 +172,10 @@ class DB
 	public static function queryAndFetchResult($query)
 	{
 		self::$queryCount++;
-		//self::$lastQuery = $query;
-		//self::$allQueries[] = $query;
+		#self::$lastQuery = $query;
+		#self::$allQueries[] = $query;
 
-		if( !$result = mysqli_query(self::$MySQLi, $query) )
+		if( !$Result = mysqli_query(self::$MySQLi, $query) )
 		{
 			if( DEBUG )
 				throw new Exception(mysqli_error(self::$MySQLi)."\n".$query);
@@ -176,7 +186,7 @@ class DB
 			}
 		}
 
-		return $result;
+		return $Result;
 	}
 
 	public static function queryAndGetID($query)
