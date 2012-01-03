@@ -12,7 +12,7 @@ function parseFiles($files, $basePath = '/', $policy = null)
 	$items = array();
 	foreach($files as $file)
 	{
-		if( $path = parseContent(file_get_contents($file), str_replace($basePath, '', $file),  $policy) )
+		if( $path = parseContent(file_get_contents($file), str_replace($basePath, '/', $file),  $policy) )
 			$items[] = $path;
 	}
 	return $items;
