@@ -1,4 +1,7 @@
 <?
+class DBException extends \Exception
+{}
+
 class DB
 {
 	const PROVIDER = 'MySQL';
@@ -50,6 +53,7 @@ class DB
 
 	private static function escapeString($value)
 	{
+		if( !is_string($value) ) throw New DBException(sprintf('%s requires arg #1 to be string, %s given', __METHOD__, gettype($value)));
 		return mysqli_real_escape_string(self::$MySQLi, $value);
 	}
 
@@ -107,7 +111,7 @@ class DB
 
 			### String
 			case 's':
-				return "'" . self::escapeString($var) . "'";
+				return "'" . self::escapeString((string)$var) . "'";
 		}
 
 		return '0';
