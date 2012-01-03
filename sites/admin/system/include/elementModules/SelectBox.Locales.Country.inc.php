@@ -6,7 +6,7 @@ $query = "SELECT
 		Locales";
 
 
-$locales = \DB::populate($query);
+$locales = \DB::queryAndFetchArray($query);
 
 $Select = new \Element\SelectBox($args[0] ?: 'localeID');
 $Select->addItemsFromArray($locales);

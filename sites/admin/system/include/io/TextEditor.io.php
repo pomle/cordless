@@ -23,7 +23,7 @@ class TextEditorIO extends AjaxIO {
 			case 'image':
 				$this->importArgs('mediaID');
 				$query = DB::prepareQuery("SELECT fileHash FROM Media WHERE ID = %u", $this->mediaID);
-				if ( $result = DB::pick($query) ) {
+				if ( $result = DB::queryAndFetchOne($query) ) {
 					return sprintf('<flipshop:media type="image" hash="%s" text="" href="" mediaID="%u" />', $result, $this->mediaID);
 				}
 				else {

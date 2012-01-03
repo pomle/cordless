@@ -14,7 +14,7 @@ class User
 		$newPasswordHash = \User::createHash($newPassword, $crypto);
 
 		$query = \DB::prepareQuery("SELECT COUNT(*) FROM Users WHERE ID = %u AND passwordHash = %s", $userID, $currentPasswordHash);
-		$res = (int)\DB::pick($query);
+		$res = (int)\DB::queryAndFetchOne($query);
 
 		if( $res !== 1 )
 			throw New \Exception(_('Nuvarande lösenord matchar inte'));
@@ -41,7 +41,7 @@ class User
 			throw New \Exception(sprintf(_('Användarnamnet har ogiltig längd och måste bestå av minst %u och mest %u tecken'), $minLen, $maxLen));
 
 		$query = \DB::prepareQuery("SELECT COUNT(*) FROM Users WHERE username = %s AND NOT ID = %u", $username, $discountUserID);
-		if( (bool)\DB::pick($query) )
+		if( (bool)\DB::queryAndFetchOne($query) )
 			throw New \Exception(sprintf(_('Användarnamnet "%s" är upptaget'), $username));
 	}
 }

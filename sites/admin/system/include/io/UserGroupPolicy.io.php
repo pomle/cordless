@@ -22,7 +22,7 @@ switch($action) {
 	case 'add':
 		ensurePolicies('AllowEditUserGroup', 'AllowSetPolicy');
 		if(!strlen($policy)) throw New Exception(_('Ingen rättighet angiven'));
-		if($policyID = DB::pick(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy))) {
+		if($policyID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy))) {
 			$query = DB::prepareQuery("REPLACE INTO UserGroupPolicies (userGroupID, policyID) SELECT %d, ID FROM Policies WHERE ID = %d", $userGroupID, $policyID);
 			DB::queryAndGetID($query);
 			message::addNotice(MESSAGE_ROW_UPDATED);

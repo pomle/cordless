@@ -37,7 +37,7 @@ if( $filter['search'] )
 				pl.title LIKE %S",
 			$comp);
 
-		$productMediaIDs = \DB::populate($query);
+		$productMediaIDs = \DB::queryAndFetchArray($query);
 
 		$query = \DB::prepareQuery("SELECT DISTINCT
 				a.mediaID
@@ -48,7 +48,7 @@ if( $filter['search'] )
 				IFNULL(al.name, a.internalName) LIKE %S",
 			$comp);
 
-		$articleMediaIDs = \DB::populate($query);
+		$articleMediaIDs = \DB::queryAndFetchArray($query);
 
 		$Stmt->addWhere('ID IN %a', array_unique(array_merge($productMediaIDs, $articleMediaIDs)));
 		$Antiloop->addNotice(sprintf(_('Sökning på produkt/artikel: "%s"'), $search));

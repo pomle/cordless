@@ -36,7 +36,7 @@ if( $filter['search'] )
 				OR u.fullname LIKE %S",
 			$comp, $comp);
 
-		$userGroupIDs = \DB::populate($query);
+		$userGroupIDs = \DB::queryAndFetchArray($query);
 
 		$Stmt->addWhere('ug.ID IN %a', $userGroupIDs);
 		$Antiloop->addNotice(sprintf(_('Sökning på användare: "%s"'), $search));

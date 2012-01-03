@@ -43,7 +43,7 @@ class SkeletonIO extends AjaxIO
 			WHERE ID = %u",
 			$this->param1);
 
-		$result = DB::pick($query);
+		$result = DB::queryAndFetchOne($query);
 
 		### If any formatting needs to be done
 		$result['value1'] = $this->Format::timestamp($result['value1']);

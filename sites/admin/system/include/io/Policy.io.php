@@ -27,12 +27,12 @@ switch($action) {
 	case 'load':
 		ensurePolicies('AllowViewPolicy');
 		$query = DB::prepareQuery("SELECT ID as policyID, policy, description FROM Policies WHERE ID = %d", $policyID);
-		$result = DB::pick($query);
+		$result = DB::queryAndFetchOne($query);
 		break;
 
 	case 'delete':
 		ensurePolicies('AllowDeletePolicy');
-		if(!DB::pick(DB::prepareQuery("SELECT COUNT(*) FROM Policies WHERE ID = %d", $policyID))) throw New Exception(MESSAGE_ROW_MISSING);
+		if(!DB::queryAndFetchOne(DB::prepareQuery("SELECT COUNT(*) FROM Policies WHERE ID = %d", $policyID))) throw New Exception(MESSAGE_ROW_MISSING);
 		$query = DB::prepareQuery("DELETE FROM Policies WHERE ID = %d", $policyID);
 		DB::queryAndCountAffected($query);
 		Message::addNotice(MESSAGE_ROW_DELETED);

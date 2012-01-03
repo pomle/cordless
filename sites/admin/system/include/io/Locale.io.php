@@ -37,7 +37,7 @@ switch($action)
 
 	case 'delete':
 		ensurePolicies('AllowDeleteLocale');
-		if(!DB::pick(DB::prepareQuery("SELECT COUNT(*) FROM Locales WHERE ID = %d", $localeID))) throw New Exception(MESSAGE_ROW_MISSING);
+		if(!DB::queryAndFetchOne(DB::prepareQuery("SELECT COUNT(*) FROM Locales WHERE ID = %d", $localeID))) throw New Exception(MESSAGE_ROW_MISSING);
 		$query = DB::prepareQuery("DELETE FROM Locales WHERE ID = %d", $localeID);
 		DB::queryAndCountAffected($query);
 		Message::addNotice(MESSAGE_ROW_DELETED);

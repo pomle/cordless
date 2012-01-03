@@ -25,7 +25,7 @@ switch($action) {
 	case 'load':
 		ensurePolicies('AllowViewSecurityBlockedIP');
 		$query = DB::prepareQuery("SELECT sbip.ID AS securityBlockedIPID, sbip.timeCreated, sbip.isEnabled, INET_NTOA(sbip.hostAddress) AS hostAddress, sbip.comment FROM SecurityBlockedIPs sbip WHERE sbip.ID = %d", $securityBlockedIPID);
-		$result = DB::pick($query);
+		$result = DB::queryAndFetchOne($query);
 		break;
 
 	case 'delete':

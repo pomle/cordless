@@ -36,15 +36,15 @@ switch($action) {
 
 		if(!$userGroupID) {
 			if( !strlen($usergroup) ) throw New Exception(_('Inget gruppnamn angivet'));
-			if( !($userGroupID = DB::pick(DB::prepareQuery("SELECT ID FROM UserGroups WHERE name = %s", $usergroup))) ) throw New Exception(sprintf(_('Grupp ogitlig: "%s"'), $usergroup));
+			if( !($userGroupID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM UserGroups WHERE name = %s", $usergroup))) ) throw New Exception(sprintf(_('Grupp ogitlig: "%s"'), $usergroup));
 		}
 
 		if(!$userID) {
 			if( !strlen($username) ) throw New Exception(_('Inget användarnamn angivet'));
-			if( !($userID = DB::pick(DB::prepareQuery("SELECT ID FROM Users WHERE username = %s", $username))) ) throw New Exception(sprintf(_('Användare ogitlig: "%s"'), $username));
+			if( !($userID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM Users WHERE username = %s", $username))) ) throw New Exception(sprintf(_('Användare ogitlig: "%s"'), $username));
 		}
 
-		if(!$user->isAdministrator() && !(bool)DB::pick(DB::prepareQuery("SELECT COUNT(*) FROM UserGroups ug JOIN UserGroupUsers ugu ON ugu.userGroupID = ug.ID WHERE ugu.userID = %d AND ug.ID = %d", CURRENT_USER_ID, $userGroupID))) throw New Exception(_('Användare kan endast lägga till användare i grupper de själva är medlemmar av'));
+		if(!$user->isAdministrator() && !(bool)DB::queryAndFetchOne(DB::prepareQuery("SELECT COUNT(*) FROM UserGroups ug JOIN UserGroupUsers ugu ON ugu.userGroupID = ug.ID WHERE ugu.userID = %d AND ug.ID = %d", CURRENT_USER_ID, $userGroupID))) throw New Exception(_('Användare kan endast lägga till användare i grupper de själva är medlemmar av'));
 
 		if($userID && $userGroupID) {
 			$query = DB::prepareQuery("REPLACE INTO UserGroupUsers (userGroupID, userID) VALUES(%d, %d)", $userGroupID, $userID);

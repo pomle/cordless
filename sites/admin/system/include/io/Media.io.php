@@ -81,7 +81,7 @@ switch($action)
 	case 'load':
 		ensurePolicies('AllowViewMedia');
 		$query = \DB::prepareQuery("SELECT ID AS mediaID, mediaType FROM Media WHERE ID = %u", $mediaID);
-		$result = DB::pick($query);
+		$result = DB::queryAndFetchOne($query);
 		break;
 
 	case 'delete':

@@ -66,7 +66,7 @@ class UserSecurityIPIO extends AjaxIO
 			WHERE ID = %u",
 			$this->userSecurityIPID);
 
-		$result = DB::pick($query);
+		$result = DB::queryAndFetchOne($query);
 
 		### If any formatting needs to be done
 		$result['spanStart'] = long2ip($result['spanStart']);
