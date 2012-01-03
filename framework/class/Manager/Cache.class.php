@@ -80,7 +80,7 @@ class Cache
 
 	private static function getEvents()
 	{
-		$files = glob(DIR_SYSTEM_COMMON . 'cache/*.inc.php');
+		$files = glob(DIR_ASENINE_COMMON . 'cache/*.inc.php');
 		$events = array();
 		foreach($files as $file)
 		{

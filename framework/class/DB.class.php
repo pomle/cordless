@@ -20,6 +20,11 @@ class DB
 		return $Result->fetch_assoc();
 	}
 
+	public static function fetch($query)
+	{
+		return self::queryAndFetchResult($query);
+	}
+
 	public static function init()
 	{
 		self::$queryCount = 0;
