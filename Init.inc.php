@@ -52,9 +52,10 @@ define('MEDIA_TYPE_IMAGE',	'image');
 define('MEDIA_TYPE_ROTATE',	'rotate');
 define('MEDIA_TYPE_VIDEO',	'video');
 
-
 if( !defined('CACHE_FORCE_REGENERATE') )
 	define('CACHE_FORCE_REGENERATE', isset($_GET['cacheForceRegenerate']));
+
+mb_internal_encoding('UTF-8');
 
 require DIR_ASENINE_INCLUDE . 'Functions.inc.php';
 

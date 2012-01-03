@@ -119,8 +119,7 @@ class DB
 
 	public static function query($query)
 	{
-		self::queryAndFetchResult($query);
-		return true;
+		return self::queryAndFetchResult($query);
 	}
 
 	public static function queryAndCountAffected($query)
@@ -133,20 +132,21 @@ class DB
 	public static function queryAndFetchArray($query)
 	{
 		$Result = self::queryAndFetchResult($query);
+
 		$array = array();
 
 		while($row = $Result->fetch_assoc())
 		{
-			switch(count($row))
+			switch($Result->field_count)
 			{
 				case 1:
 					$array[] = current($row);
-					break;
+				break;
 
 				case 2:
 					list($id, $value) = array_values($row);
 					$array[$id] = $value;
-					break;
+				break;
 
 				default:
 					list($id) = array_values($row);
