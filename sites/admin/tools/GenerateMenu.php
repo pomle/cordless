@@ -1,43 +1,45 @@
 <?
 require __DIR__ . '/_Init.inc.php';
 
-function parseFile($file)
+function parseTree($path)
 {
-	return parseContent(file_get_contents($file));
+	$files = recGlob('*.php', $path);
+	return parseFiles($files, $path);
 }
 
-function parseContent($content)
+function parseFiles($files, $basePath = '/', $policy = null)
+{
+	$items = array();
+	foreach($files as $file)
+	{
+		if( $path = parseContent(file_get_contents($file), str_replace($basePath, '', $file),  $policy) )
+			$items[] = $path;
+	}
+	return $items;
+}
+
+function parseContent($content, $href = null, $policy = null)
 {
 	if( !preg_match('%^#MENUPATH:(.+)$%m', $content, $match) ) return false;
 	$path = trim($match[1]);
 
-	if( !preg_match('%^#URLPATH:(.+)$%m', $content, $match) ) return false;
-	$href = trim($match[1]);
+	if( !preg_match('%^#URLPATH:(.+)$%m', $content, $match) )
+		$href = trim($match[1]);
 
 	if( preg_match('%define\([\'\"]ACCESS_POLICY[\'\"], ?[\'\"]([A-Za-z]+)[\'\"]\);%m', $content, $match) )
 		$policy = trim($match[1]);
-	else
-		$policy = null;
 
 	return array('path' => $path, 'href' => $href, 'policy' => $policy);
 }
 
 $Menu = new \Element\MainMenu();
 
-$files = glob(DIR_ADMIN_PUBLIC . '*.php');
-$items = array();
+$items = parseTree(DIR_ADMIN_PUBLIC);
 
-foreach($files as $file)
-{
-	if( !$item = parseFile($file) ) continue;
+uasort($items, function($a, $b) { return $a['path'] > $b['path']; });
 
-	$items[$item['path']] = $item;
-}
-
-ksort($items);
-
-foreach($items as $path => $item)
-	$Menu->addItem($path, $item['href'], $item['policy']);
+foreach($items as $item)
+	$Menu->addItem($item['path'], $item['href'], $item['policy']);
 
 $content = "<?\n\$tree = " . $Menu->getAsVariable() . ";";
 

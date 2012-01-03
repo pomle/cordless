@@ -11,6 +11,13 @@ function addIncludePath($newPath)
 	set_include_path($currentIncludePaths . PATH_SEPARATOR . $newPath);
 }
 
+function recGlob($pattern, $path)
+{
+	$command = sprintf("%s %s -name %s", 'find', escapeshellarg($path), escapeshellarg($pattern));
+	#echo $command;
+	return array_filter(explode("\n", shell_exec($command)));
+}
+
 function sendFile($filePath, $fileName = '', $contentType = 'application/octet-stream')
 {
 	if( is_file($filePath) && is_readable($filePath) )
