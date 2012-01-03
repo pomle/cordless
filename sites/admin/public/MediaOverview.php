@@ -1,6 +1,5 @@
 <?
 #MENUPATH:Databas/Media
-#URLPATH:MediaOverview.php
 define('ACCESS_POLICY', 'AllowViewMedia');
 
 require '../Init.inc.php';

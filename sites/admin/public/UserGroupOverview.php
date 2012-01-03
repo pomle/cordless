@@ -1,6 +1,5 @@
 <?
 #MENUPATH:System/Användargrupper
-#URLPATH:UserGroupOverview.php
 define('ACCESS_POLICY', 'AllowViewUserGroup');
 
 require '../Init.inc.php';

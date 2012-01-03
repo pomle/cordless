@@ -1,6 +1,5 @@
 <?
 #MENUPATH:System/Diagnostik
-#URLPATH:DiagnosticsOverview.php
 define('ACCESS_POLICY', 'AllowViewDiagnostics');
 
 require_once '../Init.inc.php';

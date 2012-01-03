@@ -5,13 +5,13 @@ $tree = array (
     0 => 
     array (
       'caption' => _('Media'),
-      'href' => 'MediaOverview.php',
+      'href' => '/MediaOverview.php',
       'policy' => 'AllowViewMedia',
     ),
     1 => 
     array (
       'caption' => _('Språk'),
-      'href' => 'LocaleEdit.php',
+      'href' => '/LocaleEdit.php',
       'policy' => 'AllowViewLocale',
     ),
   ),
@@ -20,25 +20,25 @@ $tree = array (
     0 => 
     array (
       'caption' => _('Användare'),
-      'href' => 'UserOverview.php',
+      'href' => '/UserOverview.php',
       'policy' => 'AllowViewUser',
     ),
     1 => 
     array (
       'caption' => _('Användargrupper'),
-      'href' => 'UserGroupOverview.php',
+      'href' => '/UserGroupOverview.php',
       'policy' => 'AllowViewUserGroup',
     ),
     2 => 
     array (
       'caption' => _('Diagnostik'),
-      'href' => 'DiagnosticsOverview.php',
+      'href' => '/DiagnosticsOverview.php',
       'policy' => 'AllowViewDiagnostics',
     ),
     3 => 
     array (
       'caption' => _('Rättigheter'),
-      'href' => 'PolicyEdit.php',
+      'href' => '/PolicyEdit.php',
       'policy' => 'AllowViewPolicy',
     ),
   ),

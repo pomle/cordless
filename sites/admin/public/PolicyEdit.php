@@ -1,6 +1,5 @@
 <?
 #MENUPATH:System/Rättigheter
-#URLPATH:PolicyEdit.php
 define('ACCESS_POLICY', 'AllowViewPolicy');
 
 require '../Init.inc.php';

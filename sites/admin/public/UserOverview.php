@@ -1,6 +1,5 @@
 <?
 #MENUPATH:System/Användare
-#URLPATH:UserOverview.php
 define('ACCESS_POLICY', 'AllowViewUser');
 
 require '../Init.inc.php';

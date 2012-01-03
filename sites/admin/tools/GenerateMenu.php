@@ -20,10 +20,12 @@ function parseFiles($files, $basePath = '/', $policy = null)
 
 function parseContent($content, $href = null, $policy = null)
 {
-	if( !preg_match('%^#MENUPATH:(.+)$%m', $content, $match) ) return false;
+	if( !preg_match('%^#MENUPATH:(.+)$%m', $content, $match) ) ### If not set, we shouldn't add this file to menu
+		return false;
+
 	$path = trim($match[1]);
 
-	if( !preg_match('%^#URLPATH:(.+)$%m', $content, $match) )
+	if( preg_match('%^#URLPATH:(.+)$%m', $content, $match) )
 		$href = trim($match[1]);
 
 	if( preg_match('%define\([\'\"]ACCESS_POLICY[\'\"], ?[\'\"]([A-Za-z]+)[\'\"]\);%m', $content, $match) )

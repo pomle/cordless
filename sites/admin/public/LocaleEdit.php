@@ -1,6 +1,5 @@
 <?
 #MENUPATH:Databas/Språk
-#URLPATH:LocaleEdit.php
 define('ACCESS_POLICY', 'AllowViewLocale');
 
 require '../Init.inc.php';
