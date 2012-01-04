@@ -45,6 +45,24 @@ class Media
 		}
 	}
 
+	public static function downloadFileToLibrary($url, $preferredMediaType = null)
+	{
+		$name = basename($url);
+
+		if( strpos($name, '%') ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
+
+		$FileOp = new \File();
+
+		if( !$downloadedFile = $FileOp->download($url) )
+			throw New \Exception('Download Failed');
+
+		\Message::addNotice(sprintf("Read %u bytes from %s", $FileOp->bytes, $url));
+
+		$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType);
+
+		return $Media;
+	}
+
 	public static function importFileToLibrary($filepath, $originalFilename = null, $preferredMediaType = null, $requireType = null)
 	{
 		### Create Media Object from File

@@ -33,16 +33,8 @@ switch($action)
 		try
 		{
 			$url = $_POST['url'];
-			$name = basename($url);
 
-			$FileOp = new \File();
-
-			if( !$downloadedFile = $FileOp->download($url) )
-				throw New Exception('Download Failed');
-
-			Message::addNotice(sprintf("Read %u bytes from %s", $FileOp->bytes, $url));
-
-			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, null);
+			$Media = \Operation\Media::downloadFileToLibrary($url);
 
 			Message::addNotice('Fetch Success "' . $url . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
