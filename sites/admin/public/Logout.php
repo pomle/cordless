@@ -1,8 +1,8 @@
 <?
-define('NO_LOGIN_REQUIRED', true);
-
 require '../Init.inc.php';
 
-\User::logout();
+$User->logout();
+
+unset($_SESSION['User']);
 
 header('Location: /');

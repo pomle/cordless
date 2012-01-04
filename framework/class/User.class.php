@@ -97,6 +97,8 @@ class User
 
 				\DB::queryAndCountAffected($query);
 
+				sleep(2);
+
 				return false;
 			}
 		}
@@ -139,26 +141,6 @@ class User
 		\DB::queryAndCountAffected($query);
 
 		return $User;
-	}
-
-	public static function logout()
-	{
-		if( isset($_SESSION['User']) && $_SESSION['User'] instanceof \User )
-		{
-			$query = \DB::prepareQuery("UPDATE
-				Users
-					SET
-						passwordAuthtoken = NULL,
-						timeAuthtokenCreated = NULL
-				WHERE
-					ID = %u",
-				$_SESSION['User']->getID());
-
-			\DB::queryAndCountAffected($query);
-
-			unset($_SESSION['User']);
-		}
-		setcookie('authtoken', '', 0, '/');
 	}
 
 
@@ -296,6 +278,28 @@ class User
 	public function isLoggedIn()
 	{
 		return $this->isLoggedIn;;
+	}
+
+	public function logout()
+	{
+		if( $this->isLoggedIn !== true ) return false;
+
+		$query = \DB::prepareQuery("UPDATE
+			Users
+				SET
+					passwordAuthtoken = NULL,
+					timeAuthtokenCreated = NULL
+			WHERE
+				ID = %u",
+			$this->userID);
+
+		\DB::queryAndCountAffected($query);
+
+		$this->isLoggedIn = false;
+
+		setcookie('authtoken', '', 0, '/');
+
+		return true;
 	}
 
 	public function setSetting($key, $value = null)

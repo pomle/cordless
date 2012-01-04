@@ -16,7 +16,7 @@ $User = $_SESSION['User'];
 if( USER_IP_SECURITY === true && $User->getIP() !== getenv('REMOTE_ADDR') )
 {
 	trigger_error('IP Changed. Possible cookie theft. User session killed', E_USER_WARNING);
-	User::logout();
+	$User->logout();
 
 	$User = new \User();
 }
