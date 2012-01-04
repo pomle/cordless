@@ -42,15 +42,6 @@ define('FORMAT_MONEY_SHORT', $User->getSetting('DefaultMoneyFormatShort'));
 define('FORMAT_MONEY_INTERNATIONAL', '%i');
 
 
-
-if( $User->getSetting('ShowUserTasksAssigned') )
-	$userPanel['tasksAssigned'] = sprintf('<a href="%s">%s</a>', '/UserTaskOverview.php?userID_Assignee=' . USER_ID, \Element\Icon::custom('page_white_stack_user_orange', _('Mina Tilldelade Uppgifter')));
-
-if( $User->getSetting('ShowUserTasksAssigner') )
-	$userPanel['tasksOwned'] = sprintf('<a href="%s">%s</a>', '/UserTaskOverview.php?userID_Assigner=' . USER_ID, \Element\Icon::custom('page_white_stack_user_suit', _('Mina Ägda Uppgifter')));
-
-
-
 if( defined('ACCESS_POLICY') )
 {
 	require DIR_ADMIN_INIT . 'AccessSecurity.init.php';
@@ -59,6 +50,6 @@ if( defined('ACCESS_POLICY') )
 
 
 $userPanel = array_merge($userPanel, array(
-	'profile'	=> sprintf('<a href="%s">%s</a>', '/UserProfile.php', \Element\Icon::custom(USER_IS_ADMIN ? 'user_suit' : 'user_orange', $User->username)),
+	'profile'	=> sprintf('<a href="%s">%s</a>', '/UserProfile.php', \Element\Icon::custom(USER_IS_ADMIN ? 'user_suit' : 'user', $User->username)),
 	'logout'	=> sprintf('<a href="%s">%s</a>', '/Logout.php', \Element\Icon::custom('door_in', _('Logga ut')))
 ));
