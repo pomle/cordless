@@ -10,6 +10,10 @@ if( !defined('EXECUTABLE_FFPROBE') )
 
 class FFMPEG extends Common\Root
 {
+	protected static
+		$exe_ffprobe,
+		$exe_ffmpeg;
+
 	protected
 		$optPre,
 		$optPost,
@@ -20,16 +24,12 @@ class FFMPEG extends Common\Root
 
 	public static function doEncode($inputFiles = array(), $outputFile = null, Array $optPre = array(), Array $optPost = array())
 	{
-		if( !defined('EXECUTABLE_FFMPEG') || !is_executable($bin = constant('EXECUTABLE_FFMPEG')) )
-		{
-			trigger_error(sprintf('"%s" is not a valid executable', EXECUTABLE_FFMPEG), E_USER_WARNING);
-			return false;
-		}
+		if( !self::$exe_ffmpeg ) return false;
 
 		foreach($inputFiles as &$f)
 			$f = '-i ' . \escapeshellarg($f);
 
-		$command = sprintf('%s -y %s %s %s %s 2>&1', $bin, join(' ', $optPre), join($inputFiles), join(' ', $optPost), $outputFile ? \escapeshellarg($outputFile) : '');
+		$command = sprintf('%s -y %s %s %s %s 2>&1', self::$exe_ffmpeg, join(' ', $optPre), join($inputFiles), join(' ', $optPost), $outputFile ? \escapeshellarg($outputFile) : '');
 
 		asenineLog($command, 'FFMPEG');
 
@@ -38,13 +38,9 @@ class FFMPEG extends Common\Root
 
 	public static function doInfo($inputFile)
 	{
-		if( !defined('EXECUTABLE_FFPROBE') || !is_executable($bin = constant('EXECUTABLE_FFPROBE')) )
-		{
-			trigger_error(sprintf('"%s" is not a valid executable', EXECUTABLE_FFPROBE), E_USER_WARNING);
-			return false;
-		}
+		if( !self::$exe_ffprobe ) return false;
 
-		$command = sprintf('%s -i %s 2>&1', $bin, \escapeshellarg($inputFile));
+		$command = sprintf('%s -i %s 2>&1', self::$exe_ffprobe, \escapeshellarg($inputFile));
 
 		self::runCommand($command); ### If FFPROBE does not exist, we fall back to FFMPEG parsing, which returns false if no output file is specified but still provides parse:able output
 
@@ -130,6 +126,21 @@ class FFMPEG extends Common\Root
 		);
 	}
 
+	public static function init($ffmpeg = null, $ffprobe = null)
+	{
+		if( $ffmpeg && is_executable($ffmpeg) )
+			self::$exe_ffmpeg = $ffmpeg;
+		else
+			trigger_error(sprintf('%s: could not initialize FFMPEG', __METHOD__), E_USER_WARNING);
+
+		if( $ffprobe && is_executable($ffprobe) )
+			self::$exe_ffprobe = $ffprobe;
+		else
+			trigger_error(sprintf('%s: could not initialize FFPROBE', __METHOD__), E_USER_WARNING);
+
+		return true;
+	}
+
 	public static function isValidFile($filename)
 	{
 		return (bool)(is_file($filename) && is_readable($filename) && self::doInfo($filename));
@@ -188,3 +199,5 @@ class FFMPEG extends Common\Root
 		return false;
 	}
 }
+
+FFMPEG::init(EXECUTABLE_FFMPEG, EXECUTABLE_FFPROBE);

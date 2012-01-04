@@ -7,72 +7,95 @@ if( !defined('EXECUTABLE_IDENTIFY') )
 if( !defined('EXECUTABLE_CONVERT') )
 	define('EXECUTABLE_CONVERT', exec('which convert'));
 
+if( !defined('EXECUTABLE_JHEAD') )
+	define('EXECUTABLE_JHEAD', exec('which jhead'));
+
 
 class ImageGuru extends Common\Root
 {
+	protected static
+		$exe_convert,
+		$exe_identify,
+		$exe_jhead;
+
 	public $imageInfo = null;
 
 
 	public static function doIdentify($filename)
 	{
-		if( !defined('EXECUTABLE_IDENTIFY') || !is_executable($bin = constant('EXECUTABLE_IDENTIFY')) )
-		{
-			trigger_error(sprintf('"%s" is not a valid executable', EXECUTABLE_IDENTIFY), E_USER_WARNING);
+		if( !self::$exe_identify ) return false;
+
+		$command = sprintf('%s %s', self::$exe_identify, escapeshellarg($filename));
+
+		if( !self::runCommand($command) )
 			return false;
-		}
 
-		$command = sprintf('%s %s', $bin, escapeshellarg($filename));
-
-		if( self::runCommand($command) )
+		$widths = array();
+		$heights = array();
+		foreach(self::$lastOutput as $line)
 		{
-			$widths = array();
-			$heights = array();
-			foreach(self::$lastOutput as $line)
+			if( preg_match('/([0-9]+)x([0-9]+)/', $line, $match) )
 			{
-				if( preg_match('/([0-9]+)x([0-9]+)/', $line, $match) )
-				{
-					$widths[] = (int)$match[1];
-					$heights[] = (int)$match[2];
-				}
+				$widths[] = (int)$match[1];
+				$heights[] = (int)$match[2];
 			}
+		}
 
-			$width = max($widths);
-			$height = max($heights);
+		$width = max($widths);
+		$height = max($heights);
 
-			$info = explode(' ', $line);
+		$info = explode(' ', $line);
 
-			return array
+		$infoArray = array
+		(
+			'format' => $info[1],
+			'size' => array
 			(
-				'format' => $info[1],
-				'size' => array
-				(
-					'x' => (int)$width,
-					'y' => (int)$height,
-					'width' => (int)$width,
-					'height' => (int)$height
-				)
-			);
-		}
-		else
+				'x' => (int)$width,
+				'y' => (int)$height,
+				'width' => (int)$width,
+				'height' => (int)$height
+			)
+		);
+
+		$orientation = 0;
+
+		for(;;)
 		{
-			return false;
+			if( !self::$exe_jhead )
+				break;
+
+			$command = sprintf('%s %s', self::$exe_jhead, escapeshellarg($filename));
+
+			if( !self::runCommand($command) )
+				break;
+
+			if( !$o = reset(preg_grep('/Orientation/', self::$lastOutput)) )
+				break;
+
+			if( !preg_match('/[0-9]+/', $o, $m) )
+				break;
+
+			$orientation = (int)$m[0];
+
+			break;
 		}
+
+		$infoArray['orientation'] = $orientation;
+
+		return $infoArray;
 	}
 
 	public static function doConvert($inputFiles, $outputFile, array $options = array(), $format)
 	{
-		$inputFiles = (array)$inputFiles;
+		if( !self::$exe_convert ) return false;
 
-		if( !defined('EXECUTABLE_CONVERT') || !is_executable($bin = constant('EXECUTABLE_CONVERT')) )
-		{
-			trigger_error(sprintf('"%s" is not a valid executable', EXECUTABLE_CONVERT), E_USER_WARNING);
-			return false;
-		}
+		$inputFiles = (array)$inputFiles;
 
 		foreach($inputFiles as &$f)
 			$f = \escapeshellarg($f);
 
-		$command = sprintf('%s %s %s %s:%s', $bin, join(' ', $inputFiles), join(' ', $options), $format, \escapeshellarg($outputFile));
+		$command = sprintf('%s %s %s %s:%s', self::$exe_convert, join(' ', $inputFiles), join(' ', $options), $format, \escapeshellarg($outputFile));
 
 		asenineLog($command, 'ImageGuru');
 
@@ -80,6 +103,27 @@ class ImageGuru extends Common\Root
 			return true;
 
 		return false;
+	}
+
+	public static function init($identify = null, $convert = null, $jhead = null)
+	{
+		if( $identify && is_executable($identify) )
+			self::$exe_identify = $identify;
+		else
+			trigger_error(sprintf('%s: could not initialize identify', __METHOD__), E_USER_WARNING);
+
+		if( $convert && is_executable($convert) )
+			self::$exe_convert = $convert;
+		else
+			trigger_error(sprintf('%s: could not initialize convert', __METHOD__), E_USER_WARNING);
+
+		### jhead is optional
+		if( $jhead && is_executable($jhead) )
+			self::$exe_jhead = $jhead;
+		else
+			trigger_error(sprintf('%s: jhead is not available - No Auto Orientation will occur', __METHOD__), E_USER_NOTICE);
+
+		return true;
 	}
 
 	public static function isValidFile($filename)
@@ -149,3 +193,5 @@ class ImageGuru extends Common\Root
 		}
 	}
 }
+
+ImageGuru::init(EXECUTABLE_IDENTIFY, EXECUTABLE_CONVERT, EXECUTABLE_JHEAD);
