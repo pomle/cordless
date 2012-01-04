@@ -51,7 +51,7 @@ class DB
 		return true;
 	}
 
-	private static function escapeString($value)
+	public static function escapeString($value)
 	{
 		if( !is_string($value) ) throw New DBException(sprintf('%s requires arg #1 to be string, %s given', __METHOD__, gettype($value)));
 		return mysqli_real_escape_string(self::$MySQLi, $value);
