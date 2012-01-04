@@ -47,20 +47,31 @@ class Media
 
 	public static function downloadFileToLibrary($url, $preferredMediaType = null)
 	{
-		$name = basename($url);
+		try
+		{
+			$name = basename($url);
 
-		if( strpos($name, '%') ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
+			if( strpos($name, '%') ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
 
-		$FileOp = new \File();
+			$FileOp = new \File();
 
-		if( !$downloadedFile = $FileOp->download($url) )
-			throw New \Exception('Download Failed');
+			if( !$downloadedFile = $FileOp->download($url) )
+				throw New \Exception('Download Failed');
 
-		\Message::addNotice(sprintf("Read %u bytes from %s", $FileOp->bytes, $url));
+			\Message::addNotice(sprintf("Read %s in %.2F seconds from \"%s\"", \Format::fileSize($FileOp->bytes), $FileOp->time, $url));
 
-		$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType);
+			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType);
 
-		return $Media;
+			unlink($downloadedFile);
+
+			return $Media;
+		}
+		catch(\Exception $e)
+		{
+			if( isset($downloadedFile) && file_exists($downloadedFile) ) unlink($downloadedFile);
+
+			throw $e;
+		}
 	}
 
 	public static function importFileToLibrary($filepath, $originalFilename = null, $preferredMediaType = null, $requireType = null)

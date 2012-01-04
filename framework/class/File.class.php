@@ -22,8 +22,14 @@ class File
 			if( !$s = @fopen($fromURL, 'r') )
 				throw New FileException(sprintf('Could not open source "%s" for reading', $fromURL));
 
-			while(($buffer = fgets($s, 4096)) !== false)
+			$bufferSize = 512 * 16;
+
+			$t = microtime(true);
+
+			while(($buffer = fgets($s, $bufferSize)) !== false)
 				$this->bytes += fputs($d, $buffer);
+
+			$this->time = microtime(true) - $t;
 
 			fclose($s);
 			fclose($d);
