@@ -61,6 +61,11 @@ abstract class _Root implements _Interface
 		$this->filePath = $filePath;
 	}
 
+	public function __toString()
+	{
+		return $this->mediaHash;
+	}
+
 
 	final public function getFilePath()
 	{
