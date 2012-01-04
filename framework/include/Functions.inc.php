@@ -11,6 +11,15 @@ function addIncludePath($newPath)
 	set_include_path($currentIncludePaths . PATH_SEPARATOR . $newPath);
 }
 
+function asenineLog($string, $space = 'Global')
+{
+	if( defined('DIR_LOG') )
+	{
+		$filename = DIR_LOG . $space . '.log';
+		file_put_contents($filename, date('c: ') . $string . "\n", FILE_APPEND);
+	}
+}
+
 function recGlob($pattern, $path)
 {
 	$command = sprintf("%s %s -name %s", 'find', escapeshellarg($path), escapeshellarg($pattern));

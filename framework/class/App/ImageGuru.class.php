@@ -72,8 +72,9 @@ class ImageGuru extends Common\Root
 		foreach($inputFiles as &$f)
 			$f = \escapeshellarg($f);
 
-
 		$command = sprintf('%s %s %s %s:%s', $bin, join(' ', $inputFiles), join(' ', $options), $format, \escapeshellarg($outputFile));
+
+		asenineLog($command, 'ImageGuru');
 
 		if( self::runCommand($command) && file_exists($outputFile) && filesize($outputFile) > 0 )
 			return true;
