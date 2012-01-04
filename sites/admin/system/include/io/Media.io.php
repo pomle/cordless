@@ -24,7 +24,7 @@ switch($action)
 			}
 			catch(Exception $e)
 			{
-				Message::addAlert(sprintf('"%s" misslyckades: %s', $file['name'], $e->getMessage()));
+				Message::addError(sprintf('"%s" misslyckades: %s', $file['name'], $e->getMessage()));
 			}
 		}
 	break;
@@ -35,30 +35,23 @@ switch($action)
 			$url = $_POST['url'];
 			$name = basename($url);
 
-			$tempfile = tempnam('/tmp/', 'MediaDownload');
+			$FileOp = new \File();
 
-			$source = fopen($url, 'r');
-			$destination = fopen($tempfile, 'w');
+			if( !$downloadedFile = $FileOp->download($url) )
+				throw New Exception('Download Failed');
 
-			$bytes = 0;
-			while(($buffer = fgets($source, 4096)) !== false)
-				$bytes += fputs($destination, $buffer);
+			Message::addNotice(sprintf("Read %u bytes from %s", $FileOp->bytes, $url));
 
-			fclose($source);
-			fclose($destination);
+			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, null);
 
-			Message::addNotice(sprintf("Read %u bytes from %s", $bytes, $url));
-
-			$Media = \Operation\Media::importFileToLibrary($tempfile, $name, null);
-
-			Message::addNotice('Upload Success "' . $url . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
+			Message::addNotice('Fetch Success "' . $url . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
 			$result['mediaIDs'][] = $Media->mediaID;
 			$result['mediaID'] = $Media->mediaID;
 		}
 		catch(Exception $e)
 		{
-			Message::addAlert(sprintf('"%s" misslyckades: %s', $url, $e->getMessage()));
+			Message::addError(sprintf('"%s" misslyckades: %s', $url, $e->getMessage()));
 		}
 	break;
 
