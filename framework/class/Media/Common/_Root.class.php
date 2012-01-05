@@ -59,6 +59,7 @@ abstract class _Root implements _Interface
 		if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expectes argument 1 to be string of exact length 32', E_USER_ERROR);
 		$this->mediaHash = $mediaHash;
 		$this->filePath = $filePath;
+		$this->orientation = 0;
 	}
 
 	public function __toString()

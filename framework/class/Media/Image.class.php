@@ -11,6 +11,18 @@ class Image extends Common\Visual
 		return \App\ImageGuru::isValidFile($filePath);
 	}
 
+	public static function createFromFile($filePath)
+	{
+		if( $Image = parent::createFromFile($filePath) )
+		{
+			$info = $Image->getInfo();
+			$Image->orientation = $info['orientation'];
+			return $Image;
+		}
+
+		return false;
+	}
+
 
 	public function getFrame($index = 0)
 	{
@@ -24,7 +36,7 @@ class Image extends Common\Visual
 
 	public function getInfo()
 	{
-		return \App\ImageGuru::doIdentify($this->getFilePath());
+		return \App\ImageGuru::doIdentify($this->getFilePath(), true);
 	}
 
 	public function getPreviewImage()

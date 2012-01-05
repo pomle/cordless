@@ -17,10 +17,31 @@ class ImageResize extends _Generator
 		$this->ImageGuru = new \App\ImageGuru();
 		$this->ImageGuru->addInput($Media->getPreviewImage());
 
+		$imageInfo = $this->ImageGuru->getImageInfo();
+
+		$orientation = $imageInfo['orientation'];
+
+		#printf("0 if dividable by 90: %d\n", $orientation % 90);
+		#$Media->orientation = 90;
+
+		if( $orientation % 90 === 0 ) ### We only fix orientation if 90 degress increments
+		{
+			$this->rotate = $orientation;
+
+			#printf("0 if dividable by 180: %d\n", $this->rotate % 180);
+
+			if( $this->rotate % 180 !== 0 ) ### Means we convert landscape <=> portrait
+			{
+				$w = $width;
+				$h = $height;
+				$width = $h;
+				$height = $w;
+				unset($w, $h);
+			}
+		}
+
 		if( $width || $height )
 		{
-			$imageInfo = $this->ImageGuru->getImageInfo();
-
 			### Original Dimensions
 			$origX = (int)$imageInfo['size']['x'];
 			$origY = (int)$imageInfo['size']['y'];
@@ -104,6 +125,8 @@ class ImageResize extends _Generator
 				$options[] = sprintf('-gravity Center -crop %ux%u+0+0', $this->cropX, $this->cropY);
 			}
 		}
+
+		if( $this->rotate ) $options[] = sprintf('-rotate %d', $this->rotate);
 
 		$options[] = sprintf('-quality %u', $this->quality);
 
