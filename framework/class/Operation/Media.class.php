@@ -58,8 +58,6 @@ class Media
 			if( !$downloadedFile = $FileOp->download($url) )
 				throw New \Exception('Download Failed');
 
-			\Message::addNotice(sprintf("Read %s in %.2F seconds from \"%s\"", \Format::fileSize($FileOp->bytes), $FileOp->time, $url));
-
 			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType);
 
 			unlink($downloadedFile);
@@ -82,7 +80,7 @@ class Media
 		if( $requireType && $requireType !== $Media_New::TYPE )
 		{
 			$mediaDesc = \Manager\Dataset\Media::getDescriptionByType($requireType);
-			throw New \Exception(sprintf('Endast media av typen "%s" kan importeras', $mediaDesc));
+			throw New \Exception(sprintf('Only media of type "%s" can be importerd', $mediaDesc));
 		}
 
 
@@ -99,58 +97,5 @@ class Media
 		$Media_New = \Manager\Media::integrateIntoLibrary($Media_New, $originalFilename);
 
 		return $Media_New;
-	}
-
-	public static function importToProduct(\Media\Common\_Root $Media, $productID, $localeID = null)
-	{
-		$query = \DB::prepareQuery("INSERT IGNORE INTO
-			ProductMedia (
-				productID,
-				mediaID,
-				isEnabled,
-				sortOrder
-			) VALUES(
-				%u,
-				%u,
-				1,
-				UNIX_TIMESTAMP()
-			)",
-			$productID,
-			$Media->mediaID);
-
-		\DB::queryAndGetID($query);
-
-		if( $localeID )
-		{
-			$query = \DB::prepareQuery("INSERT IGNORE INTO
-				ProductMediaLocale (
-					productID,
-					mediaID,
-					localeID,
-					isEnabled
-				) VALUES(
-					%u,
-					%u,
-					%u,
-					%u)",
-				$productID,
-				$Media->mediaID,
-				$localeID,
-				$isEnabled = 1);
-
-			\DB::queryAndGetID($query);
-		}
-
-		return true;
-	}
-
-	public static function receiveUpload($file)
-	{
-		### $file is an item from php's $_FILES-array
-
-		global $User;
-		ensurePolicies('AllowCreateMedia');
-
-		return self::importFileToLibrary($file['tmp_name'], $file['name']);
 	}
 }
