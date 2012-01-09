@@ -1,4 +1,6 @@
 <?
+define('RENDERSTART', microtime(true));
+
 require __DIR__ . '/Settings.inc.php';
 
 if( !defined('DIR_MEDIA') )

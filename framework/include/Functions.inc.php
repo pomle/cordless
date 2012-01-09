@@ -45,3 +45,17 @@ function sendFile($filePath, $fileName = '', $contentType = 'application/octet-s
 
 	return false;
 }
+
+function timeElapsed()
+{
+	return sprintf('%.5F', microtime(true) - RENDERSTART);
+}
+
+function timeDiff()
+{
+	static $lastTime;
+	$thisTime = microtime(true);
+	$diffTime = sprintf('%.5F', isset($lastTime) ? $thisTime - $lastTime : 0);
+	$lastTime = microTime(true);
+	return $diffTime;
+}

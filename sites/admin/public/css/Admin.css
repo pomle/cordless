@@ -101,14 +101,14 @@ td {
 
 
 .header {
+	height: 35px;
 	margin-bottom: 10px;
-	overflow: hidden;
 }
 .header .logo {
 
 }
 .header .titles {
-
+	font-size: 9pt;
 }
 .header .titles > * {
 	display: inline;

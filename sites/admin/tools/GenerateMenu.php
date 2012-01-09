@@ -28,6 +28,8 @@ function parseContent($content, $href = null, $policy = null)
 	if( preg_match('%^#URLPATH:(.+)$%m', $content, $match) )
 		$href = trim($match[1]);
 
+	$content = preg_replace('%(//|#).*%', '', $content); ### Strip away PHP line comments
+
 	if( preg_match('%define\([\'\"]ACCESS_POLICY[\'\"], ?[\'\"]([A-Za-z]+)[\'\"]\);%m', $content, $match) )
 		$policy = trim($match[1]);
 
