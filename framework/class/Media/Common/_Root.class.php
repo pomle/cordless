@@ -11,9 +11,12 @@ abstract class _Root implements _Interface
 {
 	const PATH_DEPTH = 5;
 
-	public
-		$mediaHash,
+	protected
 		$filePath;
+
+	public
+		$mediaHash;
+
 
 
 	public static function createFromFile($filePath)

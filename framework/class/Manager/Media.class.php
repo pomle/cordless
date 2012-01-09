@@ -108,6 +108,8 @@ class Media extends Common\DB
 
 	public static function loadFromDB($mediaIDs)
 	{
+		$medias = array_fill_keys($mediaIDs, false);
+
 		$query = \DB::prepareQuery("SELECT
 				m.ID AS mediaID,
 				m.fileHash AS mediaHash,
@@ -119,8 +121,6 @@ class Media extends Common\DB
 			$mediaIDs);
 
 		$result = \DB::queryAndFetchResult($query);
-
-		$medias = array();
 
 		while($media = \DB::assoc($result))
 		{
@@ -135,6 +135,8 @@ class Media extends Common\DB
 
 			$medias[$Media->mediaID] = $Media;
 		}
+
+		$medias = array_filter($medias);
 
 		return $medias;
 	}
