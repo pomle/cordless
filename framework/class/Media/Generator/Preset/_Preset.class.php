@@ -15,19 +15,14 @@ abstract class _Preset implements _Interface
 
 	final public function getFile()
 	{
-		$fileName = $this->getFileName();
-		$path = $this->getPath();
-
-		$dirPath = DIR_MEDIA . $path;
-		$filePath = $dirPath . $fileName;
-
-		if( !file_exists($filePath) )
+		if( !$this->isGenerated() )
 		{
+			$dirPath = DIR_MEDIA . $this->getPath();
 			if( !file_exists($dirPath) && !is_dir($dirPath) && !mkdir($dirPath, 0755, true) ) throw New \Exception("Path not reachable \"$dirPath\"");
 			if( !$this->createFile() ) return false;
 		}
 
-		return $filePath;
+		return $this->getFilePath();
 	}
 
 	final public function getFileName()
@@ -71,5 +66,11 @@ abstract class _Preset implements _Interface
 			trigger_error(get_called_class() . ' media generation failed, Reason: ' . $e->getMessage(), E_USER_WARNING);
 			return false;
 		}
+	}
+
+	final public function isGenerated()
+	{
+		$diskFile = DIR_MEDIA . $this->getFilePath();
+		return file_exists($diskFile);
 	}
 }
