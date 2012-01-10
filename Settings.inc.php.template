@@ -1,9 +1,13 @@
 <?
-### Settings Config
+### PHP Settings Config
 error_reporting(E_ALL & ~E_NOTICE);
 date_default_timezone_set('Europe/Berlin');
 
-define('FORCE_SSL', false);
+### Asenine Settings Config
+define('FORCE_SSL', false); ### Never enforce SSL
+
+### Overrides
+#define('HOST', 'www.forced.host');
 
 ### Dir Config
 define('DIR_ROOT', '/path/to/root/dir/');
@@ -24,6 +28,6 @@ define('DB_PASS',	'asenine');
 define('DB_NAME',	'asenine');
 define('DB_CHARSET','utf8');
 
-### Asenone Mail Config
+### Asenine Mail Config
 define('SMTP_HOST', 'localhost');
 define('SMTP_PORT', 25);
