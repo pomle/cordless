@@ -78,31 +78,20 @@ abstract class Media implements iMedia
 		return false;
 	}
 
+	public static function getArchive()
+	{
+		return new \Asenine\Archive('media/source/');
+	}
+
 	public static function integrateIntoLibrary(self $Media)
 	{
-		$inputFile = $Media->getFilePath();
+		$Archive = self::getArchive();
 
-		if( !file_exists($inputFile) )
-			throw new MediaException("Could not find file \"$inputFile\"");
+		$File = new File( $Media->getFilePath() );
 
-		if( !is_file($inputFile) )
-			throw new MediaException("\"$inputFile\" is not a valid file");
+		$LibraryFile = $Archive->putFile($File);
 
-		if( !is_readable($inputFile) )
-			throw new MediaException("Could not read file \"$inputFile\"");
-
-
-		if( !file_exists(DIR_MEDIA_SOURCE) && !@mkdir(DIR_MEDIA_SOURCE, 0775, true) )
-			throw new MediaException("Could not create dir: \"" . DIR_MEDIA_SOURCE . "\"");
-
-
-		$fileHash = md5_file($inputFile);
-		$libraryFile = DIR_MEDIA_SOURCE . $fileHash;
-
-		if( !file_exists($libraryFile) && !@copy($inputFile, $libraryFile) )
-			throw new MediaException("Could not write to source library path \"$libraryFile\"");
-
-		$query = DB::prepareQuery("SELECT ID FROM Asenine_Media WHERE fileHash = %s", $fileHash);
+		$query = DB::prepareQuery("SELECT ID FROM Asenine_Media WHERE fileHash = %s", $LibraryFile->hash);
 		$mediaID = DB::queryAndFetchOne($query);
 
 		if( !$mediaID || isset($Media->mediaID) )
@@ -136,15 +125,15 @@ abstract class Media implements iMedia
 					fileMimeType = VALUES(fileMimeType)",
 				isset($Media->mediaID) ? $Media->mediaID : 0,
 				$Media::TYPE,
-				$fileHash,
-				filesize($libraryFile),
+				$LibraryFile->hash,
+				$LibraryFile->size,
 				$Media->fileOriginalName,
 				$Media->mimeType);
 
 			$mediaID = DB::queryAndGetID($query);
 		}
 
-		return self::loadFromDB($mediaID);
+		return static::loadFromDB($mediaID);
 	}
 
 	public static function loadByHash($mediaHash)
@@ -154,6 +143,8 @@ abstract class Media implements iMedia
 
 	public static function loadFromDB($mediaIDs)
 	{
+		$Archive = self::getArchive();
+
 		if( !$returnArray = is_array($mediaIDs) )
 			$mediaIDs = (array)$mediaIDs;
 
@@ -180,11 +171,9 @@ abstract class Media implements iMedia
 
 			try
 			{
-				$File = new File(
-					DIR_MEDIA_SOURCE . $media['mediaHash'],
-					(int)$media['fileSize'] ?: null,
-					$media['fileMimeType'],
-					$media['fileOriginalName']);
+				$File = $Archive->getFile($media['mediaHash']);
+				$File->name = $media['fileOriginalName'];
+				$File->mime = $media['fileMimeType'];
 
 				if( !$Media = self::createFromType($media['mediaType'], $media['mediaHash'], $File) )
 					$Media = new \Asenine\Media\Type\Defunct($media['mediaHash'], $File); ### Fallback to Defunct type

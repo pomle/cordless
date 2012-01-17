@@ -9,11 +9,12 @@ class File
 	protected
 		$location,
 		$size,
-		$hash,
-		$name;
+		$hash;
+
 
 	public
-		$mime;
+		$mime,
+		$name;
 
 
 	public static function fromURL($fromURL, $toFile = null)
@@ -98,7 +99,7 @@ class File
 		if( !is_null($size) && ( !is_int($size) && ( $size < 0 ) ) )
 			throw New FileException(sprintf("File must be integer and 0 or more"));
 
-		$this->size = $size;
+		$this->size = $size ?: filesize($this->location);
 		$this->mime = $mime;
 		$this->name = $name ?: basename($this->location);
 	}

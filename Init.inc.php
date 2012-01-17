@@ -33,6 +33,9 @@ define('ASENINE_MEDIA_TYPE_IMAGE',	'image');
 define('ASENINE_MEDIA_TYPE_ROTATE',	'rotate');
 define('ASENINE_MEDIA_TYPE_VIDEO',	'video');
 
+define('ARCHIVE_NAMESPACE_MEDIA_SOURCE', 'media/source');
+define('ARCHIVE_NAMESPACE_MEDIA_AUTOGEN', 'media/autogen');
+
 if( !defined('CACHE_FORCE_REGENERATE') )
 	define('CACHE_FORCE_REGENERATE', isset($_GET['cacheForceRegenerate']));
 
