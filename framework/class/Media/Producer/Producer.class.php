@@ -1,13 +1,13 @@
 <?
 namespace Media\Producer;
 
-abstract class _Producer
+abstract class Producer
 {
 	protected
 		$Media;
 
 
-	public static function createFromMedia(\Media\Common\_Root $Media)
+	public static function createFromMedia(\Media $Media)
 	{
 		$Producer = new static($Media->mediaHash);
 		$Producer->Media = $Media;

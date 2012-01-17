@@ -1,13 +1,11 @@
 <?
-namespace Media\Common;
-
-interface _Interface
+interface iMedia
 {
 	public static function canHandleFile($filePath);
 	public function getInfo();
 }
 
-abstract class _Root implements _Interface
+abstract class Media implements iMedia
 {
 	const PATH_DEPTH = 5;
 

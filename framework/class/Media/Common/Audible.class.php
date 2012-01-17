@@ -1,11 +1,10 @@
 <?
 namespace Media\Common;
 
-interface _Audible
-{
-}
+interface iAudible
+{}
 
-abstract class Audible extends _Root implements _Audible
+abstract class Audible extends \Media implements iAudible
 {
 	const VARIANT = 'audible';
 }

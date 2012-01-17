@@ -1,8 +1,7 @@
 <?
 namespace Media\Common;
 
-
-abstract class Unidentified extends _Root
+abstract class Unidentified extends \Media
 {
 	const VARIANT = 'unidentified';
 }
