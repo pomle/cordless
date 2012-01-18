@@ -55,7 +55,7 @@ require DIR_ADMIN_INCLUDE . 'Messages.General.inc.php';
 $css[] = '/css/Admin.css';
 $css[] = '/css/Awesome.css';
 
-$js[] = '//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js';
+$js[] = DEBUG ? '//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js' : '//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
 
 $js[] = '/js/objects/AjaxEvent.js';
 $js[] = '/js/objects/FormManager.js';

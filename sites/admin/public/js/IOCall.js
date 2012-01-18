@@ -12,4 +12,10 @@ $(document).ready(function() {
 			AjaxEvent.invoke(this, this.href);
 		});
 	}
+
+	$('form.antiloop').bind('postReload', function()
+	{
+		var rowID = $(this).next('form.IOCall').find(':input[name$="ID"]').val();
+		$(this).find('tr#id_'+rowID).addClass('active');
+	});
 });

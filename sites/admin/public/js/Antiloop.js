@@ -2,30 +2,37 @@ var Antiloop =
 {
 	reload: function(element, url)
 	{
-		var e = $(element);
-		e.find('thead, tbody').addClass('loading');
-		e.find('.content').load
-		(
-			url,
-			function(responseText, textStatus, XMLHttpRequest)
-			{
-				if( textStatus == 'error' )
-				{
-					alert(XMLHttpRequest.statusText);
-					return false;
-				}
+		var antiloop = $(element);
 
-				var rowID = e.next('form.IOCall').find(':input[name$="ID"]').val()
-				e.find('tr#id_'+rowID).addClass('active');
+		antiloop.trigger('preReload');
+		antiloop.find('thead, tbody').addClass('loading');
+
+		$.ajax({
+			url: url,
+			type: 'get',
+			dataType: 'html',
+			complete: function()
+			{
+				antiloop.trigger('postLoad').trigger('postReload');
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+				alert(textStatus);
+			},
+			success: function(html)
+			{
+				antiloop.find('.content').html(html);
 			}
-		);
+		});
 	}
 }
 
-$(document).ready(function() {
-	var antiloop = $('form.antiloop');
 
-	antiloop.each(function() {
+$(document).ready(function()
+{
+	var antiloops = $('form.antiloop');
+
+	antiloops.each(function() {
 
 		var antiloop = $(this);
 
@@ -164,4 +171,6 @@ $(document).ready(function() {
 			});
 		});
 	});
+
+	antiloops.trigger('postLoad');
 });

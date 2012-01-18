@@ -26,6 +26,11 @@ abstract class Root implements _Root
 		return $this;
 	}
 
+	public function addData($prefix, $content)
+	{
+		return $this->addAttr('data-' . $prefix, $content);
+	}
+
 	public function addID($ID)
 	{
 		return $this->addAttr('id', $ID);

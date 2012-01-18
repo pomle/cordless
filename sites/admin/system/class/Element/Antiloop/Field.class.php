@@ -11,6 +11,10 @@ class Field extends Field\Common\Root
 		return $Field;
 	}
 
+	public static function blank($name, $caption = null, $icon = null, $class = null)
+	{
+		return Field\Blank::raw($name, $caption, $icon, $class);
+	}
 
 	public static function bool($name, $caption, $icon, $iconMap = null)
 	{

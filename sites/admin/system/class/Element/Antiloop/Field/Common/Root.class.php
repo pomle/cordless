@@ -44,7 +44,7 @@ abstract class Root
 		return false;
 	}
 
-	public function setContentHandler($Function)
+	final public function setContentHandler($Function)
 	{
 		if( is_callable($Function) )
 		{
@@ -53,7 +53,7 @@ abstract class Root
 		return $this;
 	}
 
-	public function setHeadHandler($Function)
+	final public function setHeadHandler($Function)
 	{
 		if( is_callable($Function) )
 		{
@@ -62,13 +62,13 @@ abstract class Root
 		return $this;
 	}
 
-	public function setSortable($bool)
+	final public function setSortable($bool)
 	{
 		$this->isSortable = (bool)$bool;
 		return $this;
 	}
 
-	public function setSortReversed($bool)
+	final public function setSortReversed($bool)
 	{
 		$this->isSortReversed = (bool)$bool;
 		return $this;

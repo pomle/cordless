@@ -50,6 +50,7 @@ class Antiloop extends Common\Root
 
 		$AjaxCall = new \AjaxCall($protocol, array(), URL_ANTILOOP_FETCHER);
 		$Antiloop = new self($AjaxCall);
+		$Antiloop->addClass($protocol)->addData('protocol', $protocol);
 
 		$antiloopListFile = DIR_ANTILOOP_LISTS . str_replace('/', '', $protocol) . '.inc.php';
 
@@ -68,7 +69,8 @@ class Antiloop extends Common\Root
 	{
 		static $count;
 
-		$this->domID = sprintf('antiloop%u', ++$count);
+		$this->addID(sprintf('antiloop%u', ++$count));
+		$this->addClass('antiloop');
 
 		$this->AjaxCall = $AjaxCall;
 		$this->messages = $this->triggers = $this->filters = $this->fields = array();
@@ -208,7 +210,7 @@ class Antiloop extends Common\Root
 	{
 		ob_start();
 		?>
-		<form action="<? echo $this->AjaxCall; ?>" method="post" class="antiloop" id="<? echo htmlspecialchars($this->domID); ?>">
+		<form action="<? echo $this->AjaxCall; ?>" method="post" <? echo $this->getAttributes(); ?>>
 			<div class="control">
 				<?
 				if( count($this->filters) )
@@ -466,7 +468,7 @@ class Antiloop extends Common\Root
 
 	public function setID($domID)
 	{
-		$this->domID = $domID;
+		$this->addID($domID);
 		return $this;
 	}
 }
