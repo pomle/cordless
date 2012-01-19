@@ -1,7 +1,7 @@
 <?
 namespace Media\Producer;
 
-class CrossSite extends _Producer
+class CrossSite extends Producer
 {
 	function getCustom($sizeX, $sizeY, $crop = false)
 	{

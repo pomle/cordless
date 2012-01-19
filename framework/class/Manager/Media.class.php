@@ -40,7 +40,7 @@ class Media extends Common\DB
 	}
 
 
-	public static function integrateIntoLibrary(\Media\Common\_Root $Media, $originalFileName = null)
+	public static function integrateIntoLibrary(\Media $Media, $originalFileName = null)
 	{
 		$inputFile = $Media->getFilePath();
 
