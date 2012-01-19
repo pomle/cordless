@@ -113,6 +113,7 @@ class Media extends Common\DB
 		$query = \DB::prepareQuery("SELECT
 				m.ID AS mediaID,
 				m.fileHash AS mediaHash,
+				m.fileOriginalName,
 				m.mediaType
 			FROM
 				Media m
@@ -132,6 +133,7 @@ class Media extends Common\DB
 
 
 			$Media->mediaID = (int)$media['mediaID'];
+			$Media->fileOriginalName = $media['fileOriginalName'];
 
 			$medias[$Media->mediaID] = $Media;
 		}
