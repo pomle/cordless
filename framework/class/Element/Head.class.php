@@ -26,19 +26,24 @@ class Head
 	}
 
 
-	public function addCSS($url)
+	public function addCSS()
 	{
-		$this->addLink('stylesheet', $url, 'text/css');
+		foreach(func_get_args() as $url)
+			$this->addLink('stylesheet', $url, 'text/css');
+
+		return $this;
 	}
 
 	public function addMeta($name, $content)
 	{
 		$this->meta[] = array($name, $content);
+		return $this;
 	}
 
 	public function addLink($rel, $href, $type = null, $title = null)
 	{
 		$this->links[] = array($type, $href, $rel, $title);
+		return $this;
 	}
 
 	public function display()
