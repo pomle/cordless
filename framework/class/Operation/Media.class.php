@@ -45,7 +45,7 @@ class Media
 		}
 	}
 
-	public static function downloadFileToLibrary($url, $preferredMediaType = null)
+	public static function downloadFileToLibrary($url, $preferredMediaType = null, $mediaID = null)
 	{
 		try
 		{
@@ -58,7 +58,7 @@ class Media
 			if( !$downloadedFile = $FileOp->download($url) )
 				throw New \Exception('Download Failed');
 
-			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType);
+			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType, null, $mediaID);
 
 			unlink($downloadedFile);
 
@@ -72,7 +72,7 @@ class Media
 		}
 	}
 
-	public static function importFileToLibrary($filepath, $originalFilename = null, $preferredMediaType = null, $requireType = null)
+	public static function importFileToLibrary($filepath, $originalFilename = null, $preferredMediaType = null, $requireType = null, $mediaID = null)
 	{
 		### Create Media Object from File
 		$Media_New = self::createFromFile($filepath, $preferredMediaType);
@@ -94,6 +94,7 @@ class Media
 		}
 
 		### Extend Object as Integrated
+		$Media_New->mediaID = $mediaID;
 		$Media_New = \Manager\Media::integrateIntoLibrary($Media_New, $originalFilename);
 
 		return $Media_New;

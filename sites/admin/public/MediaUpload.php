@@ -50,55 +50,59 @@ while($i++ < 10)
 $pageTitle = _('Media');
 $pageSubtitle = _('Upload');
 
-$IOCall = new \Element\IOCall('Media');
+if( isset($_GET['mediaID']) )
+	$pageSubtitle = sprintf('Upload Replacement for %u', $_GET['mediaID']);
+
+$IOCall = new \Element\IOCall('Media', array('mediaID' => $_GET['mediaID']));
 
 require HEADER;
+
+echo $IOCall->getHead();
 ?>
 <fieldset>
 	<legend><? echo \Element\Tag::legend('mouse_add', 'Drag & Drop'); ?></legend>
+	<?
+	echo \Element\Table::inputs()
+		->addRow(_('Typ'), new \Element\Module('SelectBox.MediaTypes', 'preferredMediaType', true))
+		;
 
-	<form action="" method="post">
-		<?
-		echo \Element\Table::inputs()
-			->addRow(_('Typ'), new \Element\Module('SelectBox.MediaTypes', 'preferredMediaType', true))
-			;
-
-		echo new \Element\FileUpload($IOCall);
-		?>
-	</form>
+	echo new \Element\FileUpload($IOCall);
+	?>
 </fieldset>
 
-<?
-echo $IOCall->getHead();
-$IOControl = new \Element\IOControl($IOCall);
-?>
 <fieldset>
 	<legend><? echo \Element\Tag::legend('world_link', 'Fetch Resource'); ?></legend>
-
 	<?
 	echo \Element\Table::inputs()
 		->addRow(_('URL'), \Element\Input::text('url')->size(100))
 		;
 
+	$IOControl = new \Element\IOControl($IOCall);
 	echo $IOControl->setButtons(\Element\Button::IO('url', 'world_add', 'Download'));
 	?>
 </fieldset>
 <?
 echo $IOCall->getFoot();
-?>
 
-<form action="?upload=1" method="post" enctype="multipart/form-data">
-<fieldset>
-	<legend><? echo \Element\Tag::legend('application_form_edit', 'File List'); ?></legend>
 
-	<?
-	echo
-		$MessageBox,
-		$Table;
-
-	echo \Element\Button::submit('arrow_divide', 'Upload');
+if( !isset($_GET['mediaID']) )
+{
 	?>
-</fieldset>
-</form>
-<?
+
+	<form action="?upload=1" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend><? echo \Element\Tag::legend('application_form_edit', 'File List'); ?></legend>
+
+		<?
+		echo
+			$MessageBox,
+			$Table;
+
+		echo \Element\Button::submit('arrow_divide', 'Upload');
+		?>
+	</fieldset>
+	</form>
+	<?
+}
+
 require FOOTER;

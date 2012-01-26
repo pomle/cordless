@@ -31,15 +31,16 @@ if( isset($_GET['download']) && $fileReadable )
 
 $MediaInfo = \Element\Table::inputs();
 $MediaInfo
-	->addRow(_('Typ'), new \Element\Module('SelectBox.MediaTypes', 'mediaType', true, $Media::TYPE))
+	->addRow(_('Type'), new \Element\Module('SelectBox.MediaTypes', 'mediaType', true, $Media::TYPE))
+	->addRow(_('ID'), $Media->mediaID . ' ' . sprintf('(<a href="/MediaUpload.php?mediaID=%u">%s</a>)', $Media->mediaID, _('Replace')))
 	->addRow(_('Hash'), $Media->mediaHash)
-	->addRow(_('Uppladdningsdatum'), Format::timestamp($mediaInfo['timeCreated']))
-	->addRow(_('Orginalfilnamn'), $isAdmin ? \Element\Input::text('fileOriginalName', $mediaInfo['fileOriginalName'])->size(32) : $mediaInfo['fileOriginalName'] ?: MESSAGE_NOT_AVAILABLE)
-	->addRow(_('Källfil'), $displayFullPaths ? $filePath : str_replace(DIR_MEDIA, '', $filePath))
-	->addRow(_('Existerar'), sprintf('%s %s', $fileExists ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE, $fileReadable ? sprintf('(<a href="?mediaID=%u&download=1">%s</a>)', $Media->mediaID, _('Ladda ner')) : ''))
-	->addRow(_('Läsbar'), $fileReadable ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE)
-	->addRow(_('Skrivbar'), $fileWritable ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE)
-	->addRow(_('Filstorlek'), $fileSize ? \Format::fileSize($fileSize) : MESSAGE_NOT_AVAILABLE);
+	->addRow(_('Upload Time'), Format::timestamp($mediaInfo['timeCreated']))
+	->addRow(_('Orginal Fiilename'), $isAdmin ? \Element\Input::text('fileOriginalName', $mediaInfo['fileOriginalName'])->size(32) : $mediaInfo['fileOriginalName'] ?: MESSAGE_NOT_AVAILABLE)
+	->addRow(_('Source file'), $displayFullPaths ? $filePath : str_replace(DIR_MEDIA, '', $filePath))
+	->addRow(_('Exists'), sprintf('%s %s', $fileExists ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE, $fileReadable ? sprintf('(<a href="?mediaID=%u&download=1">%s</a>)', $Media->mediaID, _('Download')) : ''))
+	->addRow(_('Readable'), $fileReadable ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE)
+	->addRow(_('Writeable'), $fileWritable ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE)
+	->addRow(_('Filesize'), $fileSize ? \Format::fileSize($fileSize) : MESSAGE_NOT_AVAILABLE);
 
 
 $IOCall = new \Element\IOCall('Media', array('mediaID' => $Media->mediaID));

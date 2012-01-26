@@ -8,6 +8,7 @@ switch($action)
 			throw New Exception(_('Inga filer hittades i begäran'));
 
 		$preferredMediaType = $_POST['preferredMediaType'] ?: null;
+		$mediaID = $_GET['mediaID'] ?: null;
 
 		foreach($_FILES as $file)
 		{
@@ -15,7 +16,7 @@ switch($action)
 
 			try
 			{
-				$Media = \Operation\Media::importFileToLibrary($file['tmp_name'], $file['name'], $preferredMediaType);
+				$Media = \Operation\Media::importFileToLibrary($file['tmp_name'], $file['name'], $preferredMediaType, null, $mediaID);
 
 				Message::addNotice('Upload Success "' . $file['name'] . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
@@ -34,7 +35,7 @@ switch($action)
 		{
 			$url = $_POST['url'];
 
-			$Media = \Operation\Media::downloadFileToLibrary($url);
+			$Media = \Operation\Media::downloadFileToLibrary($url, $_GET['mediaID']);
 
 			Message::addNotice('Fetch Success "' . $url . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
