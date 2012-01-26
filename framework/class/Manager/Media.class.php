@@ -45,51 +45,51 @@ class Media extends Common\DB
 		$inputFile = $Media->getFilePath();
 
 		if( !file_exists($inputFile) )
-		{
-			trigger_error("Could not find file \"$inputFile\"", E_USER_WARNING);
-			return false;
-		}
+			throw New \Exception("Could not find file \"$inputFile\"");
 
 		if( !is_file($inputFile) )
-		{
-			trigger_error("\"$inputFile\" is not a valid file", E_USER_WARNING);
-			return false;
-		}
+			throw New \Exception("\"$inputFile\" is not a valid file");
 
 		if( !is_readable($inputFile) )
-		{
-			trigger_error("Could not read file \"$inputFile\"", E_USER_WARNING);
-			return false;
-		}
+			throw New \Exception("Could not read file \"$inputFile\"");
+
 
 		$fileHash = md5_file($inputFile);
 		$libraryFile = DIR_MEDIA_SOURCE . $fileHash;
 
 		if( !file_exists($libraryFile) && !@copy($inputFile, $libraryFile) )
-		{
-			trigger_error("Could not write to source library path \"$libraryFile\"", E_USER_WARNING);
-			return false;
-		}
+			throw New \Exception("Could not write to source library path \"$libraryFile\"");
 
 		$query = \DB::prepareQuery("SELECT ID FROM Media WHERE fileHash = %s", $fileHash);
 		$mediaID = \DB::queryAndFetchOne($query);
 
-		if( !$mediaID )
+		if( !$mediaID || isset($Media->mediaID) )
 		{
 			$query = \DB::prepareQuery("INSERT INTO
 				Media
 				(
+					ID,
 					timeCreated,
+					timeModified,
 					fileHash,
 					fileSize,
 					fileOriginalName,
 					mediaType
 				) VALUES(
+					NULLIF(%u, 0),
+					UNIX_TIMESTAMP(),
 					UNIX_TIMESTAMP(),
 					%s,
 					NULLIF(%u, 0),
 					NULLIF(%s, ''),
-					%s)",
+					%s
+				) ON DUPLICATE KEY UPDATE
+					timeModified = VALUES(timeModified),
+					fileHash = VALUES(fileHash),
+					fileSize = VALUES(fileSize),
+					fileOriginalName = VALUES(fileOriginalName),
+					mediaType = VALUES(mediaType)",
+				$Media->mediaID,
 				$fileHash,
 				filesize($libraryFile),
 				$originalFileName,
