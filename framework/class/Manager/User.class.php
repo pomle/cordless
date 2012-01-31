@@ -69,6 +69,7 @@ class User extends Common\DB
 			$userID, $userID);
 
 		$policies = \DB::queryAndFetchArray($query);
+
 		return $policies;
 	}
 
@@ -90,7 +91,7 @@ class User extends Common\DB
 		return $settings;
 	}
 
-	public static function loadFromDB($userIDs)
+	public static function loadFromDB($userIDs, $isLoggedIn = false)
 	{
 		$users = array();
 
@@ -119,9 +120,9 @@ class User extends Common\DB
 		{
 			$userID = (int)$user['userID'];
 
-			$User = new \User($user['userID'], true);
+			$User = new \User($user['userID'], $isLoggedIn);
 
-			#$User->isEnabled = (int)$user['isEnabled'];
+			#$User->isEnabled = (bool)$user['isEnabled'];
 			$User->timeCreated = (int)$user['timeCreated'] ?: null;
 			$User->timeModified = (int)$user['timeModified'] ?: null;
 			$User->timePasswordLastChange = (int)$user['timePasswordLastChange'] ?: null;

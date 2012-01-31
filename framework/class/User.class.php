@@ -118,7 +118,8 @@ class User
 			return false;
 		}
 
-		$User = new self($userID, true);
+		if( !$User = \Manager\User::loadOneFromDB($userID, true) )
+			return false;
 
 		$newToken = self::createHash(md5($User->username . microtime()), self::PASSWORD_SALT);
 
