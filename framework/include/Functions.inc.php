@@ -8,7 +8,8 @@ function __autoload($className)
 function addIncludePath($newPath)
 {
 	$currentIncludePaths = get_include_path();
-	set_include_path($currentIncludePaths . PATH_SEPARATOR . $newPath);
+	#set_include_path($currentIncludePaths . PATH_SEPARATOR . $newPath); ### New paths have lower priority
+	set_include_path($newPath . PATH_SEPARATOR . $currentIncludePaths); ### New paths have higher priority
 }
 
 function asenineLog($string, $space = 'Global')
