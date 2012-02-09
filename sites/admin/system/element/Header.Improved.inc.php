@@ -6,7 +6,7 @@ header('Content-type: text/html; charset=utf-8');
 <html>
 	<head>
 		<title><?
-			echo $pageTitlePrefix;
+			echo htmlspecialchars($pageTitlePrefix);
 			if( isset($pageTitle) ) { echo ': ', htmlspecialchars($pageTitle); }
 		?></title>
 		<?

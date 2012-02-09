@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title><?
-			echo $pageTitlePrefix;
+			echo htmlspecialchars($pageTitlePrefix);
 			if( isset($pageTitle) ) { echo ': ', htmlspecialchars($pageTitle); }
 		?></title>
 		<?

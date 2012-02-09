@@ -2,7 +2,7 @@
 if( isset($_POST['login']) ) ### If we end up here, user has tried to login, but $User->isLoggedIn() !== true
 	$MB = \Element\MessageBox::alert(_('Inloggning misslyckades'));
 
-$title = _('Login');
+$pageTitle = _('Login');
 
 require DIR_ADMIN_ELEMENT . 'Header.NotLoggedIn.inc.php';
 
