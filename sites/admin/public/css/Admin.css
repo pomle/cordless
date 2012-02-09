@@ -24,15 +24,24 @@ a {
 
 fieldset {
 	border-width: 1px;
-	background-color: #fcfbfa;
 	margin-bottom: 8px;
 	padding: 4px 8px 8px 8px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
-fieldset fieldset {
+
+/*fieldset color toggle */
+fieldset,
+fieldset fieldset fieldset,
+fieldset fieldset fieldset fieldset fieldset {
+	background-color: #f1f4f5;
+}
+fieldset fieldset,
+fieldset fieldset fieldset fieldset,
+fieldset fieldset fieldset fieldset fieldset fieldset {
 	background-color: #fff;
 }
+
 fieldset>legend {
 	color: #2591d4;
 	font-size: 12pt;
@@ -204,8 +213,8 @@ fieldset legend .icon {
 
 
 .row.odd {
-	background-color: #f5f4f2;
+	background-color: rgba(0,0,0,.06);
 }
 .row.even {
-	background-color: #fcfbfa;
+	background-color: rgba(0,0,0,.01);
 }
