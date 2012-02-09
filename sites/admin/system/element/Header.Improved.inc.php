@@ -5,8 +5,10 @@ header('Content-type: text/html; charset=utf-8');
 ?><!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8;">
-		<title>Asenine Admin<? if( isset($pageTitle) ) { echo ': ', htmlspecialchars($pageTitle); } ?></title>
+		<title><?
+			echo $pageTitlePrefix;
+			if( isset($pageTitle) ) { echo ': ', htmlspecialchars($pageTitle); }
+		?></title>
 		<?
 		require DIR_ADMIN_ELEMENT . 'Head.inc.php';
 		?>

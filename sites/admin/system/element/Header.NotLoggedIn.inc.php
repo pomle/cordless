@@ -1,7 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>CoolStuff Admin: <? echo htmlspecialchars($title); ?></title>
+		<title><?
+			echo $pageTitlePrefix;
+			if( isset($pageTitle) ) { echo ': ', htmlspecialchars($pageTitle); }
+		?></title>
 		<?
 		require DIR_ADMIN_ELEMENT . 'Head.inc.php';
 		?>
