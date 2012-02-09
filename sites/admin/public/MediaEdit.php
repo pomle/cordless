@@ -48,7 +48,9 @@ $IOCall = new \Element\IOCall('Media', array('mediaID' => $Media->mediaID));
 $MediaControl = new \Element\IOControl($IOCall);
 $MediaControl
 	->addButton(new \Element\Button\Save())
-	->addButton(new \Element\Button\Delete());
+	->addButton(new \Element\Button\Delete())
+	->addButton(\Element\Button::IO('publishToImgur', 'world', _('Publish')))
+	;
 
 $AutogenControl = new \Element\IOControl($IOCall);
 $AutogenControl
@@ -66,13 +68,16 @@ echo $IOCall->getHead();
 	<legend><? echo _('Information'); ?></legend>
 
 	<?
+	echo \Element\Input::hidden('mediaID', $Media->mediaID);
 	echo
 		$MediaInfo,
 		$MediaControl;
 	?>
 
 </fieldset>
-
+<?
+echo $IOCall->getFoot();
+?>
 <fieldset>
 	<legend><? echo _('Förhandsgranskning'); ?></legend>
 	<?
@@ -80,31 +85,5 @@ echo $IOCall->getHead();
 	echo $MediaPreview;
 	?>
 </fieldset>
-
 <?
-$files = \Manager\Dataset\Media::getSpreadByHash($Media->mediaHash);
-?>
-<fieldset>
-	<legend><? printf(_('Biblioteksförekomst (%u)'), count($files)); ?></legend>
-	<?
-	if( count($files) > 0 )
-	{
-		echo '<ul>';
-		foreach($files as $file)
-			printf('<li><a href="%s">%s</a></li>',
-				str_replace(DIR_MEDIA, URL_MEDIA, $file),
-				htmlspecialchars($displayFullPaths ? $file : str_replace(DIR_MEDIA, '', $file)));
-		echo '</ul>';
-	}
-
-	unset($files);
-
-	echo $AutogenControl;
-	?>
-</fieldset>
-
-<?
-echo $IOCall->getFoot();
-
 require FOOTER;
-
