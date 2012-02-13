@@ -7,8 +7,6 @@ $MessageBox = new \Element\MessageBox();
 
 if( isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 )
 {
-	print_r($_FILES);
-
 	foreach($_FILES['media']['name'] as $index => $fileName)
 	{
 		if( empty($fileName) ) continue; ### Skip empty field
@@ -34,75 +32,28 @@ if( isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 )
 		}
 	}
 }
-else
-{
-	$MessageBox->addNotice(sprintf('Max File Size: %s', ini_get('upload_max_filesize')));
-}
 
-$Table = new \Element\Table();
-
-while($i++ < 10)
-	$Table->addRow(
-		sprintf('File #%u', $i),
-		\Element\Input::file("media[$i]")->size(64),
-		new \Element\Module('SelectBox.MediaTypes', "mediaType[$i]", true));
+#$MessageBox->addNotice(sprintf('Max File Size: %s', ini_get('upload_max_filesize')));
 
 $pageTitle = _('Media');
 $pageSubtitle = _('Upload');
 
-if( isset($_GET['mediaID']) )
-	$pageSubtitle = sprintf('Upload Replacement for %u', $_GET['mediaID']);
-
 $IOCall = new \Element\IOCall('Media', array('mediaID' => $_GET['mediaID']));
+
+$UploadForm = new \Element\Form\Upload($IOCall);
+$UploadForm->countBrowseFields = 5;
+
+if( isset($_GET['mediaID']) )
+{
+	$pageSubtitle = sprintf('Upload Replacement for %u', $_GET['mediaID']);
+	$UploadForm->showBrowseFields = false;
+}
+
 
 require HEADER;
 
-echo $IOCall->getHead();
-?>
-<fieldset>
-	<legend><? echo \Element\Tag::legend('mouse_add', 'Drag & Drop'); ?></legend>
-	<?
-	echo \Element\Table::inputs()
-		->addRow(_('Typ'), new \Element\Module('SelectBox.MediaTypes', 'preferredMediaType', true))
-		;
+echo $MessageBox;
 
-	echo new \Element\FileUpload($IOCall);
-	?>
-</fieldset>
-
-<fieldset>
-	<legend><? echo \Element\Tag::legend('world_link', 'Fetch Resource'); ?></legend>
-	<?
-	echo \Element\Table::inputs()
-		->addRow(_('URL'), \Element\Input::text('url')->size(100))
-		;
-
-	$IOControl = new \Element\IOControl($IOCall);
-	echo $IOControl->setButtons(\Element\Button::IO('url', 'world_add', 'Download'));
-	?>
-</fieldset>
-<?
-echo $IOCall->getFoot();
-
-
-if( !isset($_GET['mediaID']) )
-{
-	?>
-
-	<form action="?upload=1" method="post" enctype="multipart/form-data">
-	<fieldset>
-		<legend><? echo \Element\Tag::legend('application_form_edit', 'File List'); ?></legend>
-
-		<?
-		echo
-			$MessageBox,
-			$Table;
-
-		echo \Element\Button::submit('arrow_divide', 'Upload');
-		?>
-	</fieldset>
-	</form>
-	<?
-}
+echo $UploadForm;
 
 require FOOTER;

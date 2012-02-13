@@ -58,7 +58,7 @@ $AutogenControl
 
 
 $pageTitle = _('Media');
-$pageSubtitle = '#'.$Media->mediaID;
+$pageSubtitle = $Media->mediaID;
 
 require HEADER;
 
