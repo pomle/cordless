@@ -35,7 +35,7 @@ $MediaInfo
 	->addRow(_('ID'), $Media->mediaID . ' ' . sprintf('(<a href="/MediaUpload.php?mediaID=%u">%s</a>)', $Media->mediaID, _('Replace')))
 	->addRow(_('Hash'), $Media->mediaHash)
 	->addRow(_('Upload Time'), Format::timestamp($mediaInfo['timeCreated']))
-	->addRow(_('Orginal Fiilename'), $isAdmin ? \Element\Input::text('fileOriginalName', $mediaInfo['fileOriginalName'])->size(32) : $mediaInfo['fileOriginalName'] ?: MESSAGE_NOT_AVAILABLE)
+	->addRow(_('Orginal Filename'), $isAdmin ? \Element\Input::text('fileOriginalName', $mediaInfo['fileOriginalName'])->size(32) : $mediaInfo['fileOriginalName'] ?: MESSAGE_NOT_AVAILABLE)
 	->addRow(_('Source file'), $displayFullPaths ? $filePath : str_replace(DIR_MEDIA, '', $filePath))
 	->addRow(_('Exists'), sprintf('%s %s', $fileExists ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE, $fileReadable ? sprintf('(<a href="?mediaID=%u&download=1">%s</a>)', $Media->mediaID, _('Download')) : ''))
 	->addRow(_('Readable'), $fileReadable ? MESSAGE_POSITIVE : MESSAGE_NEGATIVE)
