@@ -25,6 +25,6 @@
 	</head>
 	<body>
 		<fieldset>
-			<legend><? echo htmlspecialchars($title); ?></legend>
+			<legend><? echo htmlspecialchars($pageTitle); ?></legend>
 
 			<? Message::displayElements(); ?>
