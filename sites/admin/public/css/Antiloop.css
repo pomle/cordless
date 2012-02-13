@@ -19,15 +19,6 @@
 	display: inline;
 }
 
-.antiloop .row.odd {
-	background-color: #f5f4f2;
-}
-.antiloop .row.even {
-	background-color: #fcfbfa;
-}
-fieldset .antiloop .row.even {
-	background-color: #fff;
-}
 .antiloop .row.loading {
 	background-color: #e8e8e8 !important;
 }
