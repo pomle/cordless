@@ -29,7 +29,7 @@ class UserIO extends AjaxIO
 		$this->isAdministrator = (bool)$this->isAdministrator;
 		$this->timeAutoLogout = abs($this->timeAutoLogout);
 
-		$EditedUser = \Manager\User::loadOneFromDB($this->userID);
+		$EditedUser = \User::loadOneFromDB($this->userID);
 
 		if( strlen($this->username) > 0 )
 			\Operation\User::verifyUsername($this->username, $this->userID);
@@ -44,6 +44,12 @@ class UserIO extends AjaxIO
 		{
 			$this->isAdministrator = true;
 			Message::addAlert(_('Du kan ej ta bort din egen administratorstatus'));
+		}
+
+		if( !$this->isEnabled && $this->userID === USER_ID )
+		{
+			$this->isEnabled = true;
+			Message::addAlert(_('Du kan ej avaktivera den inloggade användaren'));
 		}
 
 		$query = \DB::prepareQuery("UPDATE

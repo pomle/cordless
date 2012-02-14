@@ -53,6 +53,67 @@ class User
 		return $hash;
 	}
 
+	public static function loadFromDB($userIDs)
+	{
+		$users = array();
+
+		$query = \DB::prepareQuery("SELECT
+				u.ID AS userID,
+				u.isEnabled,
+				u.isAdministrator,
+				u.timeAutoLogout,
+				u.timeCreated,
+				u.timeModified,
+				u.timeLastLogin,
+				u.timePasswordLastChange,
+				u.countLoginsSuccessful,
+				u.countLoginsFailed,
+				u.countLoginsFailedStreak,
+				u.username,
+				u.fullname,
+				u.phone,
+				u.email
+			FROM
+				Users u
+			WHERE
+				u.ID IN %a", $userIDs);
+
+		$result = \DB::fetch($query);
+
+		while($user = \DB::assoc($result))
+		{
+			$userID = (int)$user['userID'];
+
+			$User = new \User($userID);
+
+			$User->isEnabled = (bool)$user['isEnabled'];
+			$User->isAdministrator = (bool)$user['isAdministrator'];
+			$User->username = $user['username'];
+			$User->timeAutoLogout = (int)$user['timeAutoLogout'] ?: null;
+			$User->timeCreated = (int)$user['timeCreated'] ?: null;
+			$User->timeModified = (int)$user['timeModified'] ?: null;
+			$User->timeLastLogin = (int)$user['timeLastLogin'] ?: null;
+			$User->timePasswordLastChange = (int)$user['timePasswordLastChange'] ?: null;
+
+			$User->countLoginsSuccessful = (int)$user['countLoginsSuccessful'];
+			$User->countLoginsFailed = (int)$user['countLoginsFailed'];
+			$User->countLoginsFailedStreak = (int)$user['countLoginsFailedStreak'];
+
+			$User->fullname = $user['fullname'];
+			$User->name = $User->fullname ?: $User->username;
+			$User->email = $user['email'];
+			$User->phone = $user['phone'];
+
+			$users[$userID] = $User;
+		}
+
+		return $users;
+	}
+
+	public static function loadOneFromDB($userID)
+	{
+		return reset(self::loadFromDB(array($userID)));
+	}
 
 	public static function login($username, $password = null, $trialToken = null)
 	{
@@ -118,8 +179,15 @@ class User
 			return false;
 		}
 
-		if( !$User = \Manager\User::loadOneFromDB($userID, true) )
+		if( !$User = reset(self::loadFromDB(array($userID))) )
 			return false;
+
+		$User->isLoggedIn = true;
+
+		$User->enforceSecurity();
+
+		$User->settings = \Manager\User::getSettings($User->userID);
+		$User->preferences = \Manager\User::getPreferences($User->userID);
 
 		$newToken = self::createHash(md5($User->username . microtime()), self::PASSWORD_SALT);
 
@@ -145,26 +213,18 @@ class User
 	}
 
 
-	public function __construct($userID = 0, $isLoggedIn = false)
+	public function __construct($userID = 0)
 	{
 		$this->ip = getenv('REMOTE_ADDR');
 		$this->userID = (int)$userID;
 		$this->isAdministrator = false;
-		$this->isLoggedIn = ($isLoggedIn === true);
+		$this->isLoggedIn = false;
 
 		$this->IPsAllowed = new \IPPool();
 		$this->IPsDenied = new \IPPool();
 
 		$this->settings = array();
 		$this->preferences = array();
-
-		if( $this->isLoggedIn() )
-		{
-			$this->enforceSecurity();
-
-			$this->settings = \Manager\User::getSettings($this->userID);
-			$this->preferences = \Manager\User::getPreferences($this->userID);
-		}
 	}
 
 	public function __destruct()

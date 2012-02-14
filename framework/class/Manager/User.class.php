@@ -91,56 +91,6 @@ class User extends Common\DB
 		return $settings;
 	}
 
-	public static function loadFromDB($userIDs, $isLoggedIn = false)
-	{
-		$users = array();
-
-		$query = \DB::prepareQuery("SELECT
-				u.ID AS userID,
-				u.timeCreated,
-				u.timeModified,
-				u.isEnabled,
-				u.isAdministrator,
-				u.username,
-				u.fullname,
-				u.phone,
-				u.email,
-				u.timePasswordLastChange,
-				u.timeLastLogin,
-				u.countLoginsSuccessful,
-				u.countLoginsFailed
-			FROM
-				Users u
-			WHERE
-				u.ID IN %a", $userIDs);
-
-		$result = \DB::queryAndFetchResult($query);
-
-		while($user = \DB::assoc($result))
-		{
-			$userID = (int)$user['userID'];
-
-			$User = new \User($user['userID'], $isLoggedIn);
-
-			#$User->isEnabled = (bool)$user['isEnabled'];
-			$User->timeCreated = (int)$user['timeCreated'] ?: null;
-			$User->timeModified = (int)$user['timeModified'] ?: null;
-			$User->timePasswordLastChange = (int)$user['timePasswordLastChange'] ?: null;
-			$User->timeLastLogin = (int)$user['timeLastLogin'] ?: null;
-			$User->countLoginsSuccessful = (int)$user['countLoginsSuccessful'];
-			$User->countLoginsFailed = (int)$user['countLoginsFailed'];
-
-			$User->fullname = $user['fullname'];
-			$User->name = $User->fullname ?: $User->username;
-			$User->email = $user['email'];
-			$User->phone = $user['phone'];
-
-			$users[$userID] = $User;
-		}
-
-		return $users;
-	}
-
 	public static function resetPreferences($userID)
 	{
 		$query = \DB::prepareQuery("UPDATE Users SET preferences = NULL WHERE ID = %u", $userID);

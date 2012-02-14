@@ -7,17 +7,14 @@ if( !isset($_GET['userID']) )
 	header('Location: ?userID=' . $userID);
 	exit();
 }
-else
-{
-	define('ACCESS_POLICY', 'AllowViewUser');
-	require '../Init.inc.php';
-}
 
-if( !$_User = \Manager\User::loadOneFromDB($_GET['userID']) )
+define('ACCESS_POLICY', 'AllowViewUser');
+require '../Init.inc.php';
+
+
+if( !$_User = \User::loadOneFromDB($_GET['userID']) )
 	\Element\Page::error("User does not exist");
 
-
-requireClass('\Element\IOCall', '\Element\Tabs', '\Element\MessageBox');
 
 ### Stow away loaded User's id for convenience
 $userID = $_User->getID();
@@ -65,7 +62,7 @@ require HEADER;
 		<fieldset>
 			<legend><? echo \Element\Tag::legend('application_xp_terminal', _('Inställningar')); ?></legend>
 			<?
-			$IdleLogout = new \Element\SelectBox('timeAutoLogout', $properties['timeAutoLogout']);
+			$IdleLogout = new \Element\SelectBox('timeAutoLogout', $_User->timeAutoLogout);
 			$IdleLogout->addItem(_('Av'), 0);
 
 			foreach(array(1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 60) as $minutes)
@@ -73,7 +70,7 @@ require HEADER;
 
 			echo \Element\Table::inputs()
 				->addRow(_('Aktiv'), \Element\Input::checkbox('isEnabled', $_User->isEnabled))
-				->addRow(_('Administrator'), \Element\Input::checkbox('isAdministrator', $_User->isAdministrator()))
+				->addRow(_('Administrator'), \Element\Input::checkbox('isAdministrator', $_User->isAdministrator))
 				->addRow(_('Autologout'), $IdleLogout . ' ' . _('minuter'))
 				->addRow(_('Användarnamn'), \Element\Input::text('username', $_User->username)->size($size))
 				->addRow(_('Lösenord'), \Element\Input::password('newPassword')->size($size))
@@ -235,8 +232,10 @@ require HEADER;
 	<fieldset class="tab" id="policiesResulting">
 		<legend><? echo \Element\Tag::legend('key_go', _('Aktiva Rättigheter')); ?></legend>
 		<?
+		$policies = \Manager\User::getPolicies($_User->userID);
+
 		$Table = new \Element\Table();
-		foreach($_User->getPolicies() as $policy => $state)
+		foreach($policies as $policy => $state)
 			$Table->addRow($state, $policy);
 
 		echo $Table;
