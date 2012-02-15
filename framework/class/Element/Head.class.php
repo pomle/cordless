@@ -48,7 +48,8 @@ class Head
 
 	public function display()
 	{
-		printf('<meta http-equiv="content-type" content="%s; charset=%s">', $this->contentType, $this->charset);
+		### Removed since we should not rely on this being interpreted from the DOM. Content-type and charset should always be supplied as header
+		#printf('<meta http-equiv="content-type" content="%s; charset=%s">', $this->contentType, $this->charset);
 
 		if( $this->title )
 			printf('<title>%s</title>', htmlspecialchars($this->title));
