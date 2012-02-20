@@ -89,7 +89,7 @@ class Media extends Common\DB
 					fileSize = VALUES(fileSize),
 					fileOriginalName = VALUES(fileOriginalName),
 					mediaType = VALUES(mediaType)",
-				$Media->mediaID,
+				isset($Media->mediaID) ? $Media->mediaID : 0,
 				$fileHash,
 				filesize($libraryFile),
 				$originalFileName,

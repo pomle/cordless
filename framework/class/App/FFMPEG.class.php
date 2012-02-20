@@ -46,25 +46,38 @@ class FFMPEG extends Common\Root
 
 		$returnData = self::$lastOutput;
 
-		if( count(preg_grep('%Input%', $returnData)) === 0 ) return false;
+		### If there are any misdetection warnings, we abort. We want to be sure
+		if( count(preg_grep('/misdetection/', $returnData)) > 0 )
+			return false;
+
+		$inputs = preg_grep('/Input/', $returnData);
+
+		### FFMPEG could not identify any reasonable input
+		if( count($inputs) == 0 ) return false;
+
+
+		if( preg_match('/Input.*#[0-9]+, (image2)/', reset($inputs)) ) ### JPEG can be detected as valid, but should not
+			return false;
 
 		$streams['interleave'] = array_values(preg_grep('%Duration:%', $returnData));
 		$streams['audio'] = array_values(preg_grep('%Stream #[0-9]\.[0-9](.*): Audio%', $returnData));
 		$streams['video'] = array_values(preg_grep('%Stream #[0-9]\.[0-9](.*): Video%', $returnData));
 
-		preg_match('%Duration: (([0-9]{2}):([0-9]{2}):([0-9]{2})\.([0-9]{2})).*%', $streams['interleave'][0], $duration);
-		$time = array
-		(
-			'c' => $duration[1],
-			'h' => (int)$duration[2],
-			'm' => (int)$duration[3],
-			's' => (int)$duration[4],
-			'f' => (float)($duration[5] / 100)
-		);
-		$duration = ($time['h'] * 3600) + ($time['m'] * 60) + $time['s'] + $time['f'];
+		if( preg_match('%Duration: (([0-9]{2}):([0-9]{2}):([0-9]{2})\.([0-9]{2})).*%', $streams['interleave'][0], $duration) )
+		{
+			$time = array
+			(
+				'c' => $duration[1],
+				'h' => (int)$duration[2],
+				'm' => (int)$duration[3],
+				's' => (int)$duration[4],
+				'f' => (float)($duration[5] / 100)
+			);
+			$duration = ($time['h'] * 3600) + ($time['m'] * 60) + $time['s'] + $time['f'];
+		}
 
-		preg_match('%bitrate: ([0-9]+)(.*)/%', $streams['interleave'][0], $bitrate);
-		$bitrate = (int)($bitrate[1] * 1000);
+		if( preg_match('%bitrate: ([0-9]+)(.*)/%', $streams['interleave'][0], $bitrate) )
+			$bitrate = (int)($bitrate[1] * 1000);
 
 		$video = null;
 		if( count($streams['video']) > 0 )

@@ -2,6 +2,7 @@
 interface iMedia
 {
 	public static function canHandleFile($filePath);
+	public function __construct($mediaHash = null, $filePath = null);
 	public function getInfo();
 }
 
@@ -55,12 +56,11 @@ abstract class Media implements iMedia
 	}
 
 
-	final public function __construct($mediaHash, $filePath)
+	public function __construct($mediaHash = null, $filePath = null)
 	{
-		if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expectes argument 1 to be string of exact length 32', E_USER_ERROR);
+		#if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expectes argument 1 to be string of exact length 32', E_USER_ERROR);
 		$this->mediaHash = $mediaHash;
 		$this->filePath = $filePath;
-		$this->orientation = 0;
 	}
 
 	public function __toString()
