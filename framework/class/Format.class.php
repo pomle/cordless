@@ -19,12 +19,8 @@ class Format
 
 	public static function getFilter($language = null)
 	{
-		if( strlen($classPath) )
-		{
-			$classPath = '\\Locale\\Format\\' . $language;
-			if( class_exists($classPath) )
-				return new $classPath();
-		}
+		if( $language && ($classPath = '\\Locale\\Format\\' . $language) && class_exists($classPath) )
+			return new $classPath();
 
 		return new \Locale\Format\Common\Root();
 	}
