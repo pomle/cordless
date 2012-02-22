@@ -8,19 +8,24 @@ class Media extends Common\DB
 	const ERROR_FILE_NOT_FILE = 3;
 	const ERROR_FILE_COPY_FAILED = 4;
 
-	public static function createFromFile($inputFile)
+	public static function createFromFile(\File $File)
 	{
-		// May return several "hits", if $inputFile can be handled by multiple plugins
+		// May return several "hits", if $File can be handled by multiple plugins
 
 		$medias = array();
 
 		$plugins = Dataset\Media::getPlugins();
 
 		foreach($plugins as $className)
-			if( $className::canHandleFile($inputFile) )
-				$medias[] = $className::createFromFile($inputFile);
+			if( $className::canHandleFile($File) )
+				$medias[] = $className::createFromFile($File);
 
 		return $medias;
+	}
+
+	public static function createFromFilename($filename, $mime = null)
+	{
+		return self::createFromFile( new \File($filename, null, null, $mime) );
 	}
 
 	public static function createFromType($type, $mediaHash, $filePath)
@@ -34,13 +39,13 @@ class Media extends Common\DB
 		$classPath = '\\Media\\' . ucfirst($type);
 
 		if( class_exists($classPath) )
-			return new $classPath($mediaHash, $filePath);
+			return new $classPath($mediaHash, new \File($filePath));
 
 		return false;
 	}
 
 
-	public static function integrateIntoLibrary(\Media $Media, $originalFileName = null)
+	public static function integrateIntoLibrary(\Media $Media)
 	{
 		$inputFile = $Media->getFilePath();
 
@@ -71,29 +76,33 @@ class Media extends Common\DB
 					ID,
 					timeCreated,
 					timeModified,
+					mediaType,
 					fileHash,
 					fileSize,
 					fileOriginalName,
-					mediaType
+					fileMimeType
 				) VALUES(
 					NULLIF(%u, 0),
 					UNIX_TIMESTAMP(),
 					UNIX_TIMESTAMP(),
 					%s,
+					%s,
 					NULLIF(%u, 0),
 					NULLIF(%s, ''),
-					%s
+					NULLIF(%s, '')
 				) ON DUPLICATE KEY UPDATE
 					timeModified = VALUES(timeModified),
+					mediaType = VALUES(mediaType),
 					fileHash = VALUES(fileHash),
 					fileSize = VALUES(fileSize),
 					fileOriginalName = VALUES(fileOriginalName),
-					mediaType = VALUES(mediaType)",
+					fileMimeType = VALUES(fileMimeType)",
 				isset($Media->mediaID) ? $Media->mediaID : 0,
+				$Media::TYPE,
 				$fileHash,
 				filesize($libraryFile),
-				$originalFileName,
-				$Media::TYPE);
+				$Media->fileOriginalName,
+				$Media->mimeType);
 
 			$mediaID = \DB::queryAndGetID($query);
 		}
@@ -112,9 +121,10 @@ class Media extends Common\DB
 
 		$query = \DB::prepareQuery("SELECT
 				m.ID AS mediaID,
+				m.mediaType,
 				m.fileHash AS mediaHash,
 				m.fileOriginalName,
-				m.mediaType
+				m.fileMimeType
 			FROM
 				Media m
 			WHERE
@@ -131,9 +141,11 @@ class Media extends Common\DB
 			if( !$Media )
 				$Media = new \Media\Defunct($media['mediaHash'], DIR_MEDIA_SOURCE . $media['mediaHash']);
 
+			$Media->fileOriginalName = $media['fileOriginalName'];
+			$Media->mimeType = $media['fileMimeType'];
 
 			$Media->mediaID = (int)$media['mediaID'];
-			$Media->fileOriginalName = $media['fileOriginalName'];
+
 
 			$medias[$Media->mediaID] = $Media;
 		}
@@ -158,7 +170,7 @@ class Media extends Common\DB
 		$files = \Manager\Dataset\Media::getSpreadByHash($Media->mediaHash);
 		foreach($files as $file)
 		{
-			if( !is_writable($file) || !unlink($file) )
+			if( is_file($file) || !is_writable($file) || !unlink($file) )
 			{
 				$skipSourceDelete = true;
 				trigger_error("File \"$file\" was found but could not be removed", E_USER_WARNING);

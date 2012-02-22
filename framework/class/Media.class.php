@@ -2,7 +2,7 @@
 interface iMedia
 {
 	public static function canHandleFile($filePath);
-	public function __construct($mediaHash = null, $filePath = null);
+	public function __construct($mediaHash = null, \File $File = null);
 	public function getInfo();
 }
 
@@ -11,42 +11,40 @@ abstract class Media implements iMedia
 	const PATH_DEPTH = 5;
 
 	protected
-		$filePath;
+		$File;
 
 	public
-		$mediaHash;
+		$mediaHash,
+		$mimeType,
+		$fileOriginalName;
 
 
 
-	public static function createFromFile($filePath)
+	public static function createFromFile(\File $File)
 	{
-		if( !file_exists($filePath) )
-		{
-			trigger_error("Path does not exist: \"$filePath\"", E_USER_WARNING);
-			return false;
-		}
-
-		if( !is_file($filePath) )
-		{
-			trigger_error("Path is not a file: \"$filePath\"", E_USER_WARNING);
-			return false;
-		}
-
-		if( !is_readable($filePath) )
+		if( !$File->isReadable() )
 		{
 			trigger_error("File not readable: \"$filePath\"", E_USER_WARNING);
 			return false;
 		}
 
-		if( !static::canHandleFile($filePath) )
+		if( !static::canHandleFile($File) )
 		{
 			trigger_error(get_called_class() . " does not handle file: \"$filePath\"", E_USER_WARNING);
 			return false;
 		}
 
-		$mediaHash = md5_file($filePath);
+		$mediaHash = $File->hash;
 
-		return new static($mediaHash, $filePath);
+		$Media = new static($mediaHash, $File);
+		$Media->mimeType = $File->mime;
+
+		return $Media;
+	}
+
+	public static function createFromFilename($filename, $mime = null)
+	{
+		return self::createFromFile( new \File($filename, null, null, $mime) );
 	}
 
 	public static function createFromHash($mediaHash)
@@ -56,14 +54,14 @@ abstract class Media implements iMedia
 	}
 
 
-	public function __construct($mediaHash = null, $filePath = null)
+	public function __construct($mediaHash = null, \File $File = null)
 	{
-		#if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expectes argument 1 to be string of exact length 32', E_USER_ERROR);
+		#if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expects argument 1 to be string of exact length 32', E_USER_ERROR);
 		$this->mediaHash = $mediaHash;
-		$this->filePath = $filePath;
+		$this->File = $File;
 	}
 
-	public function __toString()
+	final public function __toString()
 	{
 		return $this->mediaHash;
 	}
@@ -71,7 +69,7 @@ abstract class Media implements iMedia
 
 	final public function getFilePath()
 	{
-		return $this->filePath;
+		return (string)$this->File; ### $File::__toString() provides $File->location and if null will be ""
 	}
 
 	final public function getFileOriginalName()

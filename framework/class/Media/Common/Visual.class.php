@@ -12,9 +12,9 @@ abstract class Visual extends \Media implements iVisual
 {
 	const VARIANT = 'visual';
 
-	public function __construct($mediaHash = null, $filePath = null)
+	public function __construct($mediaHash = null, \File $File = null)
 	{
-		parent::__construct($mediaHash, $filePath);
+		parent::__construct($mediaHash, $File);
 		$this->orientation = 0;
 	}
 }

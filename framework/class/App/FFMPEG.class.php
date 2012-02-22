@@ -12,7 +12,8 @@ class FFMPEG extends Common\Root
 {
 	protected static
 		$exe_ffprobe,
-		$exe_ffmpeg;
+		$exe_ffmpeg,
+		$formats;
 
 	protected
 		$optPre,
@@ -27,7 +28,7 @@ class FFMPEG extends Common\Root
 		if( !self::$exe_ffmpeg ) return false;
 
 		foreach($inputFiles as &$f)
-			$f = '-i ' . \escapeshellarg($f);
+			$f = self::getInputCommand($f);
 
 		$command = sprintf('%s -y %s %s %s %s 2>&1', self::$exe_ffmpeg, join(' ', $optPre), join($inputFiles), join(' ', $optPost), $outputFile ? \escapeshellarg($outputFile) : '');
 
@@ -40,7 +41,7 @@ class FFMPEG extends Common\Root
 	{
 		if( !self::$exe_ffprobe ) return false;
 
-		$command = sprintf('%s -i %s 2>&1', self::$exe_ffprobe, \escapeshellarg($inputFile));
+		$command = sprintf('%s %s 2>&1', self::$exe_ffprobe, self::getInputCommand($inputFile));
 
 		self::runCommand($command); ### If FFPROBE does not exist, we fall back to FFMPEG parsing, which returns false if no output file is specified but still provides parse:able output
 
@@ -56,8 +57,14 @@ class FFMPEG extends Common\Root
 		if( count($inputs) == 0 ) return false;
 
 
-		if( preg_match('/Input.*#[0-9]+, (image2)/', reset($inputs)) ) ### JPEG can be detected as valid, but should not
-			return false;
+		if( !preg_match('/Input.*#[0-9]+, (\w+),/', reset($inputs), $matches) ) ### JPEG can be detected as valid, but should not
+			return false; ### Unexpected input string
+
+		### Parse format from FFMPEGs result
+		$format = $matches[1];
+
+		if( in_array($format, array('image2')) ) return false; ### FFMPEG format exclude list to avoid some JPEGs being catched
+
 
 		$streams['interleave'] = array_values(preg_grep('%Duration:%', $returnData));
 		$streams['audio'] = array_values(preg_grep('%Stream #[0-9]\.[0-9](.*): Audio%', $returnData));
@@ -131,6 +138,7 @@ class FFMPEG extends Common\Root
 
 		return array
 		(
+			'format' => $format,
 			'bitrate' => $bitrate,
 			'duration' => $duration,
 			'time' => $time,
@@ -157,6 +165,49 @@ class FFMPEG extends Common\Root
 	public static function isValidFile($filename)
 	{
 		return (bool)(is_file($filename) && is_readable($filename) && self::doInfo($filename));
+	}
+
+	public static function getFormats()
+	{
+		while( !isset(self::$formats) ) ### After this loop has finished we've got a nice array with formats, or an empty array if problems occured, and we will only run once per php execution session, which should be enough since we don't expect FFMPEG to change
+		{
+			self::$formats = array(); ### Set the variable so that this loop will only run once per session
+
+			if( !self::$exe_ffprobe ) break; ### No exe? NO FORMATS
+
+
+			$cmd = sprintf('%s -formats', self::$exe_ffprobe);
+
+			exec($cmd, $output, $retval);
+			if( $retval != 0 ) break; ### exec call failed
+
+			foreach($output as $line)
+				if( preg_match('/\s[D\s][E\s]\s(\S+)/', $line, $match) )
+					self::$formats[] = $match[1];
+
+			break;
+		}
+
+		return self::$formats;
+	}
+
+	public static function getInputCommand($File)
+	{
+		$str = '';
+
+		### If input is a \File we check for mime type. Decreases the chance of identification problems. Notice that mime type doesn't correspond exactly to FFMPEG formats. Some further logic may be needed here for some files
+		if( $File instanceof \File && preg_match('%(.+)/(.+)%', $File->mime, $matches) )
+		{
+			$formats = self::getFormats();
+			list($mime, $type, $format) = $matches;
+
+			if( in_array($format, $formats) )
+				$str = sprintf('-f %s ', \escapeshellarg($format));
+		}
+
+		$str .= sprintf('-i %s', \escapeshellarg($File));
+
+		return $str;
 	}
 
 

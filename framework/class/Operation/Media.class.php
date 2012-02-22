@@ -3,31 +3,21 @@ namespace Operation;
 
 class Media
 {
-	public static function createFromFile($filepath, $preferredMediaType = null)
+	public static function createFromFile(\File $File, $preferredMediaType = null)
 	{
-		if( empty($filepath) )
-			throw New \Exception('Filepath empty');
-
-		if( !is_file($filepath) )
-			throw New \Exception('Not a valid file');
-
-		if( !is_file($filepath) )
-			throw New \Exception('File not readable');
-
-		$media = \Manager\Media::createFromFile($filepath);
+		$medias = \Manager\Media::createFromFile($File);
 
 		### No plug-ins accepted file
-		if( count($media) == 0 )
+		if( count($medias) == 0 )
 			throw New \Exception('File not supported by available Media Plugins');
 
-		### If only handled by one plug-in, return this
-		if( count($media) == 1 )
-			return reset($media);
+		### If only handled by one plug-in, return instance of it
+		if( count($medias) == 1 )
+			return reset($medias);
 
-
-		if( count($media) > 1 )
+		if( count($medias) > 1 )
 		{
-			foreach($media as $Media)
+			foreach($medias as $Media)
 				$mediaTypes[$Media::TYPE] = '"' . $Media::DESCRIPTION . '"';
 
 			$mediaDesc = \Manager\Dataset\Media::getDescriptionByType($preferredMediaType);
@@ -35,7 +25,7 @@ class Media
 			### Return list of plug-ins that identified media
 			if( !is_null($preferredMediaType) )
 			{
-				foreach($media as $Media)
+				foreach($medias as $Media)
 					if( $preferredMediaType == $Media::TYPE ) return $Media;
 
 				throw New \Exception('Could not import file as "' . $preferredMediaDesc . '" since it was not an alternative. Supported types are ' . join(', ', $mediaTypes));
@@ -53,14 +43,11 @@ class Media
 
 			if( strpos($name, '%') ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
 
-			$FileOp = new \File();
+			$File = \File::fromURL($url);
 
-			if( !$downloadedFile = $FileOp->download($url) )
-				throw New \Exception('Download Failed');
+			$Media = \Operation\Media::importFileToLibrary($File, $name, $preferredMediaType, null, $mediaID);
 
-			$Media = \Operation\Media::importFileToLibrary($downloadedFile, $name, $preferredMediaType, null, $mediaID);
-
-			unlink($downloadedFile);
+			$File->delete();
 
 			return $Media;
 		}
@@ -72,10 +59,11 @@ class Media
 		}
 	}
 
-	public static function importFileToLibrary($filepath, $originalFilename = null, $preferredMediaType = null, $requireType = null, $mediaID = null)
+	public static function importFileToLibrary(\File $File, $originalFilename = null, $preferredMediaType = null, $requireType = null, $mediaID = null)
 	{
+
 		### Create Media Object from File
-		$Media_New = self::createFromFile($filepath, $preferredMediaType);
+		$Media_New = self::createFromFile($File, $preferredMediaType);
 
 		if( $requireType && $requireType !== $Media_New::TYPE )
 		{
@@ -94,8 +82,9 @@ class Media
 		}
 
 		### Extend Object as Integrated
+		$Media_New->fileOriginalName = $originalFilename;
 		$Media_New->mediaID = $mediaID;
-		$Media_New = \Manager\Media::integrateIntoLibrary($Media_New, $originalFilename);
+		$Media_New = \Manager\Media::integrateIntoLibrary($Media_New);
 
 		return $Media_New;
 	}

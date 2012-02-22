@@ -12,6 +12,13 @@ class Rotate extends Common\Visual
 		$frames;
 
 
+	public static function canHandleFile($filePath)
+	{
+		if( !$Zip = self::getZip($filePath) ) return false;
+		if( $Zip->numFiles != 36 ) return false;
+		return true;
+	}
+
 	private static function getZip($filePath)
 	{
 		if( !is_file($filePath) )
@@ -28,13 +35,6 @@ class Rotate extends Common\Visual
 		if( $Zip->open($filePath) !== true ) return false;
 
 		return $Zip;
-	}
-
-	public static function canHandleFile($filePath)
-	{
-		if( !$Zip = self::getZip($filePath) ) return false;
-		if( $Zip->numFiles != 36 ) return false;
-		return true;
 	}
 
 

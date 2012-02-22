@@ -33,7 +33,7 @@ $MediaInfo = \Element\Table::inputs();
 $MediaInfo
 	->addRow(_('Type'), new \Element\Module('SelectBox.MediaTypes', 'mediaType', true, $Media::TYPE))
 	->addRow(_('ID'), $Media->mediaID . ' ' . sprintf('(<a href="/MediaUpload.php?mediaID=%u">%s</a>)', $Media->mediaID, _('Replace')))
-	->addRow(_('Hash'), $Media->mediaHash)
+	->addRow(_('MIME'), $Media->mimeType ?: '-')
 	->addRow(_('Upload Time'), Format::timestamp($mediaInfo['timeCreated']))
 	->addRow(_('Orginal Filename'), $isAdmin ? \Element\Input::text('fileOriginalName', $mediaInfo['fileOriginalName'])->size(32) : $mediaInfo['fileOriginalName'] ?: MESSAGE_NOT_AVAILABLE)
 	->addRow(_('Source file'), $displayFullPaths ? $filePath : str_replace(DIR_MEDIA, '', $filePath))

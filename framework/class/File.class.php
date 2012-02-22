@@ -4,9 +4,18 @@ class FileException extends Exception
 
 class File
 {
-	public function download($fromURL, $toFile = null)
+	protected
+		$location,
+		$size,
+		$hash;
+
+	public
+		$mime;
+
+
+	public static function fromURL($fromURL, $toFile = null)
 	{
-		$this->bytes = 0;
+		$d = $s = null;
 
 		try
 		{
@@ -26,15 +35,22 @@ class File
 
 			$t = microtime(true);
 
-			while(($buffer = fgets($s, $bufferSize)) !== false)
-				$this->bytes += fputs($d, $buffer);
+			$downloadBytes = 0;
 
-			$this->time = microtime(true) - $t;
+			while(($buffer = fgets($s, $bufferSize)) !== false)
+				$downloadBytes += fputs($d, $buffer);
+
+			$downloadTime = microtime(true) - $t;
 
 			fclose($s);
 			fclose($d);
 
-			return $toFile;
+			$File = new self($toFile, filesize($toFile));
+
+			$File->downloadBytes = $downloadBytes;
+			$File->downloadTime = $downloadTime;
+
+			return $File;
 		}
 		catch(Exception $e)
 		{
@@ -43,5 +59,107 @@ class File
 
 			throw $e;
 		}
+	}
+
+	public static function fromPHPUpload($phpfile)
+	{
+		return new self($phpfile['tmp_name'], $phpfile['size'], $phpfile['type']);
+	}
+
+
+	public function __construct($location, $size = null, $mime = null)
+	{
+		if( !is_string($location) )
+			trigger_error(__METHOD__ . ' expects arg #1 to be string, ' . gettype($location) . ' given', E_USER_WARNING);
+
+		$location = (string)$location;
+
+		if( !file_exists($location) )
+			throw New FileException(sprintf("Path does not exist: %s", $location));
+
+		if( !is_file($location) )
+			throw New FileException(sprintf("Path is not a file: %s", $location));
+
+		$this->location = $location;
+
+		### File size can only be integer and must not be negative
+		if( !is_null($size) && ( !is_int($size) && ( $size < 0 ) ) )
+			throw New FileException(sprintf("File must be integer and 0 or more"));
+
+		$this->size = $size;
+		$this->mime = $mime;
+	}
+
+	public function __get($key)
+	{
+		### Auto calculate hash and size if not available already
+		switch($key)
+		{
+			case 'hash':
+				if( is_null($this->hash) )
+					$this->hash = md5_file($this->location);
+
+				return $this->hash;
+			break;
+
+			case 'size':
+				if( is_null($this->size) )
+					$this->size = filesize($this->location);
+
+				return $this->size;
+			break;
+		}
+
+		return $this->$key;
+	}
+
+	public function __toString()
+	{
+		return $this->location;
+	}
+
+
+	public function copy($to)
+	{
+		if( !copy($this->location, $to) )
+			throw New FileException(sprintf("File copy from %s to %s failed", $this->location, $to));
+
+		$File_New = clone $this;
+		$File_New->location = $to;
+
+		return $File_New;
+	}
+
+	public function move($to)
+	{
+		if( !rename($this->location, $to) )
+			throw New FileException(sprintf("File move from %s to %s failed", $this->location, $to));
+
+		$this->location = $to;
+
+		return true;
+	}
+
+	public function delete()
+	{
+		if( !unlink($this->location) )
+			throw New FileException(sprintf("File delete at %s failed", $this->location));
+
+		return true;
+	}
+
+	public function isExisting()
+	{
+		return file_exists($this->location) && is_file($this->location);
+	}
+
+	public function isReadable()
+	{
+		return is_readable($this->location);
+	}
+
+	public function isWriteable()
+	{
+		return is_readable($this->location);
 	}
 }

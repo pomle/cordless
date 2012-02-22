@@ -12,11 +12,13 @@ switch($action)
 
 		foreach($_FILES as $file)
 		{
+			$File = \File::fromPHPUpload($file);
+
 			$originalFilename = $file['name'];
 
 			try
 			{
-				$Media = \Operation\Media::importFileToLibrary($file['tmp_name'], $file['name'], $preferredMediaType, null, $mediaID);
+				$Media = \Operation\Media::importFileToLibrary($File, $originalFilename, $preferredMediaType, null, $mediaID);
 
 				Message::addNotice('Upload Success "' . $file['name'] . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 

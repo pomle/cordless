@@ -50,14 +50,22 @@ class Media
 
 	public static function getSpreadByHash($mediaHash)
 	{
-		if( strlen($mediaHash) !== 32 ) throw New \Exception("Media Hash Length not 32 chars (\"$mediaHash\")");
+		### This should not be enforced at this level, so has been commented out at 2012-02-24 12:26
+		#if( strlen($mediaHash) !== 32 ) throw New \Exception("Media Hash Length not 32 chars (\"$mediaHash\")");
+
+		if( strlen($mediaHash) == 0 ) throw New \Exception(__METHOD__ . ' arg# 1 must have length > 0');
+
 		if( !defined('DIR_MEDIA') || !is_dir(DIR_MEDIA) ) throw New \Exception("DIR_MEDIA not defined or not valid dir");
 
-		$cmd = sprintf('$(which find) %s -name %s | sort', \escapeshellarg(DIR_MEDIA), \escapeshellarg($mediaHash . '*'));
+		$cmd = sprintf('$(which find) %s -name %s | sort', \escapeshellarg(DIR_MEDIA), \escapeshellarg($mediaHash));
 		$res = shell_exec($cmd);
 		$arr = explode("\n", $res);
 		$arr = array_filter($arr);
 		$arr = preg_grep('%' . DIR_MEDIA_SOURCE . '%', $arr, PREG_GREP_INVERT); // Remove source media file from list
+
+		foreach($arr as $index => $filename)
+			if( !is_file($filename) ) unset($arr[$index]);
+
 		return $arr;
 	}
 
