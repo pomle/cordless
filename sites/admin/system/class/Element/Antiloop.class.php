@@ -437,7 +437,7 @@ class Antiloop extends Common\Root
 				if( $isSortOK ) $this->Dataset->addOrder($sortField, $this->params['sortReverse'], $isCollateOK);
 			}
 
-			$page = abs($this->params['filter']['page'] ?: self::DEFAULT_PAGE) - 1;
+			$page = abs( isset($this->params['filter']['page']) ? $this->params['filter']['page'] : self::DEFAULT_PAGE ) - 1;
 
 			if( $this->enforceLimit )
 			{

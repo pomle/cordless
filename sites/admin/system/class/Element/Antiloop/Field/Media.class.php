@@ -27,26 +27,24 @@ class Media extends Common\Root
 			{
 				if( strlen($value) != 32 ) return false;
 
-				if( $dataRow['mediaType'] != MEDIA_TYPE_AUDIO )
-				{
-					if( $Field->crop )
-						$Preset = new \Media\Generator\Preset\CroppedThumb($value, $Field->sizeX, $Field->sizeY);
-					else
-						$Preset = new \Media\Generator\Preset\AspectThumb($value, $Field->sizeX, $Field->sizeY);
+				if( isset($dataRow['mediaType']) && $dataRow['mediaType'] == MEDIA_TYPE_AUDIO )
+					return false;
 
-					$imageURL = $Preset->getURL();
+				if( $Field->crop )
+					$Preset = new \Media\Generator\Preset\CroppedThumb($value, $Field->sizeX, $Field->sizeY);
+				else
+					$Preset = new \Media\Generator\Preset\AspectThumb($value, $Field->sizeX, $Field->sizeY);
 
-					return sprintf('<a href="%5$s" class="media" style="height: %4$upx; width: %3$upx;"><img src="%1$s" title="%2$s" alt="%2$s"></a>',
-						$imageURL ?: URL_FALLBACK_THUMB_ICON,
-						htmlspecialchars($value),
-						$Field->sizeX,
-						$Field->sizeY,
-						htmlspecialchars('/helpers/sendFile/Media.php?mediaHash=' . $value)
-					);
-				}
-				return '';
+				$imageURL = $Preset->getURL();
+
+				return sprintf('<a href="%5$s" class="media" style="height: %4$upx; width: %3$upx;"><img src="%1$s" title="%2$s" alt="%2$s"></a>',
+					$imageURL ?: URL_FALLBACK_THUMB_ICON,
+					htmlspecialchars($value),
+					$Field->sizeX,
+					$Field->sizeY,
+					htmlspecialchars('/helpers/sendFile/Media.php?mediaHash=' . $value)
+				);
 			}
 		);
-		return $Field;
 	}
 }

@@ -5,7 +5,7 @@ class Search extends Text
 {
 	public static function text()
 	{
-		$Search = new self($isAllSelectable);
+		$Search = new self();
 		$Search->caption = _('Sök');
 		return $Search;
 	}

@@ -23,6 +23,6 @@ class Text extends Common\Root
 
 	public function importParams(array $params)
 	{
-		$this->currentString = $params[$this->name];
+		$this->currentString = isset($params[$this->name]) ? $params[$this->name] : '';
 	}
 }

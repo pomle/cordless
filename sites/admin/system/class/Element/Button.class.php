@@ -21,6 +21,7 @@ class Button extends Common\Root
 
 	public function __construct($href = null, $icon = null, $caption = null)
 	{
+		$this->type = null;
 		$this->href = (string)$href;
 		$this->icon = (string)$icon;
 		$this->caption = (string)$caption;

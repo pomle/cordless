@@ -11,7 +11,7 @@ $Stmt = new \Query\Select("SELECT
 	FROM
 		UserSecurityIPs usip");
 
-if( $filter['search'] )
+if( isset($filter['search']) && strlen($filter['search']) )
 {
 	$Stmt->addHaving('%u BETWEEN spanStart AND spanEnd', $filter['search']);
 	$Antiloop->addNotice(sprintf(_('Sökning på IP-adress: "%s"'), $filter['search']));

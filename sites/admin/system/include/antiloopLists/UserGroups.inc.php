@@ -11,7 +11,7 @@ $Stmt = new \Query\Select("SELECT
 	FROM
 		UserGroups ug");
 
-if( $filter['search'] )
+if( isset($filter['search']) && strlen($filter['search']) )
 {
 	$search = $filter['search'];
 

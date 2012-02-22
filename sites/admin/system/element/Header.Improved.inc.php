@@ -41,7 +41,7 @@ header('Content-type: text/html; charset=utf-8');
 		<nav class="menu">
 			<?
 			require DIR_ADMIN_INCLUDE . 'MainMenu.inc.php';
-			displayMenu($menu);
+			displayMenu();
 			?>
 		</nav>
 

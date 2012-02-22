@@ -6,8 +6,7 @@ $pageTitle = _('Login');
 
 require DIR_ADMIN_ELEMENT . 'Header.NotLoggedIn.inc.php';
 
-echo $MB;
-
+if( isset($MB) ) echo $MB;
 ?>
 <form action="<? echo getenv('REQUEST_URI'); ?>" method="post">
 	<table>

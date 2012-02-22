@@ -7,7 +7,7 @@ require '../Init.inc.php';
 $pageTitle = _('System');
 $pageSubtitle = _('Användare');
 
-$List = \Element\Antiloop::getAsDomObject(IS_ADMIN ? 'Users.Administrator' : 'Users');
+$List = \Element\Antiloop::getAsDomObject(USER_IS_ADMIN ? 'Users.Administrator' : 'Users');
 
 require HEADER;
 
