@@ -1,97 +1,65 @@
 $(function(){
 
-	var template = '<div class="item"><div class="fileName">-</div><div class="progressBar"><div class="progress"></div></div></div>';
+	var queueItemTemplate = '<div class="item"><div class="fileName">-</div><div class="progressBar"><div class="progress"></div></div></div>';
 
 	$('.fileUpload').each(function(i) {
 		var fileUpload = $(this);
 		var fileList = fileUpload.find('.fileList');
 
-		var form = fileUpload.parent('form');
+		var form = fileUpload.closest('form');
 
 		var messageBox = fileUpload.find('.messageBox');
 		var dropbox = fileUpload.find('.dropbox');
 		var destURL = fileUpload.attr('data-url');
 
-		dropbox.filedrop({
-			// The name of the $_FILES entry:
-			paramname: 'file',
-
-			maxfiles: 100,
-			maxfilesize: 1000,
-			url: destURL,
-			data: {},
-
-			drop: function()
+		dropbox.dropUpload({
+			'url': form.attr('action'),
+			'fileMeta': function()
 			{
-				this.data = form.serializeJSON();
-				Messenger.clear(messageBox);
+				return form.serializeArray(); // Attach form data to each dropped file
 			},
-
-			error: function(err, file)
+			'fileParamName': 'file',
+			'fileSizeMax': 1000 * 1024 * 1024, // ONE GIGIDIBYTE
+			'onFileCompleted': function(File)
 			{
-				switch(err)
+				File.queueItem.remove(); // Removed DOM queue item on completion
+			},
+			'onFileQueued': function(File) // Created DOM queue item and attaches it to the File object
+			{
+				var qi = $(queueItemTemplate);
+				qi.find('.fileName').html(File.name);
+				qi.appendTo(fileList);
+				File.queueItem = qi;
+			},
+			'onFileSucceeded': function(File, response)
+			{
+				try
 				{
-					case 'BrowserNotSupported':
-						alert('Your browser does not support HTML5 file uploads!');
-					break;
+					if( response = $.parseJSON(response) )
+					{
+						if( response.message )
+							Messenger.display(messageBox, response.message);
 
-					case 'TooManyFiles':
-						Messenger.display(messageBox, {error: ['TooManyFiles']});
-					break;
+						if( response.data )
+							FormManager.fill(response.data, form);
 
-					case 'FileTooLarge':
-						Messenger.display(messageBox, {error: [file.name + ' is too large']});
-					break;
-
-					default:
-						break;
+						if(response.call)
+							eval(response.call);
+					}
 				}
-			},
+				catch(e)
+				{
+					alert("Bad Response from Server, Reason: " + e.message);
+				}
 
-			// Called before each upload is started
-			beforeEach: function(file)
+			},
+			'onProgressUpdated': function(File, progress)
 			{
-				/*if(!file.type.match(/^image\//)){
-					alert('Only images are allowed!');
-
-					// Returning false will cause the
-					// file to be rejected
-					return false;
-				}*/
+				File.queueItem.find('.progress').css('width', (progress * 100) + '%');
 			},
-
-			uploadStarted:function(i, file, len)
+			'onQueueCompleted': function()
 			{
-				var
-					fileItem = $(template),
-					fileName = $('.fileName', fileItem);
-
-				fileName.html(file.name);
-
-				fileItem.appendTo(fileList);
-
-				$.data(file, fileItem);
-			},
-
-			progressUpdated: function(i, file, progress)
-			{
-				$.data(file).find('.progress').width(progress + '%');
-			},
-
-			uploadFinished: function(i, file, response)
-			{
-				$.data(file).remove();
-
-				if( response.message )
-					Messenger.display(messageBox, response.message);
-
-				if( response.data )
-					FormManager.fill(response.data, form);
-
-				if(response.call)
-					eval(response.call);
-			},
-
+			}
 		});
 	});
 });

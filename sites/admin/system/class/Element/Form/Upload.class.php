@@ -11,13 +11,22 @@ class Upload extends \Element\Common\Root
 
 		$this->showBrowseFields = true;
 		$this->countBrowseFields = 1;
+
+		$this->uploadAction = 'upload';
+		$this->fetchAction = 'url';
 	}
 
 	public function __toString()
 	{
 		ob_start();
 
-		echo $this->IOCall->getHead();
+		$UploadIO = clone $this->IOCall;
+		$UploadIO->setParam('action', $this->uploadAction);
+
+		$FetchIO = clone $this->IOCall;
+
+
+		echo $UploadIO->getHead();
 		?>
 		<fieldset>
 			<legend><? echo \Element\Tag::legend('mouse_add', 'Drag & Drop'); ?></legend>
@@ -26,10 +35,17 @@ class Upload extends \Element\Common\Root
 				->addRow(_('Typ'), new \Element\Module('SelectBox.MediaTypes', 'preferredMediaType', true))
 				;
 
-			echo new \Element\FileUpload($this->IOCall);
+
+
+			echo new \Element\FileUpload($UploadIO);
 			?>
 		</fieldset>
+		<?
+		echo $UploadIO->getFoot();
 
+
+		echo $FetchIO->getHead();
+		?>
 		<fieldset>
 			<legend><? echo \Element\Tag::legend('world_link', 'Fetch Resource'); ?></legend>
 			<?
@@ -38,11 +54,12 @@ class Upload extends \Element\Common\Root
 				;
 
 			$IOControl = new \Element\IOControl($this->IOCall);
-			echo $IOControl->setButtons(\Element\Button::IO('url', 'world_add', 'Download'));
+			echo $IOControl->setButtons(\Element\Button::IO($this->fetchAction, 'world_add', 'Download'));
 			?>
 		</fieldset>
 		<?
-		echo $this->IOCall->getFoot();
+		echo $FetchIO->getFoot();
+
 
 		if( $this->showBrowseFields )
 		{

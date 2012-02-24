@@ -12,7 +12,6 @@ class IOCall
 		$this->AjaxCall = new \AjaxCall($protocol, $params, URL_IO_FETCHER);
 	}
 
-
 	public function getHead()
 	{
 		return sprintf('<form action="%s" method="post" class="IOCall" autocomplete="off">', $this->AjaxCall);
@@ -21,5 +20,11 @@ class IOCall
 	public function getFoot()
 	{
 		return '</form>';
+	}
+
+	public function setParam($key, $value = null)
+	{
+		$this->AjaxCall->setParam($key, $value);
+		return $this;
 	}
 }

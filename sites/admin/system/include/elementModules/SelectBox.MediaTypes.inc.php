@@ -8,7 +8,7 @@ if( $noneSelectable )
 
 $mediaTypes += \Manager\Dataset\Media::getTypes();
 
-$Select = new \Element\SelectBox($args[0] ?: 'mediaType', $args[2]);
+$Select = new \Element\SelectBox(isset($args[0]) ? $args[0] : 'mediaType', isset($args[2]) ? $args[2] : null);
 $Select->addItemsFromArray($mediaTypes);
 
 echo $Select;

@@ -34,18 +34,19 @@ if( isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 )
 }
 
 #$MessageBox->addNotice(sprintf('Max File Size: %s', ini_get('upload_max_filesize')));
+$mediaID = isset($_GET['mediaID']) ? $_GET['mediaID'] : null;
 
 $pageTitle = _('Media');
 $pageSubtitle = _('Upload');
 
-$IOCall = new \Element\IOCall('Media', array('mediaID' => $_GET['mediaID']));
+$IOCall = new \Element\IOCall('Media', array('mediaID' => $mediaID));
 
 $UploadForm = new \Element\Form\Upload($IOCall);
 $UploadForm->countBrowseFields = 5;
 
 if( isset($_GET['mediaID']) )
 {
-	$pageSubtitle = sprintf('Upload Replacement for %u', $_GET['mediaID']);
+	$pageSubtitle = sprintf('Upload Replacement for %u', $mediaID);
 	$UploadForm->showBrowseFields = false;
 }
 
