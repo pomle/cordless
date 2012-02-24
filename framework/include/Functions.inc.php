@@ -12,6 +12,15 @@ function addIncludePath($newPath)
 	set_include_path($newPath . PATH_SEPARATOR . $currentIncludePaths); ### New paths have higher priority
 }
 
+function asenineDef($const, $value)
+{
+	if( defined($const) ) return false;
+
+	define($const, $value);
+
+	return true;
+}
+
 function asenineLog($string, $space = 'Global')
 {
 	if( defined('DIR_LOG') )
