@@ -28,7 +28,7 @@ class Media extends Common\DB
 		return self::createFromFile( new \File($filename, null, null, $mime) );
 	}
 
-	public static function createFromType($type, $mediaHash, $filePath)
+	public static function createFromType($type, $mediaHash, \File $File)
 	{
 		if( strlen($type) == 0 )
 		{
@@ -39,7 +39,7 @@ class Media extends Common\DB
 		$classPath = '\\Media\\' . ucfirst($type);
 
 		if( class_exists($classPath) )
-			return new $classPath($mediaHash, new \File($filePath));
+			return new $classPath($mediaHash, $File);
 
 		return false;
 	}
@@ -123,6 +123,7 @@ class Media extends Common\DB
 				m.ID AS mediaID,
 				m.mediaType,
 				m.fileHash AS mediaHash,
+				m.fileSize,
 				m.fileOriginalName,
 				m.fileMimeType
 			FROM
@@ -135,17 +136,14 @@ class Media extends Common\DB
 
 		while($media = \DB::assoc($result))
 		{
-			$Media = self::createFromType($media['mediaType'], $media['mediaHash'], DIR_MEDIA_SOURCE . $media['mediaHash']);
+			$File = new \File(DIR_MEDIA_SOURCE . $media['mediaHash'], (int)$media['fileSize'] ?: null, $media['fileMimeType'], $media['fileOriginalName']);
 
-			### Fallback to Defunct type
-			if( !$Media )
-				$Media = new \Media\Defunct($media['mediaHash'], DIR_MEDIA_SOURCE . $media['mediaHash']);
+			if( !$Media = self::createFromType($media['mediaType'], $media['mediaHash'], $File) )
+				$Media = new \Media\Defunct($media['mediaHash'], $File); ### Fallback to Defunct type
 
 			$Media->fileOriginalName = $media['fileOriginalName'];
 			$Media->mimeType = $media['fileMimeType'];
-
 			$Media->mediaID = (int)$media['mediaID'];
-
 
 			$medias[$Media->mediaID] = $Media;
 		}

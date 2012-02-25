@@ -15,7 +15,7 @@ class AudioTranscode extends _Generator
 	public function __construct(\Media\Common\Audible $Audio, $format, $codec, $bitrate, $frequency = 44100, $channels = 2)
 	{
 		$this->FFMPEG = new \App\FFMPEG();
-		$this->FFMPEG->addInput($Audio->getFilePath());
+		$this->FFMPEG->addInput($Audio->File);
 
 		$this->Audio = $Audio;
 

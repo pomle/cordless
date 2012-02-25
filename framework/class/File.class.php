@@ -7,7 +7,8 @@ class File
 	protected
 		$location,
 		$size,
-		$hash;
+		$hash,
+		$name;
 
 	public
 		$mime;
@@ -76,7 +77,7 @@ class File
 	}
 
 
-	public function __construct($location, $size = null, $mime = null)
+	public function __construct($location, $size = null, $mime = null, $name = null)
 	{
 		if( !is_string($location) )
 			trigger_error(__METHOD__ . ' expects arg #1 to be string, ' . gettype($location) . ' given', E_USER_WARNING);
@@ -90,7 +91,6 @@ class File
 			throw New FileException(sprintf("Path is not a file: %s", $location));
 
 		$this->location = $location;
-		$this->name = basename($location);
 
 		### File size can only be integer and must not be negative
 		if( !is_null($size) && ( !is_int($size) && ( $size < 0 ) ) )
@@ -98,6 +98,7 @@ class File
 
 		$this->size = $size;
 		$this->mime = $mime;
+		$this->name = $name ?: basename($this->location);
 	}
 
 	public function __get($key)
@@ -121,6 +122,11 @@ class File
 		}
 
 		return $this->$key;
+	}
+
+	public function __isset($key)
+	{
+		return isset($this->$key);
 	}
 
 	public function __toString()

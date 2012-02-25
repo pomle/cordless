@@ -24,19 +24,20 @@ abstract class Media implements iMedia
 	{
 		if( !$File->isReadable() )
 		{
-			trigger_error("File not readable: \"$filePath\"", E_USER_WARNING);
+			trigger_error("File not readable: \"" . $File . "\"", E_USER_WARNING);
 			return false;
 		}
 
 		if( !static::canHandleFile($File) )
 		{
-			trigger_error(get_called_class() . " does not handle file: \"$filePath\"", E_USER_WARNING);
+			trigger_error(get_called_class() . " can not handle file: \"" . $File . "\"", E_USER_WARNING);
 			return false;
 		}
 
 		$mediaHash = $File->hash;
 
 		$Media = new static($mediaHash, $File);
+		$Media->fileOriginalName = $File->name;
 		$Media->mimeType = $File->mime;
 
 		return $Media;
@@ -50,7 +51,7 @@ abstract class Media implements iMedia
 	public static function createFromHash($mediaHash)
 	{
 		$filePath = DIR_MEDIA_SOURCE . $mediaHash;
-		return new static($mediaHash, $filePath);
+		return new static($mediaHash, new \File($filePath) );
 	}
 
 
@@ -59,6 +60,11 @@ abstract class Media implements iMedia
 		#if( strlen($mediaHash) !== 32 ) trigger_error(__METHOD__ . ' expects argument 1 to be string of exact length 32', E_USER_ERROR);
 		$this->mediaHash = $mediaHash;
 		$this->File = $File;
+	}
+
+	public function __get($key)
+	{
+		return $this->$key;
 	}
 
 	final public function __toString()
