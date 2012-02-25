@@ -45,7 +45,14 @@ class File
 			fclose($s);
 			fclose($d);
 
+
+			$name = basename($fromURL);
+			if( strpos($name, '%') !== false ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
+
+
 			$File = new self($toFile, filesize($toFile));
+
+			$File->name = $name;
 
 			$File->downloadBytes = $downloadBytes;
 			$File->downloadTime = $downloadTime;
@@ -63,7 +70,9 @@ class File
 
 	public static function fromPHPUpload($phpfile)
 	{
-		return new self($phpfile['tmp_name'], $phpfile['size'], $phpfile['type']);
+		$File = new self($phpfile['tmp_name'], $phpfile['size'], $phpfile['type']);
+		$File->name = $phpfile['name'];
+		return $File;
 	}
 
 
@@ -81,6 +90,7 @@ class File
 			throw New FileException(sprintf("Path is not a file: %s", $location));
 
 		$this->location = $location;
+		$this->name = basename($location);
 
 		### File size can only be integer and must not be negative
 		if( !is_null($size) && ( !is_int($size) && ( $size < 0 ) ) )

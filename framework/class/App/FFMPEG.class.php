@@ -43,6 +43,8 @@ class FFMPEG extends Common\Root
 
 		$command = sprintf('%s %s 2>&1', self::$exe_ffprobe, self::getInputCommand($inputFile));
 
+		#var_dump($command);
+
 		self::runCommand($command); ### If FFPROBE does not exist, we fall back to FFMPEG parsing, which returns false if no output file is specified but still provides parse:able output
 
 		$returnData = self::$lastOutput;
@@ -70,6 +72,8 @@ class FFMPEG extends Common\Root
 		$streams['audio'] = array_values(preg_grep('%Stream #[0-9]\.[0-9](.*): Audio%', $returnData));
 		$streams['video'] = array_values(preg_grep('%Stream #[0-9]\.[0-9](.*): Video%', $returnData));
 
+		$time = null;
+		$duration = null;
 		if( preg_match('%Duration: (([0-9]{2}):([0-9]{2}):([0-9]{2})\.([0-9]{2})).*%', $streams['interleave'][0], $duration) )
 		{
 			$time = array
@@ -196,11 +200,9 @@ class FFMPEG extends Common\Root
 		$str = '';
 
 		### If input is a \File we check for mime type. Decreases the chance of identification problems. Notice that mime type doesn't correspond exactly to FFMPEG formats. Some further logic may be needed here for some files
-		if( $File instanceof \File && preg_match('%(.+)/(.+)%', $File->mime, $matches) )
+		if( $File instanceof \File && $format = self::guessFormat($File) )
 		{
 			$formats = self::getFormats();
-			list($mime, $type, $format) = $matches;
-
 			if( in_array($format, $formats) )
 				$str = sprintf('-f %s ', \escapeshellarg($format));
 		}
@@ -208,6 +210,30 @@ class FFMPEG extends Common\Root
 		$str .= sprintf('-i %s', \escapeshellarg($File));
 
 		return $str;
+	}
+
+	public static function guessFormat(\File $File)
+	{
+		if( isset($File->name) && preg_match('/.(\w+)$/', $File->name, $matches) )
+		{
+			$ext = mb_strtolower($matches[1]);
+
+			switch($ext)
+			{
+				case 'mp3':
+					return 'mp3';
+				break;
+			}
+		}
+
+		if( isset($File->mime) && preg_match('%(.+)/(.+)%', $File->mime, $matches) )
+		{
+			list($mime, $type, $format) = $matches;
+
+			return $format;
+		}
+
+		return false;
 	}
 
 

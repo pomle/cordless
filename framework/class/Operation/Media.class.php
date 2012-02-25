@@ -39,13 +39,9 @@ class Media
 	{
 		try
 		{
-			$name = basename($url);
-
-			if( strpos($name, '%') ) $name = urldecode($name); ### If URL contains % we assume it's URL encoded.
-
 			$File = \File::fromURL($url);
 
-			$Media = \Operation\Media::importFileToLibrary($File, $name, $preferredMediaType, null, $mediaID);
+			$Media = \Operation\Media::importFileToLibrary($File, $File->name, $preferredMediaType, null, $mediaID);
 
 			$File->delete();
 
