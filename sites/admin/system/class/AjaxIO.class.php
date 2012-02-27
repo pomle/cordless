@@ -20,10 +20,14 @@ class AjaxIO
 		$varnames = func_get_args();
 		foreach($varnames as $varname)
 		{
-			if( !isset($this->$varname) && (isset($_POST[$varname]) || isset($_GET[$varname])) )
+			if( !isset($this->$varname) ) ### Don't overwrite
 			{
-				$source = isset($_GET[$varname]) ? $_GET[$varname] : $_POST[$varname];
-				$this->$varname = $source;
+				if( isset($_GET[$varname]) )
+					$this->$varname = $_GET[$varname];
+				elseif( isset($_POST[$varname]) )
+					$this->$varname = $_POST[$varname];
+				else
+					$this->$varname = null;
 			}
 		}
 	}

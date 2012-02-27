@@ -69,6 +69,8 @@ $js[] = '/js/Admin.js';
 
 $userPanel = array();
 
+asenineDef('ACCESS_POLICY', 'AllowAdminAccess'); ### Any access to admin now requires a policy for non-administrators
+
 if( !defined('NO_LOGIN_REQUIRED') )
 {
 	session_start();
