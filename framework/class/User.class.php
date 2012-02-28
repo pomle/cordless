@@ -296,14 +296,10 @@ class User
 	public function getSetting($key)
 	{
 		if( isset($this->settings[$key]) )
-		{
 			return $this->settings[$key];
-		}
+
 		else
-		{
-			$defaults = \Manager\Dataset\UserSetting::getAvailable();
-			return isset($defaults[$key]) ? $defaults[$key]['default'] : null;
-		}
+			return null;
 	}
 
 	public function hasPolicy($policy)
@@ -366,16 +362,12 @@ class User
 	public function setSetting($key, $value = null)
 	{
 		$key = (string)$key;
-		$value = (string)$value;
 
-		if( !strlen($value) && isset($this->settings[$key]) )
-		{
+		if( is_null($value) && isset($this->settings[$key]) )
 			unset($this->settings[$key]);
-		}
-		elseif( strlen($value) )
-		{
-			$this->settings[$key] = (string)$value;
-		}
+
+		else
+			$this->settings[$key] = $value;
 
 		return true;
 	}
