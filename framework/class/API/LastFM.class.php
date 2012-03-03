@@ -170,26 +170,28 @@ class LastFM
 		return $this->sendRequest('track.love', $params, true);
 	}
 
-	public function trackUnlove($session_key, $artist, $track)
+	public function trackUnlove($session_key, $artist, $track, $duration = null)
 	{
 		$params = array
 		(
 			'sk' => $session_key,
 			'artist' => $artist,
-			'track' => $track
+			'track' => $track,
+			'duration' => is_numeric($duration) ? (int)$duration : null
 		);
 
 		return $this->sendRequest('track.unlove', $params, true);
 	}
 
-	public function updateNowPlaying($session_key, $uts, $artist, $track)
+	public function updateNowPlaying($session_key, $uts, $artist, $track, $duration = null)
 	{
 		$params = array
 		(
 			'sk' => $session_key,
 			'timestamp' => (string)$uts,
 			'artist' => $artist,
-			'track' => $track
+			'track' => $track,
+			'duration' => is_numeric($duration) ? (int)$duration : null
 		);
 
 		return $this->sendRequest('track.updateNowPlaying', $params, true);
