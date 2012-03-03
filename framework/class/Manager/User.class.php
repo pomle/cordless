@@ -156,7 +156,7 @@ class User extends Common\DB
 
 		if( count($settings) > 0 )
 		{
-			$query = "INSERT INTO UserSettings (userID, name, value) VALUES";
+			$query = "REPLACE INTO UserSettings (userID, name, value) VALUES";
 			foreach($settings as $key => $value)
 			{
 				$query .= \DB::prepareQuery('(%u, %s, %s),', $userID, $key, $value);
