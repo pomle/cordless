@@ -13,16 +13,55 @@ abstract class _Preset implements _Interface
 		$subPath,
 		$ext;
 
-	final public function getFile()
+	final public function getFile($wait = true)
 	{
-		if( !$this->isGenerated() )
+		if( !$fileExists = $this->isGenerated() )
 		{
+			$sleepTime = 100000; // 100 ms
+
+
 			$dirPath = DIR_MEDIA . $this->getPath();
 			if( !file_exists($dirPath) && !is_dir($dirPath) && !mkdir($dirPath, 0755, true) ) throw New \Exception("Path not reachable \"$dirPath\"");
-			if( !$this->createFile() ) return false;
+
+			$filePath = $this->getFullFilePath();
+
+
+			if( !$resource = fopen($filePath, "c") )
+				throw New \Exception("Could not create handle for \"$filePath\"");
+
+			while( true )
+			{
+				$haveLock = flock($resource, LOCK_EX | LOCK_NB, $wouldblock);
+
+				if( $haveLock )
+				{
+					clearstatcache($filePath);
+
+					$fileSize = filesize($filePath);
+
+					if( $fileSize == 0 ) ### A 0 byte fileSize means that we are the creator
+					{
+						ftruncate($resource, 0);
+						$this->createFile();
+					}
+
+					flock($resource, LOCK_UN);
+
+					$fileExists = true;
+
+					break;
+				}
+
+				if( $wait )
+					usleep($sleepTime);
+				else
+					break;
+			}
+
+			fclose($resource);
 		}
 
-		return $this->getFilePath();
+		return $fileExists ? $this->getFilePath() : false;
 	}
 
 	final public function getFileName()
@@ -50,14 +89,14 @@ abstract class _Preset implements _Interface
 		return 'autogen/preset/' . static::NAME . '/' . $this->subPath;
 	}
 
-	final public function getURL()
+	final public function getURL($wait = true)
 	{
 		try
 		{
 			$fileName = $this->getFileName();
 			$path = $this->getPath();
 
-			if( !$this->getFile() ) return false;
+			if( !$this->getFile($wait) ) return false;
 
 			return URL_MEDIA . $path . $fileName;
 		}
@@ -71,6 +110,6 @@ abstract class _Preset implements _Interface
 	final public function isGenerated()
 	{
 		$diskFile = DIR_MEDIA . $this->getFilePath();
-		return file_exists($diskFile);
+		return ( file_exists($diskFile) && filesize($diskFile) > 0 );
 	}
 }
