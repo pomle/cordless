@@ -10,10 +10,10 @@ $(function(){
 
 		var messageBox = fileUpload.find('.messageBox');
 		var dropbox = fileUpload.find('.dropbox');
-		var destURL = fileUpload.attr('data-url');
+		var destURL = fileUpload.attr('data-url') || form.attr('action');
 
 		dropbox.dropUpload({
-			'url': form.attr('action'),
+			'url': destURL,
 			'fileMeta': function()
 			{
 				return form.serializeArray(); // Attach form data to each dropped file

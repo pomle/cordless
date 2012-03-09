@@ -29,7 +29,7 @@ class FileUpload extends IOControl
 
 		ob_start();
 		?>
-		<div class="fileUpload">
+		<div class="fileUpload" data-url="<? echo $AjaxCall; ?>">
 
 			<div class="dropbox"></div>
 
