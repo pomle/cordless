@@ -162,8 +162,8 @@ require HEADER;
 				(NOT upC.policyID IS NULL) AS hasPolicy
 			FROM
 				Policies p
-				LEFT JOIN UserPolicies upA ON upA.policyID = p.ID AND upA.userID = %u
-				LEFT JOIN UserPolicies upC ON upC.policyID = p.ID AND upC.userID = %u
+				LEFT JOIN Asenine_UserPolicies upA ON upA.policyID = p.ID AND upA.userID = %u
+				LEFT JOIN Asenine_UserPolicies upC ON upC.policyID = p.ID AND upC.userID = %u
 			WHERE
 				upA.policyID OR %u = 1
 			ORDER BY

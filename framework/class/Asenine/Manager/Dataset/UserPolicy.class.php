@@ -11,7 +11,7 @@ class UserPolicy
 
 	public static function getDescription($policyIDs)
 	{
-		$query = \DB::prepareQuery("SELECT ID, description FROM Policies WHERE ID IN %a", $policyIDs);
+		$query = \DB::prepareQuery("SELECT ID, description FROM Asenine_Policies WHERE ID IN %a", $policyIDs);
 		return \DB::queryAndFetchArray($query);
 	}
 }

@@ -45,7 +45,7 @@ class Dataset
 
 	public static function getPolicies($userID)
 	{
-		$query = DB::prepareQuery("SELECT policyID FROM UserPolicies WHERE userID = %u", $userID);
+		$query = DB::prepareQuery("SELECT policyID FROM Asenine_UserPolicies WHERE userID = %u", $userID);
 		return DB::queryAndFetchArray($query);
 	}
 

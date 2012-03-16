@@ -10,7 +10,7 @@ switch($action) {
 			DB::queryAndCountAffected($deleteQuery); // Clean out old policies
 
 			if( is_array($policyIDs) ) { 
-				$insertQuery = DB::prepareQuery("INSERT INTO UserGroupPolicies (policyID, userGroupID) SELECT p.ID, %d FROM Policies p WHERE p.ID IN (%s)", $userGroupID, join(',', $policyIDs));
+				$insertQuery = DB::prepareQuery("INSERT INTO UserGroupPolicies (policyID, userGroupID) SELECT p.ID, %d FROM Asenine_Policies p WHERE p.ID IN (%s)", $userGroupID, join(',', $policyIDs));
 				DB::queryAndGetID($insertQuery); 
 			}
 
@@ -22,8 +22,8 @@ switch($action) {
 	case 'add':
 		ensurePolicies('AllowEditUserGroup', 'AllowSetPolicy');
 		if(!strlen($policy)) throw New Exception(_('Ingen rättighet angiven'));
-		if($policyID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy))) {
-			$query = DB::prepareQuery("REPLACE INTO UserGroupPolicies (userGroupID, policyID) SELECT %d, ID FROM Policies WHERE ID = %d", $userGroupID, $policyID);
+		if($policyID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM Asenine_Policies WHERE policy = %s", $policy))) {
+			$query = DB::prepareQuery("REPLACE INTO UserGroupPolicies (userGroupID, policyID) SELECT %d, ID FROM Asenine_Policies WHERE ID = %d", $userGroupID, $policyID);
 			DB::queryAndGetID($query);
 			message::addNotice(MESSAGE_ROW_UPDATED);
 		}else{
@@ -34,7 +34,7 @@ switch($action) {
 		break;
 
 	case 'load':
-		$query = DB::prepareQuery("SELECT ID AS policyID, policy FROM Policies WHERE ID = %d", $policyID);
+		$query = DB::prepareQuery("SELECT ID AS policyID, policy FROM Asenine_Policies WHERE ID = %d", $policyID);
 		$result = DB::assoc(DB::queryAndFetchResult($query));
 		break;
 

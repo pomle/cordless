@@ -71,7 +71,7 @@ class UserGroupIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$policyIDs = array_intersect($policyIDs, $allowedPolicyIDs);
 
-			$query = DB::prepareQuery("INSERT INTO UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
+			$query = DB::prepareQuery("INSERT INTO UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Asenine_Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
 			DB::queryAndGetID($query);
 		}
 

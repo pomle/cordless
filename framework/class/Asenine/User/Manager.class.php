@@ -57,7 +57,7 @@ class Manager
 				p.policy,
 				p.ID
 			FROM
-				Policies p
+				Asenine_Policies p
 				JOIN Asenine_UserPolicies up ON up.policyID = p.ID
 			WHERE
 				up.userID = %u
@@ -65,7 +65,7 @@ class Manager
 				p.policy,
 				p.ID
 			FROM
-				Policies p
+				Asenine_Policies p
 				JOIN Asenine_UserGroupPolicies ugp ON ugp.policyID = p.ID
 				JOIN Asenine_UserGroups ug ON ug.ID = ugp.userGroupID
 				JOIN Asenine_UserGroupUsers ugu ON ugu.userGroupID = ug.ID

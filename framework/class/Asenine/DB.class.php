@@ -126,13 +126,15 @@ class DB
 
 	public static function queryAndFetchArray($query)
 	{
-		$Result = self::queryAndFetchResult($query);
+		$Stmt = self::queryAndFetchResult($query);
 
 		$array = array();
 
-		while($row = $Result->fetch_assoc())
+		$c = $Stmt->columnCount();
+
+		while($row = $Stmt->fetch(\PDO::FETCH_ASSOC))
 		{
-			switch($Result->field_count)
+			switch($c)
 			{
 				case 1:
 					$array[] = current($row);
@@ -146,6 +148,7 @@ class DB
 				default:
 					list($id) = array_values($row);
 					$array[(int)$id] = array_slice($row, 1);
+				break;
 			}
 		}
 

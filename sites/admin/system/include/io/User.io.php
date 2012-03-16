@@ -115,7 +115,7 @@ class UserIO extends AjaxIO
 		### Only delete policies that current user has power over or all if is Administrator
 		$allowedPolicyIDs = Dataset::getPolicies(USER_ID);
 
-		$query = DB::prepareQuery("DELETE FROM UserPolicies WHERE userID = %u", $this->userID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_UserPolicies WHERE userID = %u", $this->userID);
 
 		if( !USER_IS_ADMIN )
 			$query .= DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
@@ -130,7 +130,7 @@ class UserIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$policyIDs = array_intersect($policyIDs, $allowedPolicyIDs);
 
-			$query = DB::prepareQuery("INSERT INTO UserPolicies (userID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userID, $policyIDs);
+			$query = DB::prepareQuery("INSERT INTO Asenine_UserPolicies (userID, policyID) SELECT %u, ID FROM Asenine_Policies WHERE ID IN %a", $this->userID, $policyIDs);
 			DB::queryAndGetID($query);
 		}
 

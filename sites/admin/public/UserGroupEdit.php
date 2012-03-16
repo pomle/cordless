@@ -77,7 +77,7 @@ echo $IO->getHead();
 				(NOT ugpC.policyID IS NULL) AS hasPolicy
 			FROM
 				Policies p
-				LEFT JOIN UserPolicies upA ON upA.policyID = p.ID AND upA.userID = %u
+				LEFT JOIN Asenine_UserPolicies upA ON upA.policyID = p.ID AND upA.userID = %u
 				LEFT JOIN UserGroupPolicies ugpC ON ugpC.policyID = p.ID AND ugpC.userGroupID = %u
 			WHERE
 				upA.policyID OR %u = 1
