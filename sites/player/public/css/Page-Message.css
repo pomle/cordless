@@ -1,0 +1,35 @@
+.message {
+	margin: 100px auto;
+	min-width: 420px;
+	max-width: 50%;
+}
+
+.message h1 {
+	color: #e4e4e4;
+	font-size: 36pt;
+	margin-bottom: .2em;
+}
+
+.message p {
+	color: #fff;
+	font-size: 14pt;
+}
+
+.message.error p {
+	color: #fa5200;
+}
+
+.message.notice p {
+	color: #fff;
+}
+
+.message p small {
+	color: #a7a7a7;
+	font-size: 9pt;
+
+}
+
+.message p em {
+	color: #fa6400;
+
+}

@@ -1,0 +1,194 @@
+#library {
+	background-color: rgba(0,0,0,.85);
+	border-radius: 0 0 20px 20px;
+	color: rgba(255, 255, 255, .7);
+	margin: 70px 105px 20px 60px;
+	overflow: hidden;
+	padding: 10px 20px 20px 20px;
+}
+
+.playqueueLocked #library {
+	margin-right: 445px;
+}
+
+#library h1,
+#library h2,
+#library h3,
+#library h4 {
+	color: #fff;
+}
+
+#library h1 {
+	font-size: 15pt;
+}
+
+#library h2 {
+	font-size: 13pt;
+}
+
+#library h3 {
+	font-size: 11pt;
+}
+
+
+nav.library {
+	margin: 0 0 0 60px;
+}
+
+nav.library .goTo {
+	float: left;
+	margin-right: 10px;
+}
+
+nav.library .goTo>* {
+	background: transparent center no-repeat;
+	display: inline-block;
+	height: 100%;
+	margin: 1px 2px;
+	opacity: .5;
+	overflow: hidden;
+	text-indent: 11px;
+	width: 11px;
+}
+
+nav.library .goTo>*:hover {
+	opacity: 1;
+}
+
+nav.library .goTo .home {
+	background-image: url("../img/Library_Icon_Home.png");
+}
+
+nav.library .goTo .prev {
+	background-image: url("../img/Library_Icon_HistoryPrev.png");
+}
+
+nav.library .goTo .next {
+	background-image: url("../img/Library_Icon_HistoryNext.png");
+}
+
+#library>.history .trail a {
+	opacity: .5;
+}
+
+#library>.history .trail .isCurrent {
+	opacity: 1;
+}
+
+#library>.history .trail:hover a {
+	opacity: 1;
+}
+
+#library>.history .trail:hover .isCurrent {
+	color: #fff;
+}
+
+
+#library>.content {
+	clear: both;
+}
+
+#library>.content .header {
+	margin-bottom: 10px;
+}
+
+#library>.content .header h2 {
+	color: #666;
+}
+
+#library>.content table {
+	border-radius: 10px;
+	margin: 5px -4px;
+}
+
+#library>.content table tr:nth-child(2n+1) {
+	background-color: rgba(255,255,255,.1);
+}
+
+#library>.content table th,
+#library>.content table td {
+	color: #fff;
+	font-weight: normal;
+	padding: 4px 8px;
+	text-align: left;
+}
+
+#library>.content table input {
+	background: transparent;
+	border: none;
+	border-bottom: solid 1px rgba(255,255,255,.2);
+	color: #fff;
+}
+
+#library .indexlist h2 {
+	font-size: 14pt;
+	margin-bottom: 5px;
+}
+
+#library .indexlist ul {
+	margin: 0 0 15px 0;
+	overflow: hidden;
+}
+
+
+#library .home section {
+	float: left;
+	margin: 0 1em 1em 0;
+	min-width: 15em;
+}
+
+#library .home ul {
+	color: #fff;
+	list-style: inside square;
+	margin: 6px 0;
+}
+
+
+#nowPlaying {
+
+}
+
+#nowPlaying>.canvas {
+	background: rgba(0,0,0,.8);
+	border-radius: 7px;
+	box-shadow: 0 0 30px -17px #d7ebff;
+	float: left;
+	height: 300px;
+	overflow: hidden;
+	margin: 0 20px 20px 0;
+	max-width: 100%;
+	width: 300px;
+}
+
+#nowPlaying>.canvas>.image {
+	background-position: center;
+	background-repeat: no-repeat;
+	/*background-size: cover;*/
+	background-size: contain;
+	height: 100%;
+	width: 100%;
+}
+
+#nowPlaying .title {
+	font-size: 24pt;
+}
+
+#nowPlaying .artist {
+	font-size: 18pt;
+}
+
+#nowPlaying>.time {
+	color: rgba(255,255,255,.28);
+	float: right;
+	font-family: Georgia;
+	font-size: 28pt;
+	min-width: 2.5em;
+}
+
+#nowPlaying .bio {
+	color: rgba(255,255,255,.7);
+	display: none;
+	max-width: 900px;
+	margin: 10px 0;
+	text-align: justify;
+}

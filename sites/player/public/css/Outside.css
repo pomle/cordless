@@ -1,0 +1,34 @@
+.content {
+	color: #fff;
+	margin: 60px;
+}
+
+.content h1 {
+	font-size: 16pt;
+}
+
+.content p {
+	line-height: 1.5;
+	text-align: justify;
+}
+
+.content .logo {
+	margin-bottom: 10px;
+}
+
+.content table {
+	margin: 1em 0;
+	width: 500px;
+}
+
+.content table td {
+	padding: 0.2em 0;
+}
+
+.content table label {
+	font-size: 14pt;
+}
+
+.content table input {
+
+}

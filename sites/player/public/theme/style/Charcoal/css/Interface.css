@@ -1,0 +1,279 @@
+body {
+	color: #4f4f4f;
+	background-attachment: fixed, scroll;
+	background-color: none, #0f0f0f;
+	background-image: url('/img/Background_TT.jpg'), url('../img/Noise_Dark.png');
+	background-repeat: no-repeat, repeat;
+	background-position: top center, 0 0;
+	background-size: cover, auto;
+
+	font-family: Calibri, Arial, sans-serif;
+	font-size: 10pt;
+	margin: 0;
+}
+
+header {
+	background: rgba(10,10,10,.95);
+	box-shadow: 0 0 15px rgba(0,0,0,1);
+	font-size: 12px;
+	overflow: hidden;
+
+	height: 70px;
+
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	width: 100%;
+
+	z-index: 4;
+}
+
+header .inner {
+	margin: 10px 10px 0 10px;
+}
+
+header .torus {
+	float: left;
+}
+
+header .search {
+	float: right;
+	margin: 0 0 5px 5px;
+}
+
+header .search input {
+	background: #fff url('../img/Magnifier.png') 3px 50% no-repeat;
+	border: none;
+	border-radius: 10px;
+	color: #6f6f6f;
+	padding: 3px 5px 3px 22px;
+}
+
+header nav {
+}
+
+
+.sidebar {
+	box-shadow: 0 0 15px rgba(0,0,0,1);
+	/*border: solid 1px #000;*/
+	/*padding: 10px;*/
+	position: fixed;
+	top: 70px;
+}
+
+.sidebar,
+.sidebar>.control {
+	background: rgba(10,10,10,.95);
+}
+
+
+.sidebar>.control {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	position: absolute;
+}
+
+.sidebar>.content {
+	margin: 10px 10px 15px 10px;
+}
+
+
+
+.sidebar .control .icon {
+	display: block;
+	height: 15px;
+	overflow: hidden;
+	text-indent: 11px;
+	width: 11px;
+}
+
+.sidebar .control a.icon {
+	margin: 5px 0 0 0;
+}
+
+.sidebar .control .lock {
+	background: transparent url('../img/Lock_Unlocked.png');
+	opacity: .5;
+}
+
+.sidebar .control .lock:hover {
+	opacity: 1;
+}
+
+.playqueueLocked #playqueue .control .lock,
+.uploadLocked #upload .control .lock {
+	background: transparent url('../img/Lock_Locked.png');
+}
+
+
+
+
+#playqueue {
+	border-radius: 0 0 0 20px;
+	right: -342px;
+	width: 400px;
+
+	z-index: 2;
+
+	-moz-transition: right ease .4s;
+	-o-transition: right ease .4s;
+	-webkit-transition: right ease .4s;
+}
+
+#playqueue:hover,
+#playqueue.extended,
+.playqueueLocked #playqueue {
+	right: 0px;
+}
+
+#playqueue>.control {
+	border-radius: 10px 0 0 10px;
+	padding-left: 8px;
+	padding-right: 4px;
+	right: 100%;
+	top: 20px;
+}
+
+#playqueue>.control .logo {
+	background: transparent url('../img/Sidebar_Icon_PlayQueue.png');
+}
+
+#playqueue .playlist .userTracks {
+	height: 200px;
+	overflow: auto;
+}
+
+#playqueue .playlist>.control .userTrack {
+	margin: 2px;
+	opacity: .5;
+}
+
+#playqueue .playlist>.control .userTrack:hover {
+	opacity: 1;
+}
+
+
+
+
+
+
+
+#upload {
+	border-radius: 0 0 20px 0;
+	position: fixed;
+	left: -390px;
+	min-height: 200px;
+	top: 70px;
+	width: 400px;
+
+	z-index: 3;
+
+	-moz-transition: left ease .4s;
+	-o-transition: left ease .4s;
+	-webkit-transition: left ease .4s;
+}
+
+#upload:hover,
+#upload.locked,
+#upload.extended,
+.uploadLocked #upload {
+	left: 0px;
+}
+
+#upload>.control {
+	border-radius: 0 10px 10px 0;
+	left: 100%;
+	padding-left: 4px;
+	padding-right: 8px;
+	top: 20px;
+}
+
+#upload>.control .logo {
+	background: transparent url('../img/Sidebar_Icon_Upload.png');
+}
+
+#upload>.control .close {
+	background: transparent url('../img/Sidebar_Close_Left.png');
+	opacity: .5;
+}
+
+#upload.extended>.control .close {
+	opacity: 1;
+}
+
+
+#upload .dropArea {
+	background: #36b8d4 url('../img/Upload_DropArea_Highlight.png') 0 0 repeat;
+	border-radius: 10px;
+	color: rgba(255,255,255,.5);
+	font-size: 20px;
+	font-weight: bold;
+	height: 55px;
+	line-height: 55px;
+	margin: 0 0 10px 0;
+	position: relative;
+	text-align: center;
+}
+
+#upload .dropArea.isHovering {
+	background: #ff6c00 url('../img/Upload_DropArea.png') 0 0 repeat;
+}
+
+#upload .queue {
+	margin: 0 0 10px 0;
+}
+
+#upload .queue .item {
+	margin: 3px 0;
+}
+
+#upload .queue .item .caption {
+	border-radius: 3px;
+	margin-bottom: 3px;
+	padding: 2px 4px;
+}
+
+#upload .queue .item.error .caption {
+	color: #fa1d00;
+}
+
+#upload .queue .item.success .caption {
+	color: #fff;
+}
+
+
+#upload .queue .progressBar {
+	background-image: url('../img/Cordless_ScrubArea.png');
+}
+
+#upload .queue .progress {
+	background-image: url('../img/Cordless_Scrubber.png');
+	height: 6px;
+	width: 0;
+
+	-moz-transition: width linear .2s;
+	-o-transition: width linear .2s;
+	-webkit-transition: width linear .2s;
+}
+
+
+
+.control {
+	overflow: hidden;
+}
+
+.control>.item {
+	background: transparent center no-repeat;
+	display: block;
+	float: left;
+	overflow: hidden;
+	height: 16px;
+	opacity: .5;
+	text-indent: 16px;
+	width: 16px;
+}
+
+.control>.item:hover{
+	opacity: 1;
+}

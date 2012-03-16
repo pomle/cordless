@@ -1,0 +1,32 @@
+@font-face { font-family: Delicious; src: url('../font/delicious-roman.otf'); }
+@font-face { font-family: Delicious; font-weight: bold; src: url('../font/delicious-bold.otf'); }
+@font-face { font-family: SilkScreen; src: url('../font/SilkScreen.ttf'); }
+
+/* Clickables */
+a,
+.playlist .userTrackItem .title a,
+.tracklist .userTrackItem .title a {
+	color: #0096ff;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+body {
+	color: #4f4f4f;
+	background: #0f0f0f url('../img/Noise_Dark.png') repeat;
+	font-family: Calibri, Arial, sans-serif;
+	font-size: 10pt;
+	margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: Delicious;
+	font-weight: bold;
+}
+
+input.url {
+	text-align: right;
+}

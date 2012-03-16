@@ -1,0 +1,29 @@
+/* .userTrack:s have shared control items depending on context. We default to displaying none, and the context that uses a control should enable it with "display: block;" */
+.userTrack>.control>.item {
+	display: none;
+	height: 12px;
+	width: 12px;
+}
+
+.userTrack .control.track .starToggle {
+	background: url('../img/UserTrack_Icon_StarToggle.png');
+}
+
+.userTrack.isStarred .control.track .starToggle {
+	background: url('../img/UserTrack_Icon_StarToggle_On.png');
+}
+
+.userTrack .control.playqueue .queueLast {
+	background-image: url('../img/UserTrack_Icon_QueueAppend.png');
+}
+
+.userTrack .control.playqueue .queueNext {
+	background-image: url('../img/UserTrack_Icon_QueueNext.png');
+}
+
+.userTrack .control.playqueue .queuePlay {
+	background-image: url('../img/UserTrack_Icon_QueuePlay.png');
+}
+.userTrack .control.playqueue .removeItem {
+	background-image: url('../img/UserTrack_Icon_Remove.png');
+}

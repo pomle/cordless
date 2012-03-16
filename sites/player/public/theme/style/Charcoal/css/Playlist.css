@@ -1,0 +1,126 @@
+.playlist {
+
+}
+
+.playlist>.control {
+	margin: 0 0 5px 0;
+}
+
+.playlist>.control .item {
+	float: right;
+	margin-left: 6px;
+}
+
+.playlist>.control .clear {
+	background-image: url('../img/PlayQueue_Icon_Clear.png');
+}
+
+.playlist>.control .save {
+	background-image: url('../img/PlayQueue_Icon_Save.png');
+}
+
+.playlist>.control .shuffle {
+	background-image: url('../img/PlayQueue_Icon_Shuffle.png');
+}
+
+.playlist .userTracks {
+	font-size: 11px;
+}
+
+.playlist .userTrack {
+	/*background-image: url('../img/White-Black-Opac-10.png');*/
+	height: 40px;
+	line-height: 1.1;
+	overflow: hidden;
+	position: relative;
+}
+
+.playlist.compact .userTrack {
+	min-height: 0;
+	padding: 1px 3px;
+}
+
+.playlist .userTrack:nth-child(2n+0) {
+	background-color: rgba(255,255,255,.04);
+}
+
+.playlist .userTrack:nth-child(2n+1) {
+	background-color: rgba(0,0,0,.2);
+}
+
+.playlist .userTrack .image {
+	float: left;
+	height: 40px;
+	margin-right: 10px;
+	width: 40px;
+}
+
+.playlist.compact .userTrack .image {
+	display: none;
+}
+
+.playlist .userTrack .image img {
+	height: 100%;
+	width: 100%;
+}
+
+.playlist .userTrack>.control {
+	bottom: 0;
+	/*background: rgba(0,0,0,.5);*/
+	opacity: 0;
+	padding: 10px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 3;
+}
+
+.playlist .userTrack:hover>.control {
+	opacity: 1;
+}
+
+.playlist .userTrack .control>.removeItem {
+	display: inline-block;
+}
+
+.playlist .userTrack .meta {
+	margin: 2px 10px 0 0;
+}
+
+.playlist.compact .userTrack .meta>* {
+	display: inline;
+}
+
+.playlist .userTrack .title {
+
+}
+
+.playlist .userTrack .artist {
+	/*color: #335481;*/
+	color: #fff;
+}
+
+.playlist .userTrack .duration {
+	font-size: 9px;
+}
+
+.playlist .userTrack.isCurrent {
+	background: #006eb2 url('../img/Playlist_Current.png') repeat-x;
+}
+
+.playlist .userTrack.isCurrent .title {
+	color: rgba(0,0,0,.8);
+}
+
+.playlist .userTrack.isCurrent .artist {
+	color: rgba(0,0,0,.6);
+}
+
+.playlist .userTrack.isCurrent .duration {
+	color: rgba(0,0,0,.3);
+}
+
+
+.playlist .userTrack.isSelected {
+	background-color: rgba(0, 70, 120, 0.5);
+}

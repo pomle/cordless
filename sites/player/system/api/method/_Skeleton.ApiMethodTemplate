@@ -1,0 +1,14 @@
+<?
+$requireLogin = true; ### Set to false if this method can be accessed without login
+$keepSession = false; ### Set to true you need to modify session, for example updating user parameters
+
+function APIMethod(\CordlessUser $User, $params)
+{
+	if( $params['fail'] == true )
+		throw New APIException("This will return a json-response with an error and this message!");
+
+	if( $params['heavyfail'] == true )
+		throw New \Exception("This will return a json-response with an error and this message if we are debugging, otherwiswe an generic error message");
+
+	return "Everything is well"; // json_encoded whatever that is sent with the response
+}

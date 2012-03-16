@@ -1,0 +1,236 @@
+.tracklist {
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 7px;
+	margin: 0 -10px;
+	overflow: hidden;
+	padding: 8px 10px 10px 10px;
+}
+
+.tracklist .toggleView {
+	background: url('../img/Tracklist_LayoutSwitch.png') no-repeat;
+	background-position: 0 100%;
+	float: right;
+	height: 14px;
+	overflow: hidden;
+	text-indent: 16px;
+	width: 16px;
+}
+
+.tracklistList .tracklist .toggleView {
+	background-position: 0 0;
+}
+
+.tracklist>.control {
+	margin: 0 0 4px 1px;
+}
+
+.tracklist>.control .item {
+	margin-right: 6px;
+}
+
+.tracklist>.control .queueLast {
+	background: url('../img/Tracklist_Icon_QueueAppend.png');
+}
+
+.tracklist>.control .queueNext {
+	background: url('../img/Tracklist_Icon_QueueNext.png');
+}
+
+.tracklist>.control .queueReplace {
+	background: url('../img/Tracklist_Icon_QueuePlay.png');
+}
+
+
+.tracklist .userTracks {
+	font-size: 11px;
+	overflow: hidden;
+	padding: 0 1px 1px 0;
+}
+
+.tracklistList .tracklist .userTracks {
+	padding: 0;
+}
+
+
+.tracklist .userTrack,
+.tracklist .userTracks .fetchMore {
+	background: rgba(0,0,0,.5) url('../img/Tracklist_Item_BG.png') 10px 10px no-repeat;
+	border: solid 1px rgba(0,0,0, .2);
+	float: left;
+	height: 60px;
+	margin: 0 -1px -1px 0;
+	overflow: hidden;
+	position: relative;
+	width: 200px;
+	z-index: 1;
+}
+
+.tracklistList .tracklist .userTrack {
+	margin: 0 0 -1px 0;
+}
+
+.tracklist .userTrack {
+	opacity: 0.7;
+}
+
+.tracklist .userTrack.isOwner {
+	opacity: 1;
+}
+
+
+.tracklist .userTrack:hover {
+	/*background-color: rgba(0, 96, 255, 0.05);*/
+	border-color: rgba(0, 160, 244, .3);
+	z-index: 2;
+}
+
+/*.tracklist .userTrack:nth-child(2n+1) {
+	background-color: rgba(0,0,0,.2);
+}*/
+
+.tracklist .userTrack .image {
+	float: left;
+	height: 60px;
+	margin-right: 10px;
+	width: 60px;
+}
+
+.tracklist .userTrack .image img {
+	height: 100%;
+	width: 100%;
+}
+
+.tracklistTiles .tracklist .userTrack .track.control {
+	background: transparent;
+	left: 2px;
+	padding: 0;
+	position: absolute;
+	top: 2px;
+}
+
+.tracklistTiles .tracklist .userTrack.isStarred .track.control {
+	opacity: 1;
+}
+
+.tracklist .userTrack .control {
+	background-color: rgba(1,1,1,.5);
+	bottom: 0;
+	opacity: 0;
+	padding: 5px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 18px;
+}
+
+.tracklist .userTrack:hover .control {
+	opacity: 1;
+}
+
+/* Enable these controls for Tracklist */
+.tracklist .userTrack .control .starToggle,
+.tracklist .userTrack .control .queuePlay,
+.tracklist .userTrack .control .queueNext,
+.tracklist .userTrack .control .queueLast {
+	display: block;
+	margin: 0 auto 4px auto;
+}
+
+.tracklist .userTrack.isStarred .control .starToggle {
+	opacity: 1;
+}
+
+.tracklist .userTrack .meta {
+	margin: 3px 10px 0 0;
+}
+
+.tracklist .userTrack .title {
+	font-size: 13px;
+}
+
+.tracklist .userTrack .artist {
+	color: #fff;
+}
+
+.tracklist .userTrack .duration {
+	display: none;
+}
+
+.tracklist .userTracks .fetchMore {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
+	border-radius: 0 0 15px 0;
+}
+
+
+.tracklistList .tracklist .userTracks .fetchMore {
+	border-radius: 0 0 10px 10px;
+	float: none;
+	display: block;
+	line-height: 25px;
+	height: 25px;
+	text-align: center;
+	width: auto;
+}
+
+
+
+/* Compact Mode Overrides */
+.tracklistList .tracklist .userTrack {
+	float: none;
+	overflow: hidden;
+	height: auto;
+	line-height: 1;
+}
+
+.tracklistList .tracklist .userTrack {
+	background: none;
+}
+
+.tracklistList .tracklist .userTrack:nth-child(2n+1) {
+	background: rgba(255,255,255,.04);
+}
+
+.tracklistList .tracklist .userTrack {
+	width: auto;
+}
+
+.tracklistList .tracklist .userTrack .image {
+	height: 20px;
+	margin-right: 0;
+	width: 20px;
+}
+
+.tracklistList .tracklist .userTrack .image img {
+	height: 100%;
+	width: auto;
+}
+
+.tracklistList .tracklist .userTrack .control {
+	float: left;
+	height: 100%;
+	padding: 3px;
+	position: relative;
+	text-align: left;
+	width: auto;
+}
+
+.tracklistList .tracklist .userTrack .control>.item {
+	margin: 1px 3px;
+}
+
+
+.tracklistList .tracklist .userTrack .meta {
+	margin: 0;
+}
+
+.tracklistList .tracklist .userTrack .meta>li /* .item*/ {
+	font-size: 13px;
+	float: left;
+	margin: 3px 4px;
+	width: 25%;
+}
+
+.tracklistList .tracklist .userTrack .meta .duration {
+	display: inline;
+	width: 5em;
+}
