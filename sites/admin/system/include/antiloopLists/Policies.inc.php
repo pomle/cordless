@@ -3,7 +3,7 @@ namespace Element\Antiloop;
 
 defaultSort($params, 'policy', false);
 
-$Stmt = new \Query\Select("SELECT ID AS policyID, policy, description FROM Policies");
+$Stmt = new \Query\Select("SELECT ID AS policyID, policy, description FROM Asenine_Policies");
 
 if( isset($filter['search']) && $filter['search'] )
 {

@@ -3,8 +3,8 @@ define('ACCESS_POLICY', 'AllowViewSecurityBlockedIP');
 
 require '../Init.inc.php';
 
-$pageTitle = _('Säkerhet');
-$pageSubtitle = _('IP-Blockering');
+$pageTitle = _('Security');
+$pageSubtitle = _('IP-Block');
 
 $HostList = \Element\Antiloop::getAsDomObject('SecurityBlockedIPs.Load');
 
@@ -18,7 +18,7 @@ $Control
 require HEADER;
 ?>
 <fieldset>
-	<legend><? echo \Element\Tag::legend('computer_key', _('IP-adresser')); ?></legend>
+	<legend><? echo \Element\Tag::legend('computer_key', _('IP-Addresses')); ?></legend>
 
 	<? echo $HostList; ?>
 
@@ -28,12 +28,12 @@ require HEADER;
 		<input type="hidden" name="securityBlockedIPID">
 
 		<fieldset>
-			<legend><? echo \Element\Tag::legend('wrench_orange', _('Funktion')); ?></legend>
+			<legend><? echo \Element\Tag::legend('wrench_orange', _('Alter')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Aktiverad'), \Element\Input::checkbox('isEnabled'))
-				->addRow(_('IP-adress'), \Element\Input::text('hostAddress'))
-				->addRow(_('Kommentar'), \Element\TextArea::small('comment'));
+				->addRow(_('Active'), \Element\Input::checkbox('isEnabled'))
+				->addRow(_('IP-Address'), \Element\Input::text('hostAddress'))
+				->addRow(_('Comment'), \Element\TextArea::small('comment'));
 			?>
 		</fieldset>
 

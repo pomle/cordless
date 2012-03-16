@@ -352,11 +352,11 @@ class Antiloop extends \Element\_Common
 				<?
 			}
 
-			if( ($rowCount = $Dataset->num_rows) == 0 ) throw New \Exception(_('Inga rader att returnera'));
+			#if( ($rowCount = $Dataset->num_rows) == 0 ) throw New \Exception(_('Inga rader att returnera'));
 
 			$i = 0;
 			$rowNumber = 0;
-			while( $dataRow = $Dataset->fetch_assoc() )
+			while( $dataRow = $this->getNextRow($Dataset) )
 			{
 				$i++;
 				if( !is_null($this->limit) && $i > $this->limit ) break;
@@ -377,6 +377,8 @@ class Antiloop extends \Element\_Common
 				</tr>
 				<?
 			}
+
+			$rowCount = $rowNumber;
 
 			?>
 			<tr class="row summary">
@@ -414,6 +416,12 @@ class Antiloop extends \Element\_Common
 		$html = ob_get_clean();
 
 		return $html;
+	}
+
+	private function getNextRow($Dataset)
+	{
+		if( $Dataset instanceof \PDOStatement )
+			return $Dataset->fetch(\PDO::FETCH_ASSOC);
 	}
 
 	private function getPreparedDataset()

@@ -9,7 +9,7 @@ $Stmt = new \Query\Select("SELECT
 		usip.spanStart,
 		(usip.spanStart + usip.spanAppend) AS spanEnd
 	FROM
-		UserSecurityIPs usip");
+		Asenine_UserSecurityIPs usip");
 
 if( isset($filter['search']) && strlen($filter['search']) )
 {

@@ -13,7 +13,7 @@ $Stmt = new \Query\Select("SELECT
 		ROUND(timeAutoLogout / 60) AS timeAutoLogout,
 		countLoginsSuccessful,
 		countLoginsFailed
-	FROM Users");
+	FROM Asenine_Users");
 
 if( isset($filter['search']) && $filter['search'] )
 {

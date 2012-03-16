@@ -1,11 +1,11 @@
 <?
-#MENUPATH:System/Användare
+#MENUPATH:System/Users
 define('ACCESS_POLICY', 'AllowViewUser');
 
 require '../Init.inc.php';
 
 $pageTitle = _('System');
-$pageSubtitle = _('Användare');
+$pageSubtitle = _('Users');
 
 $List = \Element\Antiloop::getAsDomObject(USER_IS_ADMIN ? 'Users.Administrator' : 'Users');
 

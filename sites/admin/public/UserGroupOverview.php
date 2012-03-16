@@ -1,11 +1,11 @@
 <?
-#MENUPATH:System/Användargrupper
+#MENUPATH:System/User Groups
 define('ACCESS_POLICY', 'AllowViewUserGroup');
 
 require '../Init.inc.php';
 
 $pageTitle = _('System');
-$pageSubtitle = _('Användargrupper');
+$pageSubtitle = _('User Groups');
 
 $List = \Element\Antiloop::getAsDomObject('UserGroups');
 

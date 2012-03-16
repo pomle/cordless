@@ -18,7 +18,7 @@ class Select extends Common\Root
 		$this->name = $name;
 		$this->caption = null;
 		$this->options = array();
-		if( $isBlankSelectable ) $this->addOption('[' . _('Samtliga') . ']', '0');
+		if( $isBlankSelectable ) $this->addOption('[' . _('All') . ']', '0');
 		$this->selectedKey = null;
 	}
 

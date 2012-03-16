@@ -5,7 +5,7 @@ class Remove extends \Element\Button
 {
 	public function __construct($action = 'remove', $caption = null, $icon = null, $message = null)
 	{
-		parent::__construct(null, $icon ?: 'cancel', $caption ?: _('Ta bort'));
+		parent::__construct(null, $icon ?: 'cancel', $caption ?: _('Remove'));
 		$this->action = $action;
 		$this->message = $message;
 	}

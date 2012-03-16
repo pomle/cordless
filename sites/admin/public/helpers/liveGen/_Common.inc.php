@@ -20,5 +20,5 @@ function getLiveTemp()
 	return tempnam(DIR_TEMP, 'LiveGen_');
 }
 
-if( !$Media = \Manager\Media::loadOneFromDB($_GET['mediaID']) )
+if( !$Media = \Asenine\Media::loadFromDB($_GET['mediaID']) )
 	die('Invalid Media ID');

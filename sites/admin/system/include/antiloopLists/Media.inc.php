@@ -10,9 +10,9 @@ $Stmt = new \Query\Select("SELECT
 		fileOriginalName,
 		fileSize,
 		mediaType
-	FROM Media");
+	FROM Asenine_Media");
 
-if( $filter['search'] )
+if( isset($filter['search']) && $filter['search'] )
 {
 	$search = $filter['search'];
 

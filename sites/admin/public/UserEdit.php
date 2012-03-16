@@ -161,7 +161,7 @@ require HEADER;
 				p.description,
 				(NOT upC.policyID IS NULL) AS hasPolicy
 			FROM
-				Policies p
+				Asenine_Policies p
 				LEFT JOIN Asenine_UserPolicies upA ON upA.policyID = p.ID AND upA.userID = %u
 				LEFT JOIN Asenine_UserPolicies upC ON upC.policyID = p.ID AND upC.userID = %u
 			WHERE
@@ -203,9 +203,9 @@ require HEADER;
 				ug.description,
 				(NOT uguC.userGroupID IS NULL) AS isMember
 			FROM
-				UserGroups ug
-				LEFT JOIN UserGroupUsers uguA ON uguA.userGroupID = ug.ID AND uguA.userID = %u
-				LEFT JOIN UserGroupUsers uguC ON uguC.userGroupID = ug.ID AND uguC.userID = %u
+				Asenine_UserGroups ug
+				LEFT JOIN Asenine_UserGroupUsers uguA ON uguA.userGroupID = ug.ID AND uguA.userID = %u
+				LEFT JOIN Asenine_UserGroupUsers uguC ON uguC.userGroupID = ug.ID AND uguC.userID = %u
 			WHERE
 				uguA.userGroupID OR %u = 1
 			ORDER BY

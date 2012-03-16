@@ -6,10 +6,10 @@ defaultSort($params, 'timeLastLogin', true);
 $Stmt = new \Query\Select("SELECT
 		ug.ID AS userGroupID,
 		ug.name,
-		(SELECT COUNT(*) FROM UserGroupPolicies WHERE userGroupID = ug.ID) AS countPolicies,
-		(SELECT COUNT(*) FROM UserGroupUsers WHERE userGroupID = ug.ID) AS countUsers
+		(SELECT COUNT(*) FROM Asenine_UserGroupPolicies WHERE userGroupID = ug.ID) AS countPolicies,
+		(SELECT COUNT(*) FROM Asenine_UserGroupUsers WHERE userGroupID = ug.ID) AS countUsers
 	FROM
-		UserGroups ug");
+		Asenine_UserGroups ug");
 
 if( isset($filter['search']) && strlen($filter['search']) )
 {

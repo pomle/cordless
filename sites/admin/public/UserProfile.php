@@ -11,7 +11,7 @@ use \Element\IOCall as IOCall;
 
 $user = \Manager\Dataset\User::getProperties(USER_ID);
 
-$pageTitle = _('Användarprofil');
+$pageTitle = _('User Profile');
 
 $IO = new IOCall('User');
 $IOControl = new \Element\IOControl($IO);
@@ -22,12 +22,12 @@ require HEADER;
 	<?
 	$Tabs = new \Element\Tabs();
 	echo $Tabs
-		->addTab('overview', _('Konto'), 'user_orange')
-		->addTab('personals', _('Personuppgifter'), 'vcard')
-		->addTab('password', _('Lösenord'), 'key')
-		->addTab('policy', _('Rättigheter'), 'shield')
-		->addTab('userGroup', _('Grupper'), 'group')
-		->addTab('setting', _('Inställningar'), 'wrench_orange');
+		->addTab('overview', _('Account'), 'user_orange')
+		->addTab('personals', _(''), 'vcard')
+		->addTab('password', _('Password'), 'key')
+		->addTab('policy', _('Policies'), 'shield')
+		->addTab('userGroup', _('Groups'), 'group')
+		->addTab('setting', _('Settings'), 'wrench_orange');
 	?>
 
 	<fieldset class="tab" id="overview">

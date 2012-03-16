@@ -1,5 +1,5 @@
 <?
-#MENUPATH:System/Rättigheter
+#MENUPATH:System/Policies
 define('ACCESS_POLICY', 'AllowViewPolicy');
 
 use
@@ -9,7 +9,7 @@ use
 require '../Init.inc.php';
 
 $pageTitle = _('System');
-$pageSubtitle = _('Rättigheter');
+$pageSubtitle = _('Policies');
 
 $PolicyList = \Element\Antiloop::getAsDomObject('Policies.Load');
 
@@ -23,7 +23,7 @@ $Control
 require HEADER;
 ?>
 <fieldset>
-	<legend><? echo \Element\Tag::legend('key', _('Rättigheter')); ?></legend>
+	<legend><? echo \Element\Tag::legend('key', _('Policies')); ?></legend>
 
 	<? echo $PolicyList; ?>
 
@@ -33,12 +33,12 @@ require HEADER;
 		<input type="hidden" name="policyID">
 
 		<fieldset>
-			<legend><? echo \Element\Tag::legend('wrench_orange', _('Funktion')); ?></legend>
+			<legend><? echo \Element\Tag::legend('wrench_orange', _('Function')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
 				//->addRow(_('Aktiverad'), \Element\Input::checkbox('isEnabled'))
-				->addRow(_('Benämning'), Input::text('policy')->size(40))
-				->addRow(_('Beskrivning'), Input::text('description')->size(80));
+				->addRow(_('Name'), Input::text('policy')->size(40))
+				->addRow(_('Description'), Input::text('description')->size(80));
 			?>
 		</fieldset>
 
