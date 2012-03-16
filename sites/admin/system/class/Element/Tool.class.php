@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class Tool extends Common\Root
+class Tool extends \Element\_Common
 {
 	public static function ajaxTrigger($icon, $caption = null, $message = null)
 	{

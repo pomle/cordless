@@ -16,7 +16,7 @@ class Text extends Common\Root
 	{
 		return
 			(string)\Element\Icon::custom($this->icon, $this->caption) .
-			(string)\Element\Input::text('filter[' . $this->name . ']', $this->currentString)->size($this->size)->addClasses($this->classes) .
+			(string)\Asenine\Element\Input::text('filter[' . $this->name . ']', $this->currentString)->size($this->size)->addClasses($this->classes) .
 			'<a href="#" class="clear pD">' . (string)\Element\Icon::custom('textfield_delete', _('Rensa fält')) . '</a>';
 	}
 

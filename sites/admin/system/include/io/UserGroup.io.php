@@ -1,9 +1,15 @@
 <?
+use
+	\Asenine\DB,
+	\Asenine\UserGroup,
+	\Asenine\UserGroup\Dataset,
+	\Asenine\UserGroup\Manager;
+
 class UserGroupIO extends AjaxIO
 {
 	private function ensureExistence()
 	{
-		if( !\Manager\Dataset\UserGroup::isExisting($this->userGroupID) )
+		if( !$UserGroup = UserGroup::loadFromDB($this->userGroupID) )
 			throw New Exception(_('Grupp existerar inte'));
 	}
 
@@ -16,7 +22,7 @@ class UserGroupIO extends AjaxIO
 
 		$this->importArgs('name', 'label', 'description', 'isTaskAssignable');
 
-		$query = \DB::prepareQuery("UPDATE
+		$query = DB::prepareQuery("UPDATE
 				UserGroups
 			SET
 				name = %s,
@@ -31,7 +37,7 @@ class UserGroupIO extends AjaxIO
 			$this->isTaskAssignable,
 			$this->userGroupID);
 
-		\DB::queryAndCountAffected($query);
+		DB::queryAndCountAffected($query);
 
 		$this->loadUserGroup();
 
@@ -48,12 +54,14 @@ class UserGroupIO extends AjaxIO
 		$this->importArgs('policyIDs');
 
 		// Only delete policies that current user has power over or all if is Administrator
-		$allowedPolicyIDs = \Manager\Dataset\User::getPolicies(USER_ID);
+		$allowedPolicyIDs = \Asenine\User\Dataset::getPolicies(USER_ID);
 
-		$query = \DB::prepareQuery("DELETE FROM UserGroupPolicies WHERE userGroupID = %u", $this->userGroupID);
+		$query = DB::prepareQuery("DELETE FROM UserGroupPolicies WHERE userGroupID = %u", $this->userGroupID);
+
 		if( !USER_IS_ADMIN )
-			$query .= \DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
-		\DB::queryAndCountAffected($query);
+			$query .= DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
+
+		DB::queryAndCountAffected($query);
 
 
 		if( isset($this->policyIDs) && is_array($this->policyIDs) )
@@ -63,8 +71,8 @@ class UserGroupIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$policyIDs = array_intersect($policyIDs, $allowedPolicyIDs);
 
-			$query = \DB::prepareQuery("INSERT INTO UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
-			\DB::queryAndGetID($query);
+			$query = DB::prepareQuery("INSERT INTO UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
+			DB::queryAndGetID($query);
 		}
 
 		Message::addNotice(_('Rättigheter uppdaterade'));
@@ -79,15 +87,15 @@ class UserGroupIO extends AjaxIO
 
 		$this->importArgs('userIDs');
 
-		$query = \DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userGroupID = %u", $this->userGroupID);
-		\DB::queryAndCountAffected($query);
+		$query = DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userGroupID = %u", $this->userGroupID);
+		DB::queryAndCountAffected($query);
 
 		if( isset($this->userIDs) && is_array($this->userIDs) )
 		{
-			$userGroupIDs = $this->userGroupIDs;
+			#$userGroupIDs = $this->userGroupIDs;
 
-			$query = \DB::prepareQuery("INSERT INTO UserGroupUsers (userGroupID, userID) SELECT %u, ID FROM Users WHERE ID IN %a", $this->userGroupID, $this->userIDs);
-			\DB::queryAndGetID($query);
+			$query = DB::prepareQuery("INSERT INTO UserGroupUsers (userGroupID, userID) SELECT %u, ID FROM Users WHERE ID IN %a", $this->userGroupID, $this->userIDs);
+			DB::queryAndGetID($query);
 		}
 
 		Message::addNotice(_('Användare uppdaterade'));
@@ -97,7 +105,7 @@ class UserGroupIO extends AjaxIO
 	{
 		global $User, $result;
 		ensurePolicies('AllowViewUserGroup');
-		$result = \Manager\Dataset\UserGroup::getProperties($this->userGroupID);
+		$result = Dataset::getProperties($this->userGroupID);
 	}
 
 	public function deleteUserGroup()
@@ -107,8 +115,8 @@ class UserGroupIO extends AjaxIO
 
 		$this->ensureExistence();
 
-		$query = \DB::prepareQuery("DELETE FROM UserGroups WHERE ID = %u", $this->userGroupID);
-		\DB::queryAndCountAffected($query);
+		$query = DB::prepareQuery("DELETE FROM UserGroups WHERE ID = %u", $this->userGroupID);
+		DB::queryAndCountAffected($query);
 
 		Message::addNotice(_('Grupp borttagen'));
 	}

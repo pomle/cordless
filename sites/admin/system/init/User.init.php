@@ -3,13 +3,21 @@ require DIR_ADMIN_INCLUDE . 'Functions.User.inc.php';
 
 if( !isset($_SESSION) ) trigger_error('Session not started', E_USER_ERROR);
 
-if( !isset($_SESSION['User']) || !$_SESSION['User'] instanceof \User || isset($_POST['login']) )
+if( !isset($_SESSION['User']) || !$_SESSION['User'] instanceof \Asenine\User || isset($_POST['login']) )
 {
-	$username = isset($_POST['username']) ? $_POST['username'] : $_COOKIE['username'];
+
+
+	if( isset($_POST['username']) )
+		$username = $_POST['username'];
+	elseif( isset($_COOKIE['username']) )
+		$username = $_COOKIE['username'];
+	else
+		$username = null;
+
 	$password = isset($_POST['password']) ? $_POST['password'] : null;
 	$authtoken = isset($_COOKIE['authtoken']) ? $_COOKIE['authtoken'] : null;
 
-	$_SESSION['User'] = \User::login($username, $password, $authtoken) ?: new \User();
+	$_SESSION['User'] = \Asenine\User::login($username, $password, $authtoken) ?: new \Asenine\User();
 }
 $User = $_SESSION['User'];
 
@@ -18,7 +26,7 @@ if( USER_IP_SECURITY === true && $User->getIP() !== getenv('REMOTE_ADDR') )
 	trigger_error('IP Changed. Possible cookie theft. User session killed', E_USER_WARNING);
 	$User->logout();
 
-	$User = new \User();
+	$User = new \Asenine\User();
 }
 
 if( $User->isLoggedIn() !== true ) require DIR_ADMIN_INIT . 'UserSecurity.init.php';

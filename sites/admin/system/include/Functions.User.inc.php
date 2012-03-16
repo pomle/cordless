@@ -3,7 +3,7 @@ function ensureLoggedIn()
 {
 	global $User;
 
-	if( !$User instanceof \User || !$User->isLoggedIn() )
+	if( !$User instanceof \Asenine\User || !$User->isLoggedIn() )
 		throw New Exception(_('Not logged in'));
 }
 

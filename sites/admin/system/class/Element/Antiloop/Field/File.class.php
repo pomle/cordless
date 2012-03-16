@@ -12,11 +12,11 @@ class File extends Common\Root
 	public static function size($name, $caption = null, $icon = null)
 	{
 		$Field = new self($name, $caption ?: _('Storlek'), $icon ?: 'report_disk');
-		$Field->class = 'number';
+		$Field->class[] = 'number';
 		$Field->setContentHandler(
 			function($value)
 			{
-				return is_numeric($value) ? \Format::fileSize($value) : '-';
+				return is_numeric($value) ? \Asenine\Format::fileSize($value) : '-';
 			}
 		);
 		return $Field;

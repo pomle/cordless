@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class ToolBar extends Common\Root
+class ToolBar extends \Element\_Common
 {
 	public $icon, $caption;
 	public $tools = array();

@@ -21,7 +21,7 @@ class Number extends Common\Root
 	public static function decimal($name, $caption, $icon, $numDecimals = 2, $multiplier = 1)
 	{
 		$Field = new self($name, $caption, $icon);
-		$Field->class = 'number';
+		$Field->class[] = 'number';
 		$Field->numDecimals = (int)$numDecimals;
 		$Field->multiplier = (float)$multiplier;
 		$Field->isSigned = false;
@@ -39,7 +39,7 @@ class Number extends Common\Root
 	public static function integer($name, $caption, $icon)
 	{
 		$Field = new self($name, $caption, $icon);
-		$Field->class = 'number';
+		$Field->class[] = 'number';
 		$Field->isSigned = false;
 		$Field->isSortReversed = true;
 		$Field->setContentHandler(

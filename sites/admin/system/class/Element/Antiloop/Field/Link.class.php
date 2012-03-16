@@ -7,6 +7,7 @@ class Link extends Common\Root
 	{
 		$Field = new self($caption, $icon, trim((string)$AjaxCall, '&'), $params);
 		$Field->class[] = 'pD';
+		$Field->linkClass = 'ajaxLoad';
 		$Field->isAjaxCall = true;
 		return $Field;
 	}
@@ -51,7 +52,10 @@ class Link extends Common\Root
 						$href .= sprintf('%s=%s&', $key, $param);
 				}
 
-				$content = sprintf('<a href="%s" class="%s">%s</a>', htmlspecialchars($href), join(' ', $Field->class), $Icon);
+				$classes = $Field->class;
+				if( isset($Field->linkClass) ) $classes[] = $Field->linkClass;
+
+				$content = sprintf('<a href="%s" class="%s">%s</a>', htmlspecialchars($href), join(' ', $classes), $Icon);
 				if( $Field->isAjaxCall ) $content .= '<img src="/layout/ajax_dot_loader.gif" class="loader">';
 				return $content;
 			}

@@ -1,7 +1,7 @@
 <?
 namespace Element\Form;
 
-class Upload extends \Element\Common\Root
+class Upload extends \Element\_Common
 {
 	public function __construct(\Element\IOCall $IOCall)
 	{

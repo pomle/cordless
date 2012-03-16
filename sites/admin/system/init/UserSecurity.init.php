@@ -9,7 +9,7 @@ if( defined('IS_AJAX_REQUEST') )
 }
 else
 {
-	$userCount = \Manager\Dataset\User::getCount();
+	$userCount = \Asenine\User\Manager::getCount();
 
 	if( $userCount === 0 )
 		require DIR_ADMIN_ELEMENT . 'CreateAdmin.inc.php';

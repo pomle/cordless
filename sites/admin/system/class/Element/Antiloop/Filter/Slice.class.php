@@ -51,7 +51,7 @@ class Slice extends Common\Root
 		{
 			$string .=
 				(string)\Element\Icon::custom($this->limit['icon'], $this->limit['caption']) .
-				(string)\Element\SelectBox::keyPair('filter[limit]', $this->limit['selectedKey'], $this->limit['options'])->addClass('limit');
+				(string)\Asenine\Element\SelectBox::keyPair('filter[limit]', $this->limit['selectedKey'], $this->limit['options'])->addClass('limit');
 		}
 
 		if( isset($this->page) )
@@ -59,7 +59,7 @@ class Slice extends Common\Root
 			$string .=
 				(string)\Element\Icon::custom($this->page['icon'], $this->page['caption']) .
 				'<a href="#" class="prevPage pD" rel="-1">' . (string)\Element\Icon::custom('mono_minus', _('Föregående sida')) . '</a>' .
-				(string)\Element\Input::text('filter[page]', (int)$this->page['currentPage'] ?: 1)->size(4)->addClass('page') .
+				(string)\Asenine\Element\Input::text('filter[page]', (int)$this->page['currentPage'] ?: 1)->size(4)->addClass('page') .
 				'<a href="#" class="nextPage pD" rel="1">' . (string)\Element\Icon::custom('mono_plus', _('Nästa fält')) . '</a>' .
 				'<a href="#" class="clear pD">' . (string)\Element\Icon::custom('textfield_delete', _('Rensa fält')) . '</a>';
 		}

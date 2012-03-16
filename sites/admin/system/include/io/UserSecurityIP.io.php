@@ -1,4 +1,6 @@
 <?
+use \Asenine\DB;
+
 class UserSecurityIPIO extends AjaxIO
 {
 	public function save()
@@ -77,8 +79,8 @@ class UserSecurityIPIO extends AjaxIO
 	{
 		ensurePolicies('AllowEditUser');
 
-		$query = \DB::prepareQuery("DELETE FROM UserSecurityIPs WHERE ID = %u", $this->userSecurityIPID);
-		\DB::queryAndCountAffected($query);
+		$query = DB::prepareQuery("DELETE FROM UserSecurityIPs WHERE ID = %u", $this->userSecurityIPID);
+		DB::queryAndCountAffected($query);
 
 		Message::addNotice(MESSAGE_ROW_DELETED);
 	}

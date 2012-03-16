@@ -1,9 +1,15 @@
 <?
+use
+	\Asenine\Format,
+	\Asenine\Element\Input,
+	\Asenine\Element\SelectBox,
+	\Asenine\DB;
+
 if( !isset($_GET['userID']) )
 {
 	define('ACCESS_POLICY', 'AllowCreateUser');
 	require '../Init.inc.php';
-	$userID = \Manager\User::addToDB();
+	$userID = \Asenine\User\Manager::addToDB();
 	header('Location: ?userID=' . $userID);
 	exit();
 }
@@ -12,14 +18,12 @@ define('ACCESS_POLICY', 'AllowViewUser');
 require '../Init.inc.php';
 
 
-if( !$_User = \User::loadOneFromDB($_GET['userID']) )
+if( !$_User = \Asenine\User::loadFromDB($_GET['userID']) )
 	\Element\Page::error("User does not exist");
 
 
 ### Stow away loaded User's id for convenience
 $userID = $_User->getID();
-
-$properties = \Manager\Dataset\User::getProperties($userID);
 
 $pageTitle = _('System');
 $pageSubtitle = _('Användare') . ' #' . $userID;
@@ -51,10 +55,10 @@ require HEADER;
 			<legend><? echo \Element\Tag::legend('vcard', _('Status')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Tid skapad'), \Format::timestamp($_User->timeCreated))
-				->addRow(_('Tid ändrad'), \Format::timestamp($_User->timeModified))
-				->addRow(_('Senaste inloggning'), \Format::timestamp($_User->timeLastLogin))
-				->addRow(_('Senaste lösenordsbyte'), \Format::timestamp($_User->timePasswordLastChange))
+				->addRow(_('Tid skapad'), Format::timestamp($_User->timeCreated))
+				->addRow(_('Tid ändrad'), Format::timestamp($_User->timeModified))
+				->addRow(_('Senaste inloggning'), Format::timestamp($_User->timeLastLogin))
+				->addRow(_('Senaste lösenordsbyte'), Format::timestamp($_User->timePasswordLastChange))
 				;
 			?>
 		</fieldset>
@@ -62,18 +66,18 @@ require HEADER;
 		<fieldset>
 			<legend><? echo \Element\Tag::legend('application_xp_terminal', _('Inställningar')); ?></legend>
 			<?
-			$IdleLogout = new \Element\SelectBox('timeAutoLogout', $_User->timeAutoLogout);
+			$IdleLogout = new SelectBox('timeAutoLogout', $_User->timeAutoLogout);
 			$IdleLogout->addItem(_('Av'), 0);
 
 			foreach(array(1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 60) as $minutes)
 				$IdleLogout->addItem($minutes, $minutes * 60);
 
 			echo \Element\Table::inputs()
-				->addRow(_('Aktiv'), \Element\Input::checkbox('isEnabled', $_User->isEnabled))
-				->addRow(_('Administrator'), \Element\Input::checkbox('isAdministrator', $_User->isAdministrator))
+				->addRow(_('Aktiv'), Input::checkbox('isEnabled', $_User->isEnabled))
+				->addRow(_('Administrator'), Input::checkbox('isAdministrator', $_User->isAdministrator))
 				->addRow(_('Autologout'), $IdleLogout . ' ' . _('minuter'))
-				->addRow(_('Användarnamn'), \Element\Input::text('username', $_User->username)->size($size))
-				->addRow(_('Lösenord'), \Element\Input::password('newPassword')->size($size))
+				->addRow(_('Användarnamn'), Input::text('username', $_User->username)->size($size))
+				->addRow(_('Lösenord'), Input::password('newPassword')->size($size))
 				;
 			?>
 		</fieldset>
@@ -82,9 +86,9 @@ require HEADER;
 			<legend><? echo \Element\Tag::legend('vcard', _('Personuppgifter')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Namn'), \Element\Input::text('fullname', $_User->fullname)->size($size))
-				->addRow(_('E-postadress'), \Element\Input::text('email', $_User->email)->size($size))
-				->addRow(_('Telefon'), \Element\Input::text('phone', $_User->phone)->size($size))
+				->addRow(_('Namn'), Input::text('fullname', $_User->fullname)->size($size))
+				->addRow(_('E-postadress'), Input::text('email', $_User->email)->size($size))
+				->addRow(_('Telefon'), Input::text('phone', $_User->phone)->size($size))
 				;
 			?>
 		</fieldset>
@@ -129,8 +133,8 @@ require HEADER;
 				asort($policyMap);
 
 				echo \Element\Table::inputs()
-					->addRow(_('Policy'), \Element\SelectBox::keyPair('policy', null, $policyMap))
-					->addRow(_('IP-spann'), \Element\Input::text('spanStart') . ' - '. \Element\Input::text('spanEnd'))
+					->addRow(_('Policy'), SelectBox::keyPair('policy', null, $policyMap))
+					->addRow(_('IP-spann'), Input::text('spanStart') . ' - '. Input::text('spanEnd'))
 					;
 				?>
 			</fieldset>
@@ -151,7 +155,7 @@ require HEADER;
 		$Table = \Element\Table::inputs();
 
 		// Gets policies that current user has (or all if admin) and weather edited user has it
-		$query = \DB::prepareQuery("SELECT
+		$query = DB::prepareQuery("SELECT
 				p.ID AS policyID,
 				p.policy,
 				p.description,
@@ -168,12 +172,12 @@ require HEADER;
 			$userID,
 			USER_IS_ADMIN);
 
-		$result = \DB::queryAndFetchResult($query);
+		$result = DB::queryAndFetchResult($query);
 
-		while($row = \DB::assoc($result))
+		while($row = DB::assoc($result))
 		{
 			list($policyID, $policy, $desc, $hasPolicy) = array_values($row);
-			$Table->addRow($policy, \Element\Input::checkbox('policyIDs[]', $hasPolicy, $policyID), $desc);
+			$Table->addRow($policy, Input::checkbox('policyIDs[]', $hasPolicy, $policyID), $desc);
 		}
 
 		echo $Table;
@@ -193,7 +197,7 @@ require HEADER;
 		$Table = \Element\Table::inputs();
 
 		### Gets userGroups that current user is member of (or all if admin) and weather edited user belongs to it
-		$query = \DB::prepareQuery("SELECT
+		$query = DB::prepareQuery("SELECT
 				ug.ID AS userGroupID,
 				ug.name,
 				ug.description,
@@ -210,14 +214,14 @@ require HEADER;
 			$userID,
 			USER_IS_ADMIN);
 
-		$result = \DB::queryAndFetchResult($query);
+		$result = DB::queryAndFetchResult($query);
 
 		$allowEdit = $User->hasPolicy('AllowUserGroupEdit');
 
-		while($row = \DB::assoc($result))
+		while($row = DB::assoc($result))
 		{
 			list($userGroupID, $name, $desc, $hasGroup) = array_values($row);
-			$Table->addRow($allowEdit ? sprintf('<a href="/UserGroupEdit.php?userGroupID=%u">%s</a>', $userGroupID, $name) : $name, \Element\Input::checkbox('userGroupIDs[]', $hasGroup, $userGroupID), $desc);
+			$Table->addRow($allowEdit ? sprintf('<a href="/UserGroupEdit.php?userGroupID=%u">%s</a>', $userGroupID, $name) : $name, Input::checkbox('userGroupIDs[]', $hasGroup, $userGroupID), $desc);
 		}
 
 		echo $Table;
@@ -232,7 +236,7 @@ require HEADER;
 	<fieldset class="tab" id="policiesResulting">
 		<legend><? echo \Element\Tag::legend('key_go', _('Aktiva Rättigheter')); ?></legend>
 		<?
-		$policies = \Manager\User::getPolicies($_User->userID);
+		$policies = \Asenine\User\Manager::getPolicies($_User->userID);
 
 		$Table = new \Element\Table();
 		foreach($policies as $policy => $state)

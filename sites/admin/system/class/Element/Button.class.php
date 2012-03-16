@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class Button extends Common\Root
+class Button extends \Element\_Common
 {
 	public static function IO($action, $icon, $caption, $message = null)
 	{

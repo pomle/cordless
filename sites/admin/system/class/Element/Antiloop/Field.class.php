@@ -7,7 +7,6 @@ class Field extends Field\Common\Root
 	{
 		$AjaxCall = new \AjaxCall($protocol, array('action' => 'load'), '/ajax/AjaxRequest.php');
 		$Field = Field\Link::ajaxCall($AjaxCall, $params, 'folder', _('Öppna').'...');
-		$Field->class[] = 'ajaxLoad';
 		return $Field;
 	}
 
@@ -52,7 +51,7 @@ class Field extends Field\Common\Root
 	public static function currency($name, $caption, $icon = 'money')
 	{
 		$Field = Field\Number::currency($name, $caption, $icon, '%!.2n');
-		$Field->class = 'currency';
+		$Field->class[] = 'currency';
 		return $Field;
 	}
 
@@ -107,7 +106,7 @@ class Field extends Field\Common\Root
 
 	public static function locale($name = 'localeID', $caption = null, $icon = 'world')
 	{
-		$locales = \Manager\Dataset\Locale::getIdent();
+		$locales = \Asenine\Locale\Dataset::getIdent();
 
 		$iconMap = array('default' => array('icon' => 'help', 'caption' => _('Okänt/Ospecificerat')));
 		foreach($locales as $localeID => $locale)

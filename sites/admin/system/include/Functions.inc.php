@@ -10,12 +10,6 @@ function cachePurge()
 	}
 }
 
-function requireClass()
-{
-	foreach(func_get_args() as $c)
-		if( !class_exists($c) ) exit("$c does not exist");
-}
-
 function glob_rec($pattern, $path)
 {
 	$pattern = escapeshellarg($pattern);

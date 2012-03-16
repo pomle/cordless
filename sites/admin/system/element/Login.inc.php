@@ -1,6 +1,8 @@
 <?
+use \Asenine\Element\Input;
+
 if( isset($_POST['login']) ) ### If we end up here, user has tried to login, but $User->isLoggedIn() !== true
-	$MB = \Element\MessageBox::alert(_('Inloggning misslyckades'));
+	$MB = Element\MessageBox::alert(_('Inloggning misslyckades'));
 
 $pageTitle = _('Login');
 
@@ -12,11 +14,11 @@ if( isset($MB) ) echo $MB;
 	<table>
 		<tr>
 			<td><? echo _('Användarnamn'); ?></td>
-			<td><? echo \Element\Input::text('username', $_COOKIE['username']); ?></td>
+			<td><? echo Input::text('username', isset($_COOKIE['username']) ? $_COOKIE['username'] : null); ?></td>
 		</tr>
 		<tr>
 			<td><? echo _('Lösenord'); ?></td>
-			<td><? echo \Element\Input::password('password')->addAttr('autocomplete', 'off'); ?></td>
+			<td><? echo Input::password('password')->addAttr('autocomplete', 'off'); ?></td>
 		</tr>
 		<tr>
 			<td colspan="2" class="control">

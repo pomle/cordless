@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class ButtonSet extends Common\Root
+class ButtonSet extends \Element\_Common
 {
 	public function __construct()
 	{

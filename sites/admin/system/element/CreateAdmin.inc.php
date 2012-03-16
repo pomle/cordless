@@ -1,23 +1,31 @@
 <?
+use
+	Asenine\DB,
+	Asenine\Element\Input,
+	Asenine\User,
+	Asenine\User\Manager,
+	Asenine\User\Operation;
+
+$username = null;
+
 if( isset($_POST['register']) )
 {
 	try
 	{
-		\DB::autocommit(false);
+		DB::transactionStart();
 
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 		$passwordVerify = $_POST['passwordVerify'];
 
-		\Operation\User::verifyUsername($username);
-		\Operation\User::verifyPassword($password, $passwordVerify);
+		Operation::verifyUsername($username);
+		Operation::verifyPassword($password, $passwordVerify);
 
 
-		$userID = \Manager\User::addToDB();
+		$userID = Manager::addToDB();
 
-
-		$query = \DB::prepareQuery("UPDATE
-				Users
+		$query = DB::prepareQuery("UPDATE
+				Asenine_Users
 			SET
 				isEnabled = 1,
 				isAdministrator = 1,
@@ -27,17 +35,17 @@ if( isset($_POST['register']) )
 			$username,
 			$userID);
 
-		\DB::queryAndCountAffected($query);
+		DB::queryAndCountAffected($query);
 
 
-		if( !\Manager\User::setPassword($userID, $password) )
+		if( !Manager::setPassword($userID, $password) )
 			throw New Exception(_('Lösenord kunde inte sättas'));
 
 
-		if( !$User = \User::login($username, $password) )
+		if( !$User = User::login($username, $password) )
 			throw New Exception(_('Användare kunde inte loggas in'));
 
-		\DB::commit();
+		DB::transactionCommit();
 
 		header('Location: /');
 
@@ -45,7 +53,7 @@ if( isset($_POST['register']) )
 	}
 	catch(Exception $e)
 	{
-		\DB::rollback();
+		DB::transactionRollback();
 
 		$MB = \Element\MessageBox::alert($e->getMessage());
 	}
@@ -64,20 +72,20 @@ echo $MB;
 <form action="<? echo getenv('REQUEST_URI'); ?>" method="post">
 	<table>
 		<tr>
-			<td><? echo _('Användarnamn'); ?></td>
-			<td><? echo \Element\Input::text('username', $_COOKIE['username']); ?></td>
+			<td><? echo _('Username'); ?></td>
+			<td><? echo Input::text('username', $username); ?></td>
 		</tr>
 		<tr>
-			<td><? echo _('Lösenord'); ?></td>
-			<td><? echo \Element\Input::password('password'); ?></td>
+			<td><? echo _('Password'); ?></td>
+			<td><? echo Input::password('password'); ?></td>
 		</tr>
 		<tr>
-			<td><? echo _('Lösenord (verifiera)'); ?></td>
-			<td><? echo \Element\Input::password('passwordVerify'); ?></td>
+			<td><? echo _('Password Verify'); ?></td>
+			<td><? echo Input::password('passwordVerify'); ?></td>
 		</tr>
 		<tr>
 			<td colspan="2" class="control">
-				<input type="submit" name="register" value="<? echo _('Registrera'); ?>" />
+				<input type="submit" name="register" value="<? echo _('Register'); ?>" />
 			</td>
 		</tr>
 	</table>

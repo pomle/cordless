@@ -1,25 +1,27 @@
 <?
+use
+	\Asenine\Format,
+	\Asenine\Element\Input,
+	\Asenine\Element\TextArea,
+	\Asenine\Element\SelectBox,
+	\Asenine\DB;
+
 if( !isset($_GET['userGroupID']) )
 {
 	define('ACCESS_POLICY', 'AllowCreateUserGroup');
 	require '../Init.inc.php';
-	$userGroupID = \Manager\UserGroup::addToDB();
+	$userGroupID = \Asenine\UserGroup\Manager::addToDB();
 	header('Location: ?userGroupID=' . $userGroupID);
 	exit();
 }
-else
-{
-	define('ACCESS_POLICY', 'AllowViewUserGroup');
-	require '../Init.inc.php';
-}
 
-if( !$UserGroup = \Manager\UserGroup::loadOneFromDB($_GET['userGroupID']) )
-{
+define('ACCESS_POLICY', 'AllowViewUserGroup');
+require '../Init.inc.php';
+
+
+if( !$UserGroup = \Asenine\UserGroup::loadFromDB($_GET['userGroupID']) )
 	echo \Element\Page::error("UserGroup does not exist");
-	exit();
-}
 
-requireClass('\Element\IOCall', '\Element\Tabs', '\Element\MessageBox');
 
 $userGroupID = $UserGroup->userGroupID;
 
@@ -46,10 +48,10 @@ require HEADER;
 		<?
 		$size = 40;
 		echo \Element\Table::inputs()
-			->addRow(_('Benämning'), \Element\Input::text('name', $UserGroup->name)->size($size))
-			->addRow(_('Etikett'), \Element\Input::text('label', $UserGroup->label)->size($size))
-			->addRow(_('Beskrivning'), \Element\TextArea::small('description', $UserGroup->description))
-			->addRow(_('Kan tilldelas uppgifter'), \Element\Input::checkbox('isTaskAssignable', $UserGroup->isTaskAssignable));
+			->addRow(_('Benämning'), Input::text('name', $UserGroup->name)->size($size))
+			->addRow(_('Etikett'), Input::text('label', $UserGroup->label)->size($size))
+			->addRow(_('Beskrivning'), TextArea::small('description', $UserGroup->description))
+			->addRow(_('Kan tilldelas uppgifter'), Input::checkbox('isTaskAssignable', $UserGroup->isTaskAssignable));
 
 		$SaveButton->action = 'saveGeneral';
 		echo \Element\IOControl::makeOf($IO)
@@ -68,7 +70,7 @@ echo $IO->getHead();
 		$Table = \Element\Table::inputs();
 
 		### Gets policies that current user has (or all if admin) and weather edited group has it
-		$query = \DB::prepareQuery("SELECT
+		$query = DB::prepareQuery("SELECT
 				p.ID AS policyID,
 				p.policy,
 				p.description,
@@ -85,10 +87,10 @@ echo $IO->getHead();
 			$userGroupID,
 			USER_IS_ADMIN);
 
-		$result = \DB::queryAndFetchResult($query);
+		$result = DB::queryAndFetchResult($query);
 
-		while(list($policyID, $policy, $desc, $hasPolicy) = \DB::row($result))
-			$Table->addRow($policy, \Element\Input::checkbox('policyIDs[]', $hasPolicy, $policyID), $desc);
+		while(list($policyID, $policy, $desc, $hasPolicy) = DB::row($result))
+			$Table->addRow($policy, Input::checkbox('policyIDs[]', $hasPolicy, $policyID), $desc);
 
 		echo $Table;
 
@@ -107,7 +109,7 @@ echo $IO->getHead();
 		$Table = \Element\Table::inputs();
 
 		### Gets Users that has a username (thus can login) and weather they are members of current group
-		$query = \DB::prepareQuery("SELECT
+		$query = DB::prepareQuery("SELECT
 				u.ID AS userID,
 				u.username,
 				u.fullname,
@@ -121,12 +123,12 @@ echo $IO->getHead();
 				u.username COLLATE || ASC",
 			$userGroupID);
 
-		$result = \DB::queryAndFetchResult($query);
+		$result = DB::queryAndFetchResult($query);
 
 		$allowEdit = $User->hasPolicy('AllowUserEdit');
 
-		while(list($userID, $username, $fullname, $hasUser) = \DB::row($result))
-			$Table->addRow($allowEdit ? sprintf('<a href="/UserEdit.php?userID=%u">%s</a>', $userID, $username) : $username, \Element\Input::checkbox('userIDs[]', $hasUser, $userID), $fullname);
+		while(list($userID, $username, $fullname, $hasUser) = DB::row($result))
+			$Table->addRow($allowEdit ? sprintf('<a href="/UserEdit.php?userID=%u">%s</a>', $userID, $username) : $username, Input::checkbox('userIDs[]', $hasUser, $userID), $fullname);
 
 		echo $Table;
 

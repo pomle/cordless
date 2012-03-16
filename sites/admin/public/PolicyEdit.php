@@ -2,6 +2,10 @@
 #MENUPATH:System/Rättigheter
 define('ACCESS_POLICY', 'AllowViewPolicy');
 
+use
+	\Asenine\Element\Input
+	;
+
 require '../Init.inc.php';
 
 $pageTitle = _('System');
@@ -33,8 +37,8 @@ require HEADER;
 			<?
 			echo \Element\Table::inputs()
 				//->addRow(_('Aktiverad'), \Element\Input::checkbox('isEnabled'))
-				->addRow(_('Benämning'), \Element\Input::text('policy')->size(40))
-				->addRow(_('Beskrivning'), \Element\Input::text('description')->size(80));
+				->addRow(_('Benämning'), Input::text('policy')->size(40))
+				->addRow(_('Beskrivning'), Input::text('description')->size(80));
 			?>
 		</fieldset>
 

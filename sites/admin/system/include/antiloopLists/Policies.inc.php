@@ -5,7 +5,7 @@ defaultSort($params, 'policy', false);
 
 $Stmt = new \Query\Select("SELECT ID AS policyID, policy, description FROM Policies");
 
-if( $filter['search'] )
+if( isset($filter['search']) && $filter['search'] )
 {
 	$search = $filter['search'];
 	$Stmt->addWhere('policy LIKE %S', str_replace(' ', '%', $search));

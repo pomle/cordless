@@ -65,11 +65,10 @@ if( $filter['search'] )
 	}
 }
 
-$mediaTypes = \Manager\Dataset\Media::getTypes();
+$mediaTypes = \Asenine\Media\Dataset::getTypes();
 
 if( $filter['type'] )
 {
-
 	$Stmt->addWhere('mediaType = %s', $filter['type']);
 	$Antiloop->addNotice(sprintf(_('Filtrerar på mediatyp "%s"'), $mediaTypes[$filter['type']] ?: $filter['type']));
 }
@@ -94,5 +93,4 @@ $Antiloop
 		Field::text('fileOriginalName', _('Orginalfilnamn'), 'attach'),
 		Field\File::size('fileSize'),
 		Field\Link::custom('add', _('Ny').'...', '/MediaUpload.php', 'page_edit', _('Undersök').'...', '/MediaEdit.php', array('mediaID'))
-		/*Field::('mediaID', _('Redigera') . '...', 'page_edit', '/ArticleEdit.php', array('articleID', 'localeID'))*/
 	);

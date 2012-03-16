@@ -31,9 +31,9 @@ class Media extends Common\Root
 					return false;
 
 				if( $Field->crop )
-					$Preset = new \Media\Generator\Preset\CroppedThumb($value, $Field->sizeX, $Field->sizeY);
+					$Preset = new \Asenine\Media\Preset\CroppedThumb($value, $Field->sizeX, $Field->sizeY);
 				else
-					$Preset = new \Media\Generator\Preset\AspectThumb($value, $Field->sizeX, $Field->sizeY);
+					$Preset = new \Asenine\Media\Preset\AspectThumb($value, $Field->sizeX, $Field->sizeY);
 
 				$imageURL = $Preset->getURL();
 

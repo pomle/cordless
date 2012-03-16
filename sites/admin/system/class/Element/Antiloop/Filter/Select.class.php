@@ -26,7 +26,7 @@ class Select extends Common\Root
 	{
 		return
 			(string)\Element\Icon::custom($this->icon, $this->caption) .
-			(string)new \Element\SelectBox('filter[' . $this->name . ']', $this->selectedKey, $this->options);
+			(string)new \Asenine\Element\SelectBox('filter[' . $this->name . ']', $this->selectedKey, $this->options);
 	}
 
 

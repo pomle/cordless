@@ -1,4 +1,9 @@
 <?
+namespace Asenine;
+
+class AjaxRequestException extends \Exception
+{}
+
 function exception_error_handler($errno, $errstr, $errfile, $errline )
 {
 	switch($errno)
@@ -12,16 +17,16 @@ function exception_error_handler($errno, $errstr, $errfile, $errline )
 			return false;
 	}
 
-	throw New ErrorException($errstr, 0, $errno, $errfile, $errline);
+	throw New \ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
 
-set_error_handler("exception_error_handler");
+set_error_handler("\Asenine\exception_error_handler");
 
 try
 {
 	$action = $result = $call = null;
 
-	\DB::transactionStart();
+	DB::transactionStart();
 
 	try
 	{
@@ -31,16 +36,15 @@ try
 		$include = DIR_AJAX_IO . $protocol . '.io.php';
 
 		if( !file_exists($include) )
-		{
-			if( DEBUG )
-				throw New Exception(sprintf('File Missing: "%s"', $include));
-			else
-				throw New Exception('AjaxRequest Failed');
-		}
+			throw new \Exception(DEBUG ? sprintf('File Missing: "%s"', $include) : 'AjaxRequest Failed');
 
 		require $include;
 	}
-	catch(ErrorException $e)
+	catch(AjaxRequestException $e)
+	{
+		\Message::addError($e->getMessage());
+	}
+	catch(\ErrorException $e)
 	{
 		### Catches any errors in PHP
 		throw New Exception(
@@ -50,12 +54,12 @@ try
 		);
 	}
 
-	\DB::transactionCommit();
+	DB::transactionCommit();
 }
-catch(Exception $e) ### Any uncaught exception will trickle down here
+catch(\Exception $e) ### Any uncaught exception will trickle down here
 {
 	$action = 'error';
-	\DB::transacationRollback();
+	DB::transacationRollback();
 	\Message::addError($e->getMessage());
 }
 

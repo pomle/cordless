@@ -1,18 +1,22 @@
 <?
 ensurePolicies('AllowEditUser','AllowSetPolicy');
-	
+
+use \Asenine\DB;
+
 interport('action', 'userID', 'policyID', 'policy', 'policyIDs');
 
-switch($action) {
+switch($action)
+{
 	case 'save':
-		try {
+		try
+		{
 			DB::autocommit(false);
 
 			if( $user->isAdministrator() ) {
 
 				$deleteQuery = DB::prepareQuery("DELETE FROM UserPolicies WHERE userID = %d", $userID);
 				$insertQuery = DB::prepareQuery("INSERT INTO UserPolicies (userID, policyID) SELECT %d, p.ID FROM Policies p WHERE p.ID IN (%s)", $userID, $policyIDs);
-			
+
 			}else{
 
 				$currentUserPolicyIDs = $user->getPolicies();
@@ -29,41 +33,45 @@ switch($action) {
 			Message::addNotice(_('Rättigheter ändrade'));
 			Message::addCall('reloadListing("#policies");');
 
-		}catch(Exception $e) {
+		}
+		catch(Exception $e)
+		{
 			DB::rollback();
 
 			throw New Exception($e->getMessage());
 		}
-		break;
+	break;
 
 	case 'add':
-		if( strlen($policy) == 0 ) throw New Exception(_('Ingen rättighet angiven'));
-		
-		if($policyID = DB::queryAndFetchOne(DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy))) {
-			
+		if( strlen($policy) == 0 )
+			throw new Exception(_('Ingen rättighet angiven'));
+
+		if( $policyID = DB::queryAndFetchOne( DB::prepareQuery("SELECT ID FROM Policies WHERE policy = %s", $policy)) )
+		{
 			if( !$user->isAdministrator() && !$user->getPolicy($policy) ) throw New Exception(_('Användare kan endast lägga till rättigheter de själva besitter'));
 
 			$query = DB::prepareQuery("REPLACE INTO UserPolicies (userID, policyID) SELECT %d, ID FROM Policies WHERE ID = %d", $userID, $policyID);
 			DB::queryAndGetID($query);
 
 			Message::addNotice(MESSAGE_ROW_UPDATED);
-		}else{
+		}
+		else
+		{
 			throw New Exception(sprintf(_('Rättighet ogitlig: "%s"'), $policy));
 		}
 
 		$result = array('policyID' => 0, 'policy' => '');
 		Message::addCall('reloadListing("#policiesNew");');
-		break;
+	break;
 
 	case 'load':
 		$query = DB::prepareQuery("SELECT ID AS policyID, policy FROM Policies WHERE ID = %d", $policyID);
 		$result = DB::assoc(DB::queryAndFetchResult($query));
-		break;
+	break;
 
 	case 'remove':
 		$query = DB::prepareQuery("DELETE FROM UserPolicies WHERE policyID = %d AND userID = %d", $policyID, $userID);
-		if(DB::queryAndCountAffected($query)) message::addNotice(MESSAGE_ROW_DELETED);
+		if(DB::queryAndCountAffected($query)) Message::addNotice(MESSAGE_ROW_DELETED);
 		Message::addCall('reloadListing("#policiesNew");');
-		break;
-
+	break;
 }

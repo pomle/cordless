@@ -1,9 +1,16 @@
 <?
+use
+	\Asenine\DB,
+	\Asenine\User,
+	\Asenine\User\Dataset,
+	\Asenine\User\Manager,
+	\Asenine\User\Operation;
+
 class UserIO extends AjaxIO
 {
 	private function ensureExistence()
 	{
-		if( !\Manager\Dataset\User::isExisting($this->userID) )
+		if( !$User = User::loadFromDB($this->userID) )
 			throw New Exception(sprintf(_('Användar ID %u existerar inte'), $this->userID));
 	}
 
@@ -29,10 +36,10 @@ class UserIO extends AjaxIO
 		$this->isAdministrator = (bool)$this->isAdministrator;
 		$this->timeAutoLogout = abs($this->timeAutoLogout);
 
-		$EditedUser = \User::loadOneFromDB($this->userID);
+		$EditedUser = User::loadFromDB($this->userID);
 
 		if( strlen($this->username) > 0 )
-			\Operation\User::verifyUsername($this->username, $this->userID);
+			Operation::verifyUsername($this->username, $this->userID);
 
 		if( $EditedUser->isAdministrator() && $EditedUser->isEnabled !== $this->isEnabled && !USER_IS_ADMIN )
 			Message::addAlert(_('Endast administratörer kan ändra aktivitet för administratörskonton'));
@@ -52,7 +59,7 @@ class UserIO extends AjaxIO
 			Message::addAlert(_('Du kan ej avaktivera den inloggade användaren'));
 		}
 
-		$query = \DB::prepareQuery("UPDATE
+		$query = DB::prepareQuery("UPDATE
 				Users
 			SET
 				isEnabled = IF(%u, %u, isAdministrator),
@@ -74,7 +81,7 @@ class UserIO extends AjaxIO
 			$this->timeAutoLogout,
 			$this->userID);
 
-		if( !\DB::queryAndCountAffected($query) )
+		if( !DB::queryAndCountAffected($query) )
 			throw New Exception(ERROR_DB_GENERAL);
 
 		Message::addNotice(_('Användaruppgifter sparade'));
@@ -84,10 +91,10 @@ class UserIO extends AjaxIO
 			if( !$User->isAdministrator() )
 				throw New Exception(_('Endast administratörer kan uppdatera lösenord'));
 
-			if( strlen($this->newPassword) < \User::PASSWORD_MIN_LEN )
-				throw New Exception(sprintf(_('Nytt lösenord för kort. Lösenord måste bestå av minst %u tecken.'), \User::PASSWORD_MIN_LEN));
+			if( strlen($this->newPassword) < User::PASSWORD_MIN_LEN )
+				throw New Exception(sprintf(_('Nytt lösenord för kort. Lösenord måste bestå av minst %u tecken.'), User::PASSWORD_MIN_LEN));
 
-			if( !\Manager\User::setPassword($this->userID, $this->newPassword) )
+			if( !Manager::setPassword($this->userID, $this->newPassword) )
 				throw New Exception(_('Lösenord kunde inte uppdateras'));
 
 			Message::addNotice(_('Lösenord uppdaterat'));
@@ -106,12 +113,14 @@ class UserIO extends AjaxIO
 		$this->importArgs('policyIDs');
 
 		### Only delete policies that current user has power over or all if is Administrator
-		$allowedPolicyIDs = \Manager\Dataset\User::getPolicies(USER_ID);
+		$allowedPolicyIDs = Dataset::getPolicies(USER_ID);
 
-		$query = \DB::prepareQuery("DELETE FROM UserPolicies WHERE userID = %u", $this->userID);
+		$query = DB::prepareQuery("DELETE FROM UserPolicies WHERE userID = %u", $this->userID);
+
 		if( !USER_IS_ADMIN )
-			$query .= \DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
-		\DB::queryAndCountAffected($query);
+			$query .= DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
+
+		DB::queryAndCountAffected($query);
 
 
 		if( isset($this->policyIDs) && is_array($this->policyIDs) )
@@ -121,8 +130,8 @@ class UserIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$policyIDs = array_intersect($policyIDs, $allowedPolicyIDs);
 
-			$query = \DB::prepareQuery("INSERT INTO UserPolicies (userID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userID, $policyIDs);
-			\DB::queryAndGetID($query);
+			$query = DB::prepareQuery("INSERT INTO UserPolicies (userID, policyID) SELECT %u, ID FROM Policies WHERE ID IN %a", $this->userID, $policyIDs);
+			DB::queryAndGetID($query);
 		}
 
 		Message::addNotice(_('Rättigheter uppdaterade'));
@@ -134,7 +143,7 @@ class UserIO extends AjaxIO
 
 		$this->importArgs('email', 'fullname', 'phone');
 
-		$query = \DB::prepareQuery("UPDATE
+		$query = DB::prepareQuery("UPDATE
 				Users
 			SET
 				fullname = %s,
@@ -147,7 +156,7 @@ class UserIO extends AjaxIO
 			$this->phone,
 			$User->userID);
 
-		\DB::queryAndCountAffected($query);
+		DB::queryAndCountAffected($query);
 
 		Message::addNotice(_('Profil uppdaterad'));
 	}
@@ -162,11 +171,12 @@ class UserIO extends AjaxIO
 		$this->importArgs('userGroupIDs');
 
 		### Only delete policies that current user has power over
-		$allowedUserGroupIDs = \Manager\Dataset\User::getGroups(USER_ID);
+		$allowedUserGroupIDs = Dataset::getGroups(USER_ID);
 
-		$query = \DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userID = %u", $this->userID);
-		if( !USER_IS_ADMIN ) $query .= \DB::prepareQuery(" AND userGroupID IN %a", $allowedUserGroupIDs);
-		\DB::queryAndCountAffected($query);
+		$query = DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userID = %u", $this->userID);
+
+		if( !USER_IS_ADMIN ) $query .= DB::prepareQuery(" AND userGroupID IN %a", $allowedUserGroupIDs);
+		DB::queryAndCountAffected($query);
 
 		if( isset($this->userGroupIDs) && is_array($this->userGroupIDs) )
 		{
@@ -175,8 +185,8 @@ class UserIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$userGroupIDs = array_intersect($userGroupIDs, $allowedUserGroupIDs);
 
-			$query = \DB::prepareQuery("INSERT INTO UserGroupUsers (userID, userGroupID) SELECT %u, ID FROM UserGroups WHERE ID IN %a", $this->userID, $userGroupIDs);
-			\DB::queryAndCountAffected($query);
+			$query = DB::prepareQuery("INSERT INTO UserGroupUsers (userID, userGroupID) SELECT %u, ID FROM UserGroups WHERE ID IN %a", $this->userID, $userGroupIDs);
+			DB::queryAndCountAffected($query);
 		}
 
 		Message::addNotice(_('Grupper uppdaterade'));
@@ -190,7 +200,7 @@ class UserIO extends AjaxIO
 
 		$this->importArgs('passwordCurrent', 'passwordNew', 'passwordNewVerify');
 
-		\Operation\User::setPasswordAsUser($User->userID, $this->passwordCurrent, $this->passwordNew, $this->passwordNewVerify);
+		Operation::setPasswordAsUser($User->userID, $this->passwordCurrent, $this->passwordNew, $this->passwordNewVerify);
 
 		Message::addNotice(_('Lösenord uppdaterat'));
 	}
@@ -199,7 +209,7 @@ class UserIO extends AjaxIO
 	{
 		global $User, $result;
 		ensurePolicies('AllowViewUser');
-		$result = \Manager\Dataset\User::getProperties($this->userID);
+		$result = Dataset::getProperties($this->userID);
 		$result['newPassword'] = '';
 	}
 
@@ -212,11 +222,11 @@ class UserIO extends AjaxIO
 
 		if( (int)$this->userID === USER_ID ) throw New Exception(_('Kan ej ta bort den aktuella användaren'));
 
-		if( \Manager\Dataset\User::isAdministrator($userID) && !USER_IS_ADMIN )
+		if( Dataset::isAdministrator($this->userID) && !USER_IS_ADMIN )
 			throw New Exception(_('Du måste vara administratör för att ta bort en annan administratör'));
 
-		$query = \DB::prepareQuery("DELETE FROM Users WHERE ID = %u", $this->userID);
-		\DB::queryAndCountAffected($query);
+		$query = DB::prepareQuery("DELETE FROM Users WHERE ID = %u", $this->userID);
+		DB::queryAndCountAffected($query);
 
 		Message::addNotice(_('Användare borttagen'));
 	}

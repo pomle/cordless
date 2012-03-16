@@ -1,4 +1,6 @@
 <?
+namespace Asenine;
+
 define('RENDERSTART', microtime(true));
 
 require __DIR__ . '/Settings.inc.php';
@@ -9,13 +11,14 @@ if( !defined('DIR_MEDIA') )
 if( !defined('DIR_ASENINE') )
 	define('DIR_ASENINE', DIR_ROOT . 'framework/');
 
-define('DIR_ASENINE_CLASS',		DIR_ASENINE . 'class/');
-define('DIR_ASENINE_COMMON',	DIR_ASENINE . 'common/');
-define('DIR_ASENINE_CONFIG',	DIR_ASENINE . 'config/');
-define('DIR_ASENINE_INCLUDE',	DIR_ASENINE . 'include/');
-define('DIR_ASENINE_SITES',		DIR_ASENINE . 'sites/');
+define('DIR_CLASS',		DIR_ASENINE . 'class/');
+define('DIR_COMMON',	DIR_ASENINE . 'common/');
+define('DIR_CONFIG',	DIR_ASENINE . 'config/');
+define('DIR_INCLUDE',	DIR_ASENINE . 'include/');
+define('DIR_SITES',		DIR_ROOT . 'sites/');
 
-require DIR_ASENINE_INCLUDE . 'Functions.inc.php';
+require DIR_INCLUDE . 'Functions.Global.inc.php';
+require DIR_INCLUDE . 'Functions.Asenine.inc.php';
 
 asenineDef('DEBUG', false);
 asenineDef('HOST', $_SERVER['HTTP_HOST']);
@@ -54,4 +57,4 @@ if( !defined('CACHE_FORCE_REGENERATE') )
 
 mb_internal_encoding('UTF-8');
 
-addIncludePath(DIR_ASENINE_CLASS);
+\addIncludePath(DIR_CLASS);

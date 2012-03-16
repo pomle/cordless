@@ -1,19 +1,22 @@
 <?
+namespace Asenine;
+
 ### Overrides
-#define('HOST', 'www.asenine.com'); ### Overrides host identification
+#define('HOST', 'asenine'); ### Overrides host identification
 
 ### Asenine Settings Config
-define('DEBUG', true); ### When DEBUG is true, we show sometimes sensitive information like file paths
+define('DEBUG', true); ### When DEBUG is true, sensitive information like like file paths and database queries might be shown. Make sure it is "false" on production
 define('FORCE_SSL', false); ### Never enforce SSL
 
 ### PHP Settings Config
-error_reporting(DEBUG ? E_ALL & ~E_NOTICE : 0);
+error_reporting(DEBUG ? E_ALL : 0);
 date_default_timezone_set('Europe/Berlin');
 
 ### Dir Config
-define('DIR_ROOT', '/path/to/root/dir/');
+define('DIR_ROOT', __DIR__ . '/');
+define('DIR_ARCHIVE', DIR_ROOT . 'archive/');
 define('DIR_MEDIA', DIR_ROOT . 'media/'); ### Make this writeable by webserver
-#define('DIR_ASENINE', DIR_ROOT . 'framework/'); ### This constant can be guessed by system but it is recommended to point this to AsenineFramework dir
+define('DIR_ASENINE', DIR_ROOT . 'framework/'); ### This constant can be guessed by system but it is recommended to point this to "framework" dir
 
 ### Asenine Cache Config
 define('CACHE_PREFIX', 'ASENINE'); ### Namespace for Cache
@@ -24,9 +27,9 @@ define('CACHE_PORT', 11211);
 ### Asenine Database Config
 define('DB_HOST', '127.0.0.1');
 define('DB_PORT', 3306);
-define('DB_USER', 'asenine');
-define('DB_PASS', 'asenine');
-define('DB_NAME', 'asenine');
+define('DB_USER', 'flipshop');
+define('DB_PASS', 'flipshop');
+define('DB_NAME', 'flipshop');
 define('DB_CHARSET','utf8');
 
 ### Asenine Mail Config

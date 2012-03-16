@@ -8,7 +8,7 @@ $js[] = '/js/Antiloop.js';
 define('URL_ANTILOOP_FETCHER', '/ajax/AjaxAntiloopFetcher.php');
 define('DIR_ANTILOOP_LISTS', DIR_ADMIN_INCLUDE . 'antiloopLists/');
 
-class Antiloop extends Common\Root
+class Antiloop extends \Element\_Common
 {
 	const DEFAULT_PAGE = 1;
 	const DEFAULT_LIMIT = 20;
@@ -366,7 +366,7 @@ class Antiloop extends Common\Root
 					foreach($this->fields as $Field)
 					{
 						$class = array('col');
-						if( isset($Field->class) ) $class[] = $Field->class;
+						if( isset($Field->class) ) $class = array_merge($class, $Field->class);
 						?>
 						<td class="<? echo join(' ', $class); ?>"><? echo $Field->getContent($dataRow); ?></td>
 						<?
@@ -456,7 +456,7 @@ class Antiloop extends Common\Root
 			if( DEBUG )
 				$this->addNotice($query);
 
-			return \DB::queryAndFetchResult($query);
+			return \Asenine\DB::queryAndFetchResult($query);
 		}
 	}
 

@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class IOControl extends Common\Root
+class IOControl extends \Element\_Common
 {
 	public static function makeOf($IOCall)
 	{

@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class Icon extends Common\Root
+class Icon extends \Element\_Common
 {
 	public static function custom($icon, $caption = '')
 	{

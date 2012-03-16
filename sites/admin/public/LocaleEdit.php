@@ -1,11 +1,13 @@
 <?
-#MENUPATH:Databas/Språk
+#MENUPATH:Database/Language
 define('ACCESS_POLICY', 'AllowViewLocale');
+
+use \Asenine\Element\Input;
 
 require '../Init.inc.php';
 
-$pageTitle = _('System');
-$pageSubtitle = _('Språk');
+$pageTitle = _('Database');
+$pageSubtitle = _('Language');
 
 $LocaleList = \Element\Antiloop::getAsDomObject('Locales.Load');
 
@@ -19,7 +21,7 @@ $Control
 require HEADER;
 ?>
 <fieldset>
-	<legend><? echo \Element\Tag::legend('world', _('Språk')); ?></legend>
+	<legend><? echo \Element\Tag::legend('world', _('Languages')); ?></legend>
 
 	<? echo $LocaleList; ?>
 
@@ -32,13 +34,13 @@ require HEADER;
 			<legend><? echo \Element\Tag::legend('wrench_orange', _('Funktion')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Aktiverad'), \Element\Input::checkbox('isEnabled'))
-				->addRow(_('Ankring'), \Element\Input::text('ident')->size(6))
-				->addRow(_('Land'), \Element\Input::text('country'))
-				->addRow(_('Språk'), \Element\Input::text('language'))
-				->addRow(_('Valuta'), \Element\Input::text('currency'))
-				->addRow(_('Växlingskurs'), \Element\Input::text('conversionRate'))
-				->addRow(_('Domän'), \Element\Input::text('domain'))
+				->addRow(_('Aktiverad'), Input::checkbox('isEnabled'))
+				->addRow(_('Ankring'), Input::text('ident')->size(6))
+				->addRow(_('Land'), Input::text('country'))
+				->addRow(_('Språk'), Input::text('language'))
+				->addRow(_('Valuta'), Input::text('currency'))
+				->addRow(_('Växlingskurs'), Input::text('conversionRate'))
+				->addRow(_('Domän'), Input::text('domain'))
 				->addRow(_('Lokaliseringskod'), new \Element\Module('SelectBox.SystemLocales'))
 				->addRow(_('Bokstavsordning'), new \Element\Module('SelectBox.Collations'));
 			?>
@@ -48,8 +50,8 @@ require HEADER;
 			<legend><? echo \Element\Tag::legend('email', _('E-post')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Avsändarnamn'), \Element\Input::text('mailName')->size(40))
-				->addRow(_('Avsändaradress'), \Element\Input::text('mailAddress')->size(40));
+				->addRow(_('Avsändarnamn'), Input::text('mailName')->size(40))
+				->addRow(_('Avsändaradress'), Input::text('mailAddress')->size(40));
 			?>
 		</fieldset>
 
@@ -57,8 +59,8 @@ require HEADER;
 			<legend><? echo \Element\Tag::legend('vcard', _('Kontaktuppgifter')); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('Kundtjänst E-post'), \Element\Input::text('customerServiceEmail')->size(32))
-				->addRow(_('Kundtjänst Telefon'), \Element\Input::text('customerServicePhone')->size(32));
+				->addRow(_('Kundtjänst E-post'), Input::text('customerServiceEmail')->size(32))
+				->addRow(_('Kundtjänst Telefon'), Input::text('customerServicePhone')->size(32));
 			?>
 		</fieldset>
 

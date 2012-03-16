@@ -11,7 +11,7 @@ class Hidden extends Common\Root
 
 	public function __toString()
 	{
-		return (string)\Element\Input::hidden(sprintf('filter[%s]', $this->name), $this->value);
+		return (string)\Asenine\Element\Input::hidden(sprintf('filter[%s]', $this->name), $this->value);
 	}
 
 

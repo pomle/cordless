@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class TextMenu extends Common\Root
+class TextMenu extends \Element\_Common
 {
 	public function __construct()
 	{

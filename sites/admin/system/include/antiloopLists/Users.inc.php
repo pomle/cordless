@@ -15,7 +15,7 @@ $Stmt = new \Query\Select("SELECT
 		countLoginsFailed
 	FROM Users");
 
-if( $filter['search'] )
+if( isset($filter['search']) && $filter['search'] )
 {
 	$search = $filter['search'];
 

@@ -9,7 +9,7 @@ class Placeholder extends Common\Root
 
 		$this->isSortable = false;
 
-		$this->class = $class;
+		$this->class[] = $class;
 
 		$this->data = $data;
 

@@ -1,7 +1,7 @@
 <?
 namespace Element;
 
-class MainMenu extends Common\Root
+class MainMenu extends \Element\_Common
 {
 	public function __construct(Array $tree = array())
 	{
