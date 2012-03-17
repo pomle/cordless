@@ -3,13 +3,13 @@ namespace Asenine\Media;
 
 class Manager
 {
-	public static function createFromFile(\File $File)
+	public static function createFromFile(\Asenine\File $File)
 	{
 		// May return several "hits", if $File can be handled by multiple plugins
 
 		$medias = array();
 
-		$plugins = Dataset\Media::getPlugins();
+		$plugins = Dataset::getPlugins();
 
 		foreach($plugins as $className)
 			if( $className::canHandleFile($File) )
@@ -20,6 +20,6 @@ class Manager
 
 	public static function createFromFilename($filename, $mime = null)
 	{
-		return self::createFromFile( new \File($filename, null, null, $mime) );
+		return self::createFromFile( new \Asenine\File($filename, null, null, $mime) );
 	}
 }

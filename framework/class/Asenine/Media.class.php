@@ -18,10 +18,10 @@ abstract class Media implements iMedia
 	const PATH_DEPTH = 5;
 
 	protected
-		$mediaID,
 		$File;
 
 	public
+		$mediaID,
 		$mediaHash,
 		$mimeType,
 		$fileOriginalName;
@@ -92,19 +92,23 @@ abstract class Media implements iMedia
 			throw new MediaException("Could not read file \"$inputFile\"");
 
 
+		if( !file_exists(DIR_MEDIA_SOURCE) && !@mkdir(DIR_MEDIA_SOURCE, 0775, true) )
+			throw new MediaException("Could not create dir: \"" . DIR_MEDIA_SOURCE . "\"");
+
+
 		$fileHash = md5_file($inputFile);
 		$libraryFile = DIR_MEDIA_SOURCE . $fileHash;
 
 		if( !file_exists($libraryFile) && !@copy($inputFile, $libraryFile) )
 			throw new MediaException("Could not write to source library path \"$libraryFile\"");
 
-		$query = DB::prepareQuery("SELECT ID FROM Media WHERE fileHash = %s", $fileHash);
+		$query = DB::prepareQuery("SELECT ID FROM Asenine_Media WHERE fileHash = %s", $fileHash);
 		$mediaID = DB::queryAndFetchOne($query);
 
 		if( !$mediaID || isset($Media->mediaID) )
 		{
 			$query = DB::prepareQuery("INSERT INTO
-				Media
+				Asenine_Media
 				(
 					ID,
 					timeCreated,
@@ -163,7 +167,7 @@ abstract class Media implements iMedia
 				m.fileOriginalName,
 				m.fileMimeType
 			FROM
-				Media m
+				Asenine_Media m
 			WHERE
 				m.ID IN %a",
 			$mediaIDs);
@@ -231,7 +235,7 @@ abstract class Media implements iMedia
 		### Notice that DB skip can be overridden
 		if( $skipDBDelete === false || $forceDBDelete === true )
 		{
-			$query = DB::prepareQuery("DELETE FROM Media WHERE ID = %u", $Media->mediaID);
+			$query = DB::prepareQuery("DELETE FROM Asenine_Media WHERE ID = %u", $Media->mediaID);
 			DB::queryAndCountAffected($query);
 
 			return true;

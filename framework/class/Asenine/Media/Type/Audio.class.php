@@ -32,7 +32,7 @@ class Audio extends _Audible
 	public function getInfo()
 	{
 		if( !isset($this->streamInfo) )
-			$this->streamInfo = \App\FFMPEG::doInfo($this->File);
+			$this->streamInfo = \Asenine\App\FFMPEG::doInfo($this->File);
 
 		return $this->streamInfo;
 	}

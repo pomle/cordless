@@ -1,11 +1,11 @@
 <?
-namespace Asenine\Operation;
+namespace Asenine\Media;
 
-class Media
+class Operation
 {
-	public static function createFromFile(\File $File, $preferredMediaType = null)
+	public static function createFromFile(\Asenine\File $File, $preferredMediaType = null)
 	{
-		$medias = \Manager\Media::createFromFile($File);
+		$medias = \Asenine\Media\Manager::createFromFile($File);
 
 		### No plug-ins accepted file
 		if( count($medias) == 0 )
@@ -20,7 +20,7 @@ class Media
 			foreach($medias as $Media)
 				$mediaTypes[$Media::TYPE] = '"' . $Media::DESCRIPTION . '"';
 
-			$mediaDesc = \Manager\Dataset\Media::getDescriptionByType($preferredMediaType);
+			$mediaDesc = Dataset::getDescriptionByType($preferredMediaType);
 
 			### Return list of plug-ins that identified media
 			if( !is_null($preferredMediaType) )
@@ -39,9 +39,9 @@ class Media
 	{
 		try
 		{
-			$File = \File::fromURL($url);
+			$File = \Asenine\File::fromURL($url);
 
-			$Media = \Operation\Media::importFileToLibrary($File, $File->name, $preferredMediaType, null, $mediaID);
+			$Media = self::importFileToLibrary($File, $File->name, $preferredMediaType, null, $mediaID);
 
 			$File->delete();
 
@@ -55,7 +55,7 @@ class Media
 		}
 	}
 
-	public static function importFileToLibrary(\File $File, $originalFilename = null, $preferredMediaType = null, $requireType = null, $mediaID = null)
+	public static function importFileToLibrary(\Asenine\File $File, $originalFilename = null, $preferredMediaType = null, $requireType = null, $mediaID = null)
 	{
 
 		### Create Media Object from File
@@ -63,16 +63,16 @@ class Media
 
 		if( $requireType && $requireType !== $Media_New::TYPE )
 		{
-			$mediaDesc = \Manager\Dataset\Media::getDescriptionByType($requireType);
+			$mediaDesc = Dataset::getDescriptionByType($requireType);
 			throw New \Exception(sprintf('Only media of type "%s" can be importerd', $mediaDesc));
 		}
 
 
-		if( $preferredMediaType && ($Media_Existing = \Manager\Media::loadByHash($Media_New->mediaHash)) )
+		if( $preferredMediaType && ($Media_Existing = \Asenine\Media::loadByHash($Media_New->mediaHash)) )
 		{
 			if( $preferredMediaType !== $Media_Existing::TYPE )
 			{
-				$mediaDesc = \Manager\Dataset\Media::getDescriptionByType($preferredMediaType);
+				$mediaDesc = Dataset::getDescriptionByType($preferredMediaType);
 				throw New \Exception('Media already exists in database as "' . $Media_Existing::DESCRIPTION . '" and can not be imported as "' . $mediaDesc . '"');
 			}
 		}
@@ -80,7 +80,7 @@ class Media
 		### Extend Object as Integrated
 		$Media_New->fileOriginalName = $originalFilename;
 		$Media_New->mediaID = $mediaID;
-		$Media_New = \Manager\Media::integrateIntoLibrary($Media_New);
+		$Media_New = \Asenine\Media::integrateIntoLibrary($Media_New);
 
 		return $Media_New;
 	}
