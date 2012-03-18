@@ -31,6 +31,9 @@ define('SMTP_HOST', 'localhost');
 define('SMTP_PORT', 25);
 
 
+define('USER_PASSWORD_SALT', 'e7cb508cf04f1da9fd8965978d347133');
+
+
 define('DIR_CORDLESS_TRACKS', DIR_MEDIA . 'tracks/');
 
 define('URL_CORDLESS', 'http://cordless.myhost.com/'); ### Set to where your webserver resolves sites/player/public
