@@ -146,7 +146,7 @@ class Track
 	}
 
 
-	public function getUserTrack(\CordlessUser $User)
+	public function getUserTrack(\Cordless\User $User)
 	{
 		return \Cordless\UserTrack::loadByTrack($User, $this->trackID);
 	}

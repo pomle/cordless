@@ -77,7 +77,7 @@ class UserTrack
 		return true;
 	}
 
-	public static function loadByTrack(\CordlessUser $User, $trackIDs)
+	public static function loadByTrack(User $User, $trackIDs)
 	{
 		if( $returnArray = is_array($trackIDs) )
 			$trackIDs = (array)$trackIDs;

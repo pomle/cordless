@@ -1,7 +1,7 @@
 <?
 namespace Cordless;
 
-function APIMethod(\CordlessUser $User, $params)
+function APIMethod(User $User, $params)
 {
 	$limit = (int)(isset($params['limit']) ? $params['limit'] : 25);
 
