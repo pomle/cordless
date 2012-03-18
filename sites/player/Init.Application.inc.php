@@ -5,6 +5,8 @@ require __DIR__ . '/../Init.inc.php';
 
 define('DIR_SITE', DIR_SITES . 'player/');
 
+require DIR_SITE . 'Settings.inc.php';
+
 define('DIR_SITE_SYSTEM', DIR_SITE . 'system/');
 define('DIR_SITE_CLASS', DIR_SITE_SYSTEM . 'class/');
 define('DIR_SITE_INCLUDE', DIR_SITE_SYSTEM . 'include/');
