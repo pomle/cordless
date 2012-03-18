@@ -17,16 +17,16 @@ class User extends \Asenine\User
 		$userIDs = array_keys($users);
 
 		$query = \Asenine\DB::prepareQuery("SELECT
-				mu.userID,
-				mu.last_fm_username,
-				mu.last_fm_key,
-				mu.last_fm_scrobble,
-				mu.last_fm_love_starred_tracks,
-				mu.last_fm_unlove_unstarred_tracks
+				cu.userID,
+				cu.last_fm_username,
+				cu.last_fm_key,
+				cu.last_fm_scrobble,
+				cu.last_fm_love_starred_tracks,
+				cu.last_fm_unlove_unstarred_tracks
 			FROM
-				Cordless_Users mu
+				Cordless_Users cu
 			WHERE
-				mu.userID IN %a",
+				cu.userID IN %a",
 			$userIDs);
 
 		$Result = \Asenine\DB::queryAndFetchResult($query);
