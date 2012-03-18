@@ -1,0 +1,305 @@
+-- MySQL dump 10.13  Distrib 5.5.20, for Linux (x86_64)
+--
+-- Host: localhost    Database: Cordless
+-- ------------------------------------------------------
+-- Server version	5.5.20
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Cordless_AlbumTracks`
+--
+
+DROP TABLE IF EXISTS `Cordless_AlbumTracks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_AlbumTracks` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `albumID` int(10) unsigned NOT NULL,
+  `trackID` int(10) unsigned NOT NULL,
+  `trackNo` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `oneTrackPerAlbum` (`albumID`,`trackID`),
+  KEY `albumID` (`albumID`),
+  KEY `trackID` (`trackID`),
+  CONSTRAINT `Cordless_AlbumTracks_ibfk_1` FOREIGN KEY (`albumID`) REFERENCES `Cordless_Albums` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_AlbumTracks_ibfk_2` FOREIGN KEY (`trackID`) REFERENCES `Cordless_Tracks` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9158 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_Albums`
+--
+
+DROP TABLE IF EXISTS `Cordless_Albums`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_Albums` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `artistID` int(10) unsigned NOT NULL,
+  `image_mediaID` int(10) unsigned DEFAULT NULL,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  `timeReleased` int(10) unsigned DEFAULT NULL,
+  `title` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `image_mediaID` (`image_mediaID`),
+  CONSTRAINT `Cordless_Albums_ibfk_1` FOREIGN KEY (`image_mediaID`) REFERENCES `Asenine_Media` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_Artists`
+--
+
+DROP TABLE IF EXISTS `Cordless_Artists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_Artists` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `image_mediaID` int(10) unsigned DEFAULT NULL,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  `name` varchar(256) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `image_mediaID` (`image_mediaID`),
+  CONSTRAINT `Cordless_Artists_ibfk_1` FOREIGN KEY (`image_mediaID`) REFERENCES `Asenine_Media` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=297 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_PlaylistTracks`
+--
+
+DROP TABLE IF EXISTS `Cordless_PlaylistTracks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_PlaylistTracks` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `playlistID` int(10) unsigned NOT NULL,
+  `trackID` int(10) unsigned NOT NULL,
+  `adder_userID` int(10) unsigned DEFAULT NULL,
+  `timeAdded` int(10) unsigned NOT NULL,
+  `sortOrder` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `playlistID` (`playlistID`),
+  KEY `trackID` (`trackID`),
+  KEY `adder_userID` (`adder_userID`),
+  CONSTRAINT `Cordless_PlaylistTracks_ibfk_1` FOREIGN KEY (`playlistID`) REFERENCES `Cordless_Playlists` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_PlaylistTracks_ibfk_2` FOREIGN KEY (`trackID`) REFERENCES `Cordless_Tracks` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_PlaylistTracks_ibfk_3` FOREIGN KEY (`adder_userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_Playlists`
+--
+
+DROP TABLE IF EXISTS `Cordless_Playlists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_Playlists` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `image_mediaID` int(10) unsigned DEFAULT NULL,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  `title` varchar(64) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `image_mediaID` (`image_mediaID`),
+  CONSTRAINT `Cordless_Playlists_ibfk_1` FOREIGN KEY (`image_mediaID`) REFERENCES `Asenine_Media` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_TrackArtists`
+--
+
+DROP TABLE IF EXISTS `Cordless_TrackArtists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_TrackArtists` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `trackID` int(10) unsigned NOT NULL,
+  `artistID` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `trackID` (`trackID`),
+  KEY `artistID` (`artistID`),
+  CONSTRAINT `Cordless_TrackArtists_ibfk_1` FOREIGN KEY (`trackID`) REFERENCES `Cordless_Tracks` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_TrackArtists_ibfk_2` FOREIGN KEY (`artistID`) REFERENCES `Cordless_Artists` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1022 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_Tracks`
+--
+
+DROP TABLE IF EXISTS `Cordless_Tracks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_Tracks` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `audio_mediaID` int(10) unsigned NOT NULL,
+  `image_mediaID` int(10) unsigned DEFAULT NULL,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  `timeReleased` int(10) unsigned DEFAULT NULL,
+  `title` varchar(256) DEFAULT NULL,
+  `duration` int(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `audio_mediaID` (`audio_mediaID`),
+  KEY `image_mediaID` (`image_mediaID`),
+  CONSTRAINT `Cordless_Tracks_ibfk_1` FOREIGN KEY (`audio_mediaID`) REFERENCES `Asenine_Media` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_Tracks_ibfk_2` FOREIGN KEY (`image_mediaID`) REFERENCES `Asenine_Media` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserFriends`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserFriends`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserFriends` (
+  `userID` int(10) unsigned NOT NULL,
+  `friendUserID` int(10) unsigned NOT NULL,
+  UNIQUE KEY `oneConnection` (`userID`,`friendUserID`),
+  KEY `friendUserID` (`friendUserID`),
+  CONSTRAINT `Cordless_UserFriends_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_UserFriends_ibfk_2` FOREIGN KEY (`friendUserID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserInvites`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserInvites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserInvites` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(32) NOT NULL,
+  `userID` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `code` (`code`),
+  UNIQUE KEY `userID` (`userID`),
+  CONSTRAINT `Cordless_UserInvites_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserPlaylists`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserPlaylists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserPlaylists` (
+  `playlistID` int(10) unsigned NOT NULL,
+  `userID` int(10) unsigned NOT NULL,
+  `isCreator` int(1) unsigned NOT NULL DEFAULT '0',
+  `isEditor` int(1) unsigned NOT NULL DEFAULT '0',
+  `isSubscriber` int(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`playlistID`),
+  UNIQUE KEY `oneUserPlaylist` (`userID`,`playlistID`),
+  CONSTRAINT `Cordless_UserPlaylists_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_UserPlaylists_ibfk_2` FOREIGN KEY (`playlistID`) REFERENCES `Cordless_Playlists` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserTrackPlays`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserTrackPlays`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserTrackPlays` (
+  `userTrackID` int(10) unsigned NOT NULL,
+  `timeCreated` int(10) unsigned NOT NULL,
+  `duration` int(10) unsigned NOT NULL DEFAULT '0',
+  KEY `userTrackID` (`userTrackID`),
+  CONSTRAINT `Cordless_UserTrackPlays_ibfk_1` FOREIGN KEY (`userTrackID`) REFERENCES `Cordless_UserTracks` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserTracks`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserTracks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserTracks` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userID` int(10) unsigned NOT NULL,
+  `trackID` int(10) unsigned NOT NULL,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  `timeLastPlayed` int(10) unsigned DEFAULT NULL,
+  `timeReleased` int(10) unsigned DEFAULT NULL,
+  `playCount` int(10) unsigned NOT NULL DEFAULT '0',
+  `filename` varchar(256) DEFAULT NULL,
+  `artist` varchar(256) DEFAULT NULL,
+  `title` varchar(256) DEFAULT NULL,
+  `album` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `oneTrackPerUser` (`userID`,`trackID`),
+  KEY `trackID` (`trackID`),
+  CONSTRAINT `Cordless_UserTracks_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_UserTracks_ibfk_2` FOREIGN KEY (`trackID`) REFERENCES `Cordless_Tracks` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1065 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_UserTracksStarred`
+--
+
+DROP TABLE IF EXISTS `Cordless_UserTracksStarred`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_UserTracksStarred` (
+  `userTrackID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `timeCreated` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`userTrackID`),
+  CONSTRAINT `Cordless_UserTracksStarred_ibfk_1` FOREIGN KEY (`userTrackID`) REFERENCES `Cordless_UserTracks` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1008 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `Cordless_Users`
+--
+
+DROP TABLE IF EXISTS `Cordless_Users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Cordless_Users` (
+  `userID` int(10) unsigned NOT NULL,
+  `playDuration` int(10) unsigned NOT NULL DEFAULT '0',
+  `playCount` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_fm_username` varchar(64) DEFAULT NULL,
+  `last_fm_key` char(32) DEFAULT NULL,
+  `last_fm_scrobble` tinyint(1) NOT NULL DEFAULT '1',
+  `last_fm_love_starred_tracks` tinyint(1) NOT NULL DEFAULT '1',
+  `last_fm_unlove_unstarred_tracks` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`userID`),
+  UNIQUE KEY `userID` (`userID`),
+  CONSTRAINT `Cordless_Users_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2012-03-18  9:53:39
