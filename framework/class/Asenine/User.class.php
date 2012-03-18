@@ -9,7 +9,7 @@ class User
 	const USERNAME_MIN_LEN = 1;
 	const USERNAME_MAX_LEN = 32;
 
-	const PASSWORD_SALT = 'e7cb508cf04f1da9fd8965978d347133';
+	const PASSWORD_SALT = USER_PASSWORD_SALT;
 	const PASSWORD_MIN_LEN = 6;
 	const PASSWORD_MAX_AGE = null;
 
