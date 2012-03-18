@@ -44,7 +44,6 @@ class FFMPEG extends Common\Root
 		$command = sprintf('%s %s 2>&1', self::$exe_ffprobe, self::getInputCommand($inputFile));
 
 		#var_dump($command);
-
 		self::runCommand($command); ### If FFPROBE does not exist, we fall back to FFMPEG parsing, which returns false if no output file is specified but still provides parse:able output
 
 		$returnData = self::$lastOutput;
@@ -200,7 +199,7 @@ class FFMPEG extends Common\Root
 		$str = '';
 
 		### If input is a \File we check for mime type. Decreases the chance of identification problems. Notice that mime type doesn't correspond exactly to FFMPEG formats. Some further logic may be needed here for some files
-		if( $File instanceof \File && $format = self::guessFormat($File) )
+		if( $File instanceof \Asenine\File && $format = self::guessFormat($File) )
 		{
 			$formats = self::getFormats();
 			if( in_array($format, $formats) )
@@ -212,7 +211,7 @@ class FFMPEG extends Common\Root
 		return $str;
 	}
 
-	public static function guessFormat(\File $File)
+	public static function guessFormat(\Asenine\File $File)
 	{
 		if( isset($File->name) && preg_match('/.(\w+)$/', $File->name, $matches) )
 		{
@@ -229,7 +228,6 @@ class FFMPEG extends Common\Root
 		if( isset($File->mime) && preg_match('%(.+)/(.+)%', $File->mime, $matches) )
 		{
 			list($mime, $type, $format) = $matches;
-
 			return $format;
 		}
 

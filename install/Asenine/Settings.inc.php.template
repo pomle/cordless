@@ -14,23 +14,13 @@ date_default_timezone_set('Europe/Berlin');
 
 ### Dir Config
 define('DIR_ROOT', __DIR__ . '/');
-define('DIR_ARCHIVE', DIR_ROOT . 'archive/');
 define('DIR_MEDIA', DIR_ROOT . 'media/'); ### Make this writeable by webserver
 define('DIR_ASENINE', DIR_ROOT . 'framework/'); ### This constant can be guessed by system but it is recommended to point this to "framework" dir
 
-### Asenine Cache Config
-define('CACHE_PREFIX', 'ASENINE'); ### Namespace for Cache
-define('CACHE_ENABLED', !DEBUG);
-define('CACHE_HOST', 'localhost');
-define('CACHE_PORT', 11211);
-
 ### Asenine Database Config
-define('DB_HOST', '127.0.0.1');
-define('DB_PORT', 3306);
-define('DB_USER', 'flipshop');
-define('DB_PASS', 'flipshop');
-define('DB_NAME', 'flipshop');
-define('DB_CHARSET','utf8');
+define('PDO_DSN', 'mysql:host=localhost;dbname=Cordless');
+define('PDO_USER', 'cordless');
+define('PDO_PASS', 'cordless');
 
 ### Asenine Mail Config
 define('SMTP_HOST', 'localhost');

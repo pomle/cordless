@@ -220,4 +220,11 @@ class DB
 	}
 }
 
-DB::addPDO(new \PDO(PDO_DSN, PDO_USER, PDO_PASS));
+try
+{
+	DB::addPDO(new \PDO(PDO_DSN, PDO_USER, PDO_PASS));
+}
+catch(\Exception $e)
+{
+	die( DEBUG ? sprintf('Database Initialization Failed with DSN %s, Reason: %s', PDO_DSN, $e->getMessage()) : 'System Failure');
+}

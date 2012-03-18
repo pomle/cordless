@@ -13,9 +13,9 @@ class AudioTranscode extends \Asenine\Media\Generator
 		$channels;
 
 
-	public function __construct(\Asenine\Media\Common\Audible $Audio, $format, $codec, $bitrate, $frequency = 44100, $channels = 2)
+	public function __construct(\Asenine\Media\Type\_Audible $Audio, $format, $codec, $bitrate, $frequency = 44100, $channels = 2)
 	{
-		$this->FFMPEG = new \App\FFMPEG();
+		$this->FFMPEG = new \Asenine\App\FFMPEG();
 		$this->FFMPEG->addInput($Audio->File);
 
 		$this->Audio = $Audio;
@@ -43,7 +43,7 @@ class AudioTranscode extends \Asenine\Media\Generator
 			);
 
 			if( !$this->FFMPEG->writeFile($outFile, $options) )
-				throw New \Exception('Transcoding Failed: ' . end(\App\FFMPEG::$lastOutput));
+				throw New \Exception('Transcoding Failed: ' . end(\Asenine\App\FFMPEG::$lastOutput));
 
 			return true;
 		}

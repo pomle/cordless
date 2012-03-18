@@ -6,7 +6,7 @@ $css[] = '/css/page/Media.css';
 
 class MediaPreview
 {
-	public function __construct(\Media $Media)
+	public function __construct(\Asenine\Media $Media)
 	{
 		$this->Media = $Media;
 	}

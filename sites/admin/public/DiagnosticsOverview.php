@@ -1,10 +1,10 @@
 <?
-#MENUPATH:System/Diagnostik
+#MENUPATH:System/Diagnostics
 define('ACCESS_POLICY', 'AllowViewDiagnostics');
 
 require_once '../Init.inc.php';
 
-$pageTitle = _('Diagnostik');
+$pageTitle = _('Diagnostics');
 
 $Menu = new \Element\TextMenu();
 $Menu

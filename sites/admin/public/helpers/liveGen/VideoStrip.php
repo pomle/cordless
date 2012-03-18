@@ -3,7 +3,7 @@ require '_Common.inc.php';
 
 try
 {
-	if( !$Media instanceof \Media\Common\Visual )
+	if( !$Media instanceof \Asenine\Media\Type\_Visual )
 		throw New Exception('Media Type Mismatch');
 
 	$frames = min((int)abs($_GET['frames']) ?: 10, 10);
@@ -11,7 +11,7 @@ try
 
 	$tempFile = getLiveTemp();
 
-	$Generator = new \Media\Generator\VideoStrip($Media, $frames, $size);
+	$Generator = new \Asenine\Media\Generator\VideoStrip($Media, $frames, $size);
 
 	if( !$Generator->saveToFile($tempFile) )
 		throw New Exception('Generation failed');
@@ -20,6 +20,6 @@ try
 }
 catch(Exception $e)
 {
-	if( is_file($tempFile) ) unlink($tempFile);
+	if( isset($tempFile) && is_file($tempFile) ) unlink($tempFile);
 	die($e->getMessage());
 }

@@ -1,6 +1,6 @@
 <?
 $tree = array (
-  _('Databas') => 
+  _('Database') => 
   array (
     0 => 
     array (
@@ -13,7 +13,7 @@ $tree = array (
   array (
     0 => 
     array (
-      'caption' => _('Diagnostik'),
+      'caption' => _('Diagnostics'),
       'href' => '/DiagnosticsOverview.php',
       'policy' => 'AllowViewDiagnostics',
     ),

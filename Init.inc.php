@@ -21,7 +21,7 @@ require DIR_INCLUDE . 'Functions.Global.inc.php';
 require DIR_INCLUDE . 'Functions.Asenine.inc.php';
 
 asenineDef('DEBUG', false);
-asenineDef('HOST', $_SERVER['HTTP_HOST']);
+asenineDef('HOST', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null);
 
 asenineDef('DIR_TEMP', '/tmp/');
 

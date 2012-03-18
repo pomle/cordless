@@ -176,20 +176,30 @@ abstract class Media implements iMedia
 
 		while($media = DB::assoc($result))
 		{
-			$File = new File(
-				DIR_MEDIA_SOURCE . $media['mediaHash'],
-				(int)$media['fileSize'] ?: null,
-				$media['fileMimeType'],
-				$media['fileOriginalName']);
+			$mediaID = (int)$media['mediaID'];
 
-			if( !$Media = self::createFromType($media['mediaType'], $media['mediaHash'], $File) )
-				$Media = new \Asenine\Media\Type\Defunct($media['mediaHash'], $File); ### Fallback to Defunct type
+			try
+			{
+				$File = new File(
+					DIR_MEDIA_SOURCE . $media['mediaHash'],
+					(int)$media['fileSize'] ?: null,
+					$media['fileMimeType'],
+					$media['fileOriginalName']);
 
-			$Media->fileOriginalName = $media['fileOriginalName'];
-			$Media->mimeType = $media['fileMimeType'];
-			$Media->mediaID = (int)$media['mediaID'];
+				if( !$Media = self::createFromType($media['mediaType'], $media['mediaHash'], $File) )
+					$Media = new \Asenine\Media\Type\Defunct($media['mediaHash'], $File); ### Fallback to Defunct type
 
-			$medias[$Media->mediaID] = $Media;
+				$Media->fileOriginalName = $media['fileOriginalName'];
+				$Media->mimeType = $media['fileMimeType'];
+				$Media->mediaID = $mediaID;
+
+				$medias[$Media->mediaID] = $Media;
+			}
+			catch(\Exception $e)
+			{
+				if( DEBUG )
+					trigger_error(sprintf("Could not instantiate Media with ID %d, %s", $mediaID, $e->getMessage()), E_USER_WARNING);
+			}
 		}
 
 		$medias = array_filter($medias);
