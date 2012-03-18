@@ -3,7 +3,7 @@ namespace Asenine\Media;
 
 interface iPreset
 {
-	public function createFile();
+	public function createFile($filepath);
 }
 
 abstract class Preset implements iPreset
@@ -22,7 +22,7 @@ abstract class Preset implements iPreset
 			$sleepTime = 100000; // 100 ms
 
 
-			$dirPath = DIR_MEDIA . $this->getPath();
+			$dirPath = DIR_MEDIA_PUBLIC . $this->getPath();
 			if( !file_exists($dirPath) && !is_dir($dirPath) && !mkdir($dirPath, 0755, true) ) throw New \Exception("Path not reachable \"$dirPath\"");
 
 			$filePath = $this->getFullFilePath();
@@ -45,7 +45,7 @@ abstract class Preset implements iPreset
 					{
 						ftruncate($resource, 0);
 
-						if( !$this->createFile() )
+						if( !$this->createFile($filePath) )
 							trigger_error(get_class($this) . "::createFile() returned false for $filePath", E_USER_WARNING);
 					}
 
@@ -80,7 +80,7 @@ abstract class Preset implements iPreset
 
 	final public function getFullFilePath()
 	{
-		return DIR_MEDIA . $this->getFilePath();
+		return DIR_MEDIA_PUBLIC . $this->getFilePath();
 	}
 
 	final public function getMediaHash()
@@ -97,12 +97,9 @@ abstract class Preset implements iPreset
 	{
 		try
 		{
-			$fileName = $this->getFileName();
-			$path = $this->getPath();
-
 			if( !$this->getFile($wait) ) return false;
 
-			return URL_MEDIA . $path . $fileName;
+			return URL_MEDIA . $this->getFilePath();
 		}
 		catch(\Exception $e)
 		{
@@ -113,7 +110,7 @@ abstract class Preset implements iPreset
 
 	final public function isGenerated()
 	{
-		$diskFile = DIR_MEDIA . $this->getFilePath();
+		$diskFile = $this->getFullFilePath();
 		return ( file_exists($diskFile) && filesize($diskFile) > 0 );
 	}
 }

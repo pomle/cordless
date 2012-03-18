@@ -42,9 +42,9 @@ class ImageCopy extends \Asenine\Media\Preset
 		$this->sourceFile = $Media->getFilePath();
 	}
 
-	public function createFile()
+	public function createFile($filepath)
 	{
-		$destinationFile = DIR_MEDIA . $this->getFilePath();
+		$destinationFile = $filepath;
 
 		return copy($this->sourceFile, $destinationFile);
 	}

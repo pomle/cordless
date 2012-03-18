@@ -14,7 +14,7 @@ class VideoStrip extends \Asenine\Media\Preset
 		$this->ext = '.jpg';
 	}
 
-	public function createFile()
+	public function createFile($filepath)
 	{
 		if( !$Media = \Manager\Media::loadByHash($this->mediaHash) ) return false;
 
@@ -22,6 +22,6 @@ class VideoStrip extends \Asenine\Media\Preset
 
 		$Factory = new \Media\Generator\VideoStrip($Media, $this->numFrames, $this->size);
 
-		return $Factory->saveToFile(DIR_MEDIA . $this->getFilePath());
+		return $Factory->saveToFile($filepath);
 	}
 }

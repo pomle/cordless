@@ -16,7 +16,7 @@ class Thumb extends \Asenine\Media\Preset
 		$this->ext = '.jpg';
 	}
 
-	public function createFile()
+	public function createFile($filepath)
 	{
 		if( !$Media = \Asenine\Media::loadByHash($this->mediaHash) )
 			throw new \Asenine\MediaException(sprintf("mediaHash %s not found", $this->mediaHash));
@@ -26,6 +26,6 @@ class Thumb extends \Asenine\Media\Preset
 
 		$Factory = new \Asenine\Media\Generator\ImageResize($Media, $this->x, $this->y, $this->crop, $this->quality);
 
-		return $Factory->saveToFile(DIR_MEDIA . $this->getFilePath());
+		return $Factory->saveToFile($filepath);
 	}
 }

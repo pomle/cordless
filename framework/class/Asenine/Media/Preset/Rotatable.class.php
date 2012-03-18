@@ -15,7 +15,7 @@ class Rotatable extends \Asenine\Media\Preset
 		$this->ext = '.jpg';
 	}
 
-	public function createFile()
+	public function createFile($filepath)
 	{
 		if( !$Media = \Manager\Media::loadByHash($this->mediaHash) ) return false;
 
@@ -23,6 +23,6 @@ class Rotatable extends \Asenine\Media\Preset
 
 		$Factory = new \Media\Generator\RotateFrame($Media, $this->frameHeight, $this->numFrames, $this->quality);
 
-		return $Factory->saveToFile(DIR_MEDIA . $this->getFilePath());
+		return $Factory->saveToFile($filepath);
 	}
 }
