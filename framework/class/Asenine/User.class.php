@@ -181,7 +181,7 @@ class User
 			return false;
 		}
 
-		if( !$User = reset(self::loadFromDB(array($userID))) )
+		if( !$User = reset(static::loadFromDB(array($userID))) )
 			return false;
 
 		$User->isLoggedIn = true;
