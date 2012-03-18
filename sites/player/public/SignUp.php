@@ -34,26 +34,28 @@ if( isset($_POST['signup']) )
 		if( !$userInviteID = DB::queryAndFetchOne($query) )
 			throw New SignUpException(_('Sorry, bad invite code :('));
 
-		if( strlen($password) < $passwordMinLen)
-			throw New SignUpException(sprintf(_('Password too short. Passwords must contain at least %d characters.'), User::PASSWORD_MIN_LEN));
-
-		if( $password !== $passwordVerify )
-			throw New SignUpException(_('Passwords does not match'));
 
 		$usernameLen = mb_strlen($username);
 
 		if( (isset($usernameMinLen) && $usernameLen < $usernameMinLen) || (isset($usernameMaxLen) && $usernameLen > $usernameMaxLen) )
 			throw New SignUpException(sprintf(_('Username length illegal. Must be at least %d and at most %d characters'), $usernameMinLen, $usernameMaxLen));
 
-		$query = DB::prepareQuery("SELECT COUNT(*) FROM Users WHERE username = %s", $username);
+		if( strlen($password) < $passwordMinLen)
+			throw New SignUpException(sprintf(_('Password too short. Passwords must contain at least %d characters.'), User::PASSWORD_MIN_LEN));
+
+		if( $password !== $passwordVerify )
+			throw New SignUpException(_('Passwords does not match'));
+
+
+		$query = DB::prepareQuery("SELECT COUNT(*) FROM Asenine_Users WHERE username = %s", $username);
 		if( (bool)DB::queryAndFetchOne($query) )
 			throw New SignUpException(sprintf(_('Username "%s" is already taken'), $username));
 
 
-		$userID = Manager\User::addToDB();
+		$userID = \Asenine\User\Manager::addToDB();
 
 		$query = DB::prepareQuery("UPDATE
-				Users
+				Asenine_Users
 			SET
 				isEnabled = 1,
 				username = %s
@@ -63,7 +65,7 @@ if( isset($_POST['signup']) )
 			$userID);
 		DB::query($query);
 
-		$query = DB::prepareQuery("INSERT INTO Asenine_UserGroupUsers (userGroupID, userID) SELECT ID, %d FROM UserGroups WHERE name = 'Cordless'", $userID);
+		$query = DB::prepareQuery("INSERT INTO Asenine_UserGroupUsers (userGroupID, userID) SELECT ID, %d FROM Asenine_UserGroups WHERE name = 'Cordless'", $userID);
 		DB::query($query);
 
 		$query = DB::prepareQuery("UPDATE Cordless_UserInvites SET userID = %d WHERE ID = %d", $userID, $userInviteID);
