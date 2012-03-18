@@ -50,7 +50,7 @@ class Upload extends \Element\_Common
 			<legend><? echo \Element\Tag::legend('world_link', 'Fetch Resource'); ?></legend>
 			<?
 			echo \Element\Table::inputs()
-				->addRow(_('URL'), \Element\Input::text('url')->size(100))
+				->addRow(_('URL'), \Asenine\Element\Input::text('url')->size(100))
 				;
 
 			$IOControl = new \Element\IOControl($this->IOCall);
@@ -69,7 +69,7 @@ class Upload extends \Element\_Common
 			while($i++ < $this->countBrowseFields)
 				$Table->addRow(
 					sprintf('File #%u', $i),
-					\Element\Input::file("media[$i]")->size(64),
+					\Asenine\Element\Input::file("media[$i]")->size(64),
 					new \Element\Module('SelectBox.MediaTypes', "mediaType[$i]", true));
 
 			?>

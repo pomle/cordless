@@ -14,6 +14,7 @@ if( isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 )
 		try
 		{
 			$fileType = $_FILES['media']['type'][$index];
+			$fileName = $_FILES['media']['name'][$index];
 			$filePath = $_FILES['media']['tmp_name'][$index];
 			$fileSize = $_FILES['media']['size'][$index];
 			$mediaType = $_POST['mediaType'][$index] ?: null;
@@ -21,11 +22,9 @@ if( isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 )
 			if( !is_file($filePath) )
 				throw New Exception('File not found on disk. Might be too large.');
 
-			$File = \File::fromPHPUpload($file);
+			$File = new \Asenine\File($filePath, $fileSize, $fileType, $fileName);
 
-			$originalFilename = $file['name'];
-
-			if( !$Media = \Operation\Media::importFileToLibrary($File, $fileName, $mediaType) )
+			if( !$Media = \Asenine\Media\Operation::importFileToLibrary($File, $fileName, $mediaType) )
 				throw New Exception(MESSAGE_ERROR_SYSTEM_GENERAL);
 
 			$MessageBox->addNotice('Upload Success "' . $fileName . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));

@@ -25,7 +25,7 @@ function sendFile($filePath, $fileName = '', $contentType = 'application/octet-s
 		header('Content-Type: '.$contentType);
 		header('Content-Disposition: attachment; filename="'.$fileName.'"');
 		header('Content-Length: '.filesize($filePath));
-		header('X-LIGHTTPD-send-file: '.$filePath);
+		header('X-sendfile: '.$filePath);
 		exit();
 	}
 

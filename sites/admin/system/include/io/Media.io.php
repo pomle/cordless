@@ -12,13 +12,13 @@ switch($action)
 
 		foreach($_FILES as $file)
 		{
-			$File = \File::fromPHPUpload($file);
+			$File = \Asenine\File::fromPHPUpload($file);
 
 			$originalFilename = $file['name'];
 
 			try
 			{
-				$Media = \Operation\Media::importFileToLibrary($File, $originalFilename, $preferredMediaType, null, $mediaID);
+				$Media = \Asenine\Media\Operation::importFileToLibrary($File, $originalFilename, $preferredMediaType, null, $mediaID);
 
 				Message::addNotice('Upload Success "' . $file['name'] . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
@@ -37,7 +37,7 @@ switch($action)
 		{
 			$url = $_POST['url'];
 
-			$Media = \Operation\Media::downloadFileToLibrary($url, $_GET['mediaID']);
+			$Media = \Asenine\Media\Operation::downloadFileToLibrary($url, $_GET['mediaID']);
 
 			Message::addNotice('Fetch Success "' . $url . '": Identified as: ' . $Media::DESCRIPTION . ', Media ID: ' . sprintf('<a href="/MediaEdit.php?mediaID=%1$u">%1$u</a>', $Media->mediaID));
 
@@ -53,7 +53,7 @@ switch($action)
 	case 'publishToImgur':
 		$mediaID = $_POST['mediaID'];
 
-		if( !$Media = \Manager\Media::loadOneFromDB($_POST['mediaID']) )
+		if( !$Media = \Asenine\Media::loadFromDB($_POST['mediaID']) )
 			throw New Exception("Invalid Media ID");
 
 		$fileName = $Media->getFilePath();
@@ -93,7 +93,7 @@ switch($action)
 
 		$displayFullPaths = $User->isAdministrator();
 
-		if( $files = \Manager\Dataset\Media::getSpreadByID($mediaID) )
+		if( $files = \Asenine\Media\Dataset::getSpreadByID($mediaID) )
 		{
 			foreach($files as $fileName)
 			{
@@ -117,10 +117,10 @@ switch($action)
 
 		interport('mediaType');
 
-		$Media = \Manager\Media::loadOneFromDB($mediaID);
+		$Media = \Asenine\Media::loadFromDB($mediaID);
 
 
-		$query = \DB::prepareQuery("UPDATE
+		$query = \Asenine\DB::prepareQuery("UPDATE
 				Media
 			SET
 				mediaType = %s,
@@ -132,19 +132,19 @@ switch($action)
 			$_POST['fileOriginalName'],
 			$mediaID);
 
-		\DB::queryAndCountAffected($query);
+		\Asenine\DB::queryAndCountAffected($query);
 
 		Message::addNotice(MESSAGE_ROW_UPDATED);
 
 	case 'load':
 		ensurePolicies('AllowViewMedia');
-		$query = \DB::prepareQuery("SELECT ID AS mediaID, mediaType FROM Media WHERE ID = %u", $mediaID);
-		$result = DB::queryAndFetchOne($query);
+		$query = \Asenine\DB::prepareQuery("SELECT ID AS mediaID, mediaType FROM Media WHERE ID = %u", $mediaID);
+		$result = \Asenine\DB::queryAndFetchOne($query);
 		break;
 
 	case 'delete':
 		ensurePolicies('AllowDeleteMedia');
-		if( !\Manager\Media::removeFromDB($mediaID) )
+		if( !\Asenine\Media::removeFromDB($mediaID) )
 			throw New Exception(_('Kunde inte ta bort media'));
 
 		Message::addNotice(MESSAGE_ROW_DELETED);

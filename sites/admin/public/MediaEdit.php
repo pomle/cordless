@@ -28,7 +28,7 @@ $mediaInfo = \Asenine\Media\Dataset::getData($Media->mediaID);
 
 if( isset($_GET['download']) && $fileReadable )
 {
-	sendFile($filePath, $mediaInfo['fileOriginalName'] ?: sprintf('Media_%u.unknownExt', $Media->mediaID));
+	\Asenine\sendFile($filePath, $mediaInfo['fileOriginalName'] ?: sprintf('Media_%u.unknownExt', $Media->mediaID));
 	exit();
 }
 
@@ -82,7 +82,7 @@ echo $IOCall->getHead();
 echo $IOCall->getFoot();
 ?>
 <fieldset>
-	<legend><? echo _('Förhandsgranskning'); ?></legend>
+	<legend><? echo _('Preview'); ?></legend>
 	<?
 	$MediaPreview = new \Element\MediaPreview($Media);
 	echo $MediaPreview;
