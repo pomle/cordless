@@ -59,7 +59,7 @@ try
 catch(\Exception $e) ### Any uncaught exception will trickle down here
 {
 	$action = 'error';
-	DB::transacationRollback();
+	DB::transactionRollback();
 	\Message::addError($e->getMessage());
 }
 
