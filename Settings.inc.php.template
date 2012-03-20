@@ -23,10 +23,20 @@ define('ASENINE_DIR', ASENINE_DIR_ROOT . 'framework/');
 
 
 ### Database Config
-define('ASENINE_PDO_DSN', 'mysql:host=localhost;dbname=Asenine;charset=utf8'); ### See http://php.net/manual/en/book.pdo.php for  information on DSN string to use with your database
-define('ASENINE_PDO_USER', 'asenine');
-define('ASENINE_PDO_PASS', 'asenine');
+define('ASENINE_PDO_DSN', 'mysql:host=localhost;dbname=Cordless;charset=utf8'); ### See http://php.net/manual/en/book.pdo.php for  information on DSN string to use with your database
+define('ASENINE_PDO_USER', 'cordless');
+define('ASENINE_PDO_PASS', 'cordless');
 
 
 ### Password Salt
 define('ASENINE_USER_PASSWORD_SALT', 'y7j123c86gh5768G&%)¤)/E98h6871h56/('); ### Set this to something funny
+
+
+
+### Cordless Settings
+define('URL_ADMIN', '/');
+define('URL_PLAYER', '//dev.cordless.se//');
+
+### To use the Last.fm API with your installation, obtain your own key from http://www.last.fm/api/account
+#define('LAST_FM_API_KEY', false);
+#define('LAST_FM_API_SECRET', false);

@@ -3,7 +3,7 @@ namespace Cordless;
 
 require __DIR__ . '/../Init.inc.php';
 
-define('DIR_SITE', DIR_SITES . 'player/');
+define('DIR_SITE', ASENINE_DIR_SITES . 'player/');
 
 require DIR_SITE . 'Settings.inc.php';
 

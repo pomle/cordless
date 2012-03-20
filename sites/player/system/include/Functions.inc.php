@@ -29,7 +29,10 @@ function formatCount($number)
 
 function getLastFM()
 {
-	return new \Asenine\API\LastFM(LAST_FM_API_KEY, LAST_FM_API_SECRET);
+	if( LAST_FM_API_KEY && LAST_FM_API_SECRET )
+		return new \Asenine\API\LastFM(LAST_FM_API_KEY, LAST_FM_API_SECRET);
+
+	return false;
 }
 
 function getUserTrackItemImageURL($mediaHash)

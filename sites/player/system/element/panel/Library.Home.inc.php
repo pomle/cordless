@@ -14,10 +14,14 @@ $userPlayCountTotal = DB::queryAndFetchOne($query);
 $query = DB::prepareQuery("SELECT SUM(utp.duration) FROM Cordless_UserTracks ut JOIN Cordless_UserTrackPlays utp ON utp.userTrackID = ut.ID WHERE ut.userID = %u", $User->userID);
 $userPlayDurationTotal = DB::queryAndFetchOne($query);
 
+$isLastFmAvailable = (bool)LAST_FM_API_KEY;
+$isLastFmConnected = ($isLastFmAvailable && $User->last_fm_username);
 
-$isLastFmConnected = (bool)$User->last_fm_username;
-$urlLastFmConnect = 'http://www.last.fm/api/auth?api_key=' . LAST_FM_API_KEY;
-$urlLastFmConnect = 'http://www.last.fm/api/auth?api_key=' . LAST_FM_API_KEY . '&cb=' . URL_CORDLESS . 'helper/LastFM.Callback.php';
+if( $isLastFmAvailable )
+{
+	$urlLastFmConnect = 'http://www.last.fm/api/auth?api_key=' . LAST_FM_API_KEY;
+	$urlLastFmConnect = 'http://www.last.fm/api/auth?api_key=' . LAST_FM_API_KEY . '&cb=' . URL_PLAYER . 'helper/LastFM.Callback.php';
+}
 
 ?>
 <div class="home">
@@ -97,7 +101,7 @@ $urlLastFmConnect = 'http://www.last.fm/api/auth?api_key=' . LAST_FM_API_KEY . '
 		<h3><? echo htmlspecialchars(_("Misc")); ?></h3>
 
 		<?
-		if( !$isLastFmConnected )
+		if( $isLastFmAvailable && !$isLastFmConnected )
 		{
 			?>
 			<ul>

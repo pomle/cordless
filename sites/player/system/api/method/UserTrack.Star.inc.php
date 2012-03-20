@@ -14,10 +14,9 @@ function APIMethod($User, $params)
 	{
 		$UserTrack->star();
 
-		if( $User->last_fm_love_starred_tracks )
+		if( $User->last_fm_love_starred_tracks && $LastFM = getLastFM() )
 		{
 			$lastFM_wasPropagated = true;
-			$LastFM = getLastFM();
 			$xml = $LastFM->trackLove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
 		}
 	}
@@ -25,10 +24,9 @@ function APIMethod($User, $params)
 	{
 		$UserTrack->unstar();
 
-		if( $User->last_fm_unlove_unstarred_tracks )
+		if( $User->last_fm_unlove_unstarred_tracks && $LastFM = getLastFM() )
 		{
 			$lastFM_wasPropagated = true;
-			$LastFM = getLastFM();
 			$xml = $LastFM->trackUnlove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
 		}
 	}

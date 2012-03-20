@@ -26,7 +26,7 @@ class Message
 	{
 		global $css, $js;
 
-		$css[] = '/css/Page-Message.css';
+		$css[] = URL_PLAYER . 'css/Page-Message.css';
 
 		ob_start();
 

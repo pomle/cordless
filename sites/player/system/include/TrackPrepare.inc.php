@@ -19,7 +19,9 @@ function trackPrepare(UserTrack $UserTrack, $format)
 
 	$mediaHash = $UserTrack->Track->Audio->mediaHash;
 
-	$filePath = sprintf('%s/%s/', DIR_CORDLESS_TRACKS, $format);
+	$Archive = new \Asenine\Archive(sprintf('tracks/%s/', $format));
+
+	$filePath = $Archive->getFilePath($mediaHash);
 	$fileName = $filePath . $mediaHash;
 
 	if( !file_exists($fileName) )

@@ -23,6 +23,10 @@ function NowPlayingController(Player)
 
 	this.artistFetch = function(artistName, callback)
 	{
+		if( !Cordless.LAST_FM_API_URL )
+			return false;
+
+
 		var isRunning = 0;
 		var Artist = {
 			'name': artistName,

@@ -13,8 +13,8 @@ define('FOOTER', DIR_ELEMENT . 'Footer.inc.php');
 $pageTitle = 'Cordless';
 
 $css = array();
-$css[] = '/css/Shitfest.css';
-$css[] = '/css/Base.css';
+$css[] = URL_PLAYER . 'css/Shitfest.css';
+$css[] = URL_PLAYER . 'css/Base.css';
 
 $js = array();
 

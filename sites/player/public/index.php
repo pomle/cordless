@@ -3,30 +3,32 @@ namespace Cordless;
 
 require '../Init.Web.inc.php';
 
-$js[] = '/js/jquery/jquery.dropUpload.js';
+$js[] = URL_PLAYER . 'js/jquery/jquery.dropUpload.js';
 
-$js[] = '/js/Functions.js';
-$js[] = '/js/APIController.js';
-$js[] = '/js/AudioController.js';
-$js[] = '/js/InterfaceController.js';
-$js[] = '/js/PlaylistController.js';
-$js[] = '/js/PanelController.js';
-$js[] = '/js/NowPlayingController.js';
-$js[] = '/js/Upload.js';
+$js[] = URL_PLAYER . 'js/Functions.js';
+$js[] = URL_PLAYER . 'js/APIController.js';
+$js[] = URL_PLAYER . 'js/AudioController.js';
+$js[] = URL_PLAYER . 'js/InterfaceController.js';
+$js[] = URL_PLAYER . 'js/PlaylistController.js';
+$js[] = URL_PLAYER . 'js/PanelController.js';
+$js[] = URL_PLAYER . 'js/NowPlayingController.js';
+$js[] = URL_PLAYER . 'js/Upload.js';
 
-$js[] = '/js/Main.js';
-$js[] = '/js/LastFM.js';
+$js[] = URL_PLAYER . 'js/Main.js';
+$js[] = URL_PLAYER . 'js/LastFM.js';
 
 
 
 $style = $User->getSetting("WebUI_Theme_Style") ?: 'Charcoal';
-define('URL_STYLE', '/theme/style/' . $style . '/');
-define('DIR_STYLE', DIR_SITE . 'public' . URL_STYLE);
+$stylePath = 'theme/style/' . $style . '/';
+define('URL_STYLE', URL_PLAYER . $stylePath);
+define('DIR_STYLE', DIR_SITE . 'public/' . $stylePath);
 require DIR_STYLE . 'Init.php';
 
 $behavior = $User->getSetting("WebUI_Theme_Behavior") ?: 'Default';
-define('URL_BEHAVIOR', '/theme/behavior/' . $behavior . '/');
-define('DIR_BEHAVIOR', DIR_SITE . 'public' . URL_BEHAVIOR);
+$behaviorPath = 'theme/behavior/' . $behavior . '/';
+define('URL_BEHAVIOR', URL_PLAYER . $behaviorPath);
+define('DIR_BEHAVIOR', DIR_SITE . 'public/' . $behaviorPath);
 require DIR_BEHAVIOR . 'Init.php';
 
 

@@ -5,9 +5,7 @@ function APIMethod($User, $params)
 {
 	$timeNow = time();
 
-	if( !isset($User->last_fm_username, $User->last_fm_key) || $User->last_fm_scrobble !== true )
-		return "User not setup for scrobbling";
-
+	$lastFM_wasNotified = false;
 
 	if( isset($params['userTrackID']) && $UserTrack = getUserTrack($params, $User) )
 	{
@@ -22,8 +20,14 @@ function APIMethod($User, $params)
 
 	$duration = isset($params['duration']) ? $params['duration'] : null;
 
-	$LastFM = getLastFM();
-	$xml = $LastFM->updateNowPlaying($User->last_fm_key, $timeNow, $artist, $title, $duration);
+	if( isset($User->last_fm_username, $User->last_fm_key) && ($User->last_fm_scrobble === true) && ($LastFM = getLastFM()) )
+	{
+		$xml = $LastFM->updateNowPlaying($User->last_fm_key, $timeNow, $artist, $title, $duration);
+		$lastFM_wasNotified = true;
+	}
 
-	return;
+	return array(
+		'userTrackID' => $UserTrack->userTrackID,
+		'lastFM_wasNotified' => $lastFM_wasNotified
+	);
 }

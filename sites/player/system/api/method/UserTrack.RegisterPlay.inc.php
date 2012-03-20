@@ -24,9 +24,8 @@ function APIMethod($User, $params)
 	$title = $UserTrack->title;
 
 
-	if( $lastFM_doScrobble && isset($User->last_fm_username, $User->last_fm_key) && $User->last_fm_scrobble === true )
+	if( $lastFM_doScrobble && isset($User->last_fm_username, $User->last_fm_key) && ($User->last_fm_scrobble === true) && ($LastFM = getLastFM()) )
 	{
-		$LastFM = getLastFM();
 		$xml = $LastFM->sendScrobble($User->last_fm_key, $timePlayStart, $artist, $title, $duration);
 
 		if( !$xml->xpath('/lfm[@status="ok"]') )
