@@ -3,7 +3,7 @@ namespace Asenine;
 
 define('RENDERSTART', microtime(true));
 
-require __DIR__ . '/Settings.Asenine.inc.php';
+require __DIR__ . '/Settings.inc.php';
 
 define('ASENINE_DIR_CLASS',		ASENINE_DIR . 'class/');
 define('ASENINE_DIR_COMMON',	ASENINE_DIR . 'common/');
