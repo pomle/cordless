@@ -1,0 +1,32 @@
+<?
+### When DEBUG is true, sensitive information like like file paths and database queries might be shown. Make sure it is "false" on production
+define('DEBUG', true);
+
+
+error_reporting(DEBUG ? E_ALL : 0);
+date_default_timezone_set('Europe/Berlin');
+
+
+### Where the installation is located
+define('ASENINE_DIR_ROOT', __DIR__ . '/');
+define('ASENINE_DIR', ASENINE_DIR_ROOT . 'framework/');
+
+
+### You can customize where uploads and generated files are put. If you don't specify, everything will be put in archive/ subfolder of project dir, so make sure this is writeable
+#define('ASENINE_DIR_ARCHIVE', ASENINE_DIR_ROOT . 'archive/');
+#define('ASENINE_DIR_MEDIA', ASENINE_DIR_ARCHIVE . 'media/');
+#define('ASENINE_DIR_MEDIA_PUBLIC', ASENINE_DIR_MEDIA . 'public/');
+
+
+### If you want to enable logging, uncomment this line and make dir writeable
+#define('ASENINE_DIR_LOG', ASENINE_DIR_ROOT . 'log/');
+
+
+### Database Config
+define('ASENINE_PDO_DSN', 'mysql:host=localhost;dbname=Asenine;charset=utf8'); ### See http://php.net/manual/en/book.pdo.php for  information on DSN string to use with your database
+define('ASENINE_PDO_USER', 'asenine');
+define('ASENINE_PDO_PASS', 'asenine');
+
+
+### Password Salt
+define('ASENINE_USER_PASSWORD_SALT', 'y7j123c86gh5768G&%)¤)/E98h6871h56/('); ### Set this to something funny

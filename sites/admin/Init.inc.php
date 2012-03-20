@@ -17,8 +17,8 @@ foreach
 		define($name, $value);
 }
 
-if( !defined('DIR_ADMIN') )
-	define('DIR_ADMIN', ASENINE_DIR_SITES . 'admin/');
+asenineDef('FORCE_SSL', false);
+asenineDef('DIR_ADMIN', ASENINE_DIR_SITES . 'admin/');
 
 define('DIR_ADMIN_CONFIG', DIR_ADMIN . 'config/');
 define('DIR_ADMIN_PUBLIC', DIR_ADMIN . 'public/');
