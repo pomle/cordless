@@ -1,9 +1,9 @@
 <?
 namespace Asenine;
 
-asenineDef('ARCHIVE_DIR_DEPTH', 4);
-asenineDef('ARCHIVE_DIR_SPLIT_LEN', 2);
-asenineDef('ARCHIVE_PERM_CREATE', 0755);
+asenineDef('ASENINE_ARCHIVE_DIR_DEPTH', 4);
+asenineDef('ASENINE_ARCHIVE_DIR_SPLIT_LEN', 2);
+asenineDef('ASENINE_ARCHIVE_PERM_CREATE', 0755);
 
 class ArchiveException extends \Exception{}
 
@@ -16,8 +16,8 @@ class Archive
 
 	public function __construct($namespace, $subpath = null)
 	{
-		if( !file_exists(DIR_ARCHIVE) || !is_dir(DIR_ARCHIVE) || !is_writeable(DIR_ARCHIVE) )
-			throw New ArchiveException('"' . DIR_ARCHIVE . '" is not a valid and writeable dir');
+		if( !file_exists(ASENINE_DIR_ARCHIVE) || !is_dir(ASENINE_DIR_ARCHIVE) || !is_writeable(ASENINE_DIR_ARCHIVE) )
+			throw New ArchiveException('"' . ASENINE_DIR_ARCHIVE . '" is not a valid and writeable dir');
 
 		if( strlen($namespace) == 0 )
 			throw New ArchiveException('Required arg #1 missing from ' . __METHOD__);
@@ -31,7 +31,7 @@ class Archive
 
 		if( $subpath ) $this->treePath .=  trim($subpath, '/') . '/';
 
-		$this->workPath = DIR_ARCHIVE . $this->treePath;
+		$this->workPath = ASENINE_DIR_ARCHIVE . $this->treePath;
 	}
 
 
@@ -66,7 +66,7 @@ class Archive
 			if( !is_writeable($archiveFilePath) )
 				throw New ArchiveException(sprintf('"%s" is not writeable', $archiveFilePath));
 		}
-		elseif( !mkdir($archiveFilePath, ARCHIVE_PERM_CREATE, true) )
+		elseif( !@mkdir($archiveFilePath, ASENINE_ARCHIVE_PERM_CREATE, true) )
 			throw New ArchiveException(sprintf('Could not create dir "%s"', $archiveFilePath));
 
 
@@ -92,8 +92,8 @@ class Archive
 		$path = '';
 
 		$i = 0;
-		while($i < ARCHIVE_DIR_DEPTH)
-			$path .= substr($hash, $i++ * ARCHIVE_DIR_SPLIT_LEN, ARCHIVE_DIR_SPLIT_LEN) . '/';
+		while($i < ASENINE_ARCHIVE_DIR_DEPTH)
+			$path .= substr($hash, $i++ * ASENINE_ARCHIVE_DIR_SPLIT_LEN, ASENINE_ARCHIVE_DIR_SPLIT_LEN) . '/';
 
 		return $path;
 	}

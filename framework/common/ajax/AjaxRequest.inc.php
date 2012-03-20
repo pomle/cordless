@@ -47,7 +47,7 @@ try
 	catch(\ErrorException $e)
 	{
 		### Catches any errors in PHP
-		throw New Exception(
+		throw new \Exception(
 			DEBUG
 			? sprintf('PHP Error (%u) "%s" at line %u in %s', $e->getSeverity(), $e->getMessage(), $e->getLine(), $e->getFile())
 			: sprintf('PHP Error: %s', $e->getMessage())

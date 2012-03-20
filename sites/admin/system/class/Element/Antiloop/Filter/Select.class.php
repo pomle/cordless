@@ -40,6 +40,6 @@ class Select extends Common\Root
 
 	public function importParams(array $params)
 	{
-		$this->selectedKey = $params[$this->name];
+		$this->selectedKey = isset($params[$this->name]) ? $params[$this->name] : null;
 	}
 }

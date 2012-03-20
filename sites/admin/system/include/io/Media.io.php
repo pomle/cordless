@@ -144,8 +144,10 @@ switch($action)
 
 	case 'delete':
 		ensurePolicies('AllowDeleteMedia');
-		if( !\Asenine\Media::removeFromDB($mediaID) )
-			throw New Exception(_('Kunde inte ta bort media'));
+		if( !$Media = \Asenine\Media::loadFromDB($mediaID) )
+			throw new Exception(MESSAGE_ROW_MISSING);
+
+		\Asenine\Media::removeFromDB($Media);
 
 		Message::addNotice(MESSAGE_ROW_DELETED);
 	break;

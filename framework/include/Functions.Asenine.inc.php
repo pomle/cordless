@@ -22,10 +22,10 @@ function sendFile($filePath, $fileName = '', $contentType = 'application/octet-s
 
 		ini_set('zlib.output_compression', 'off');
 		header('Accept-Ranges: bytes');
-		header('Content-Type: '.$contentType);
-		header('Content-Disposition: attachment; filename="'.$fileName.'"');
-		header('Content-Length: '.filesize($filePath));
-		header('X-sendfile: '.$filePath);
+		header('Content-Type: ' . $contentType);
+		header('Content-Disposition: attachment; filename="' . $fileName . '"');
+		header('Content-Length: ' . filesize($filePath));
+		header('X-sendfile: ' . $filePath);
 		exit();
 	}
 

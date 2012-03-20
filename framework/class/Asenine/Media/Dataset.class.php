@@ -60,13 +60,13 @@ class Dataset
 
 		if( strlen($mediaHash) == 0 ) throw New \Exception(__METHOD__ . ' arg# 1 must have length > 0');
 
-		if( !defined('DIR_MEDIA') || !is_dir(DIR_MEDIA) ) throw New \Exception("DIR_MEDIA not defined or not valid dir");
+		if( !defined('ASENINE_DIR_MEDIA') || !is_dir(ASENINE_DIR_MEDIA) ) throw New \Exception("DIR_MEDIA not defined or not valid dir");
 
-		$cmd = sprintf('$(which find) %s -name %s | sort', \escapeshellarg(DIR_MEDIA), \escapeshellarg($mediaHash));
+		$cmd = sprintf('$(which find) %s -name %s | sort', \escapeshellarg(ASENINE_DIR_MEDIA), \escapeshellarg($mediaHash));
 		$res = shell_exec($cmd);
 		$arr = explode("\n", $res);
 		$arr = array_filter($arr);
-		$arr = preg_grep('%' . DIR_MEDIA_SOURCE . '%', $arr, PREG_GREP_INVERT); // Remove source media file from list
+		$arr = preg_grep('%' . ASENINE_DIR_MEDIA . '%', $arr, PREG_GREP_INVERT); // Remove source media file from list
 
 		foreach($arr as $index => $filename)
 			if( !is_file($filename) ) unset($arr[$index]);

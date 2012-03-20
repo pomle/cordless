@@ -41,7 +41,7 @@ define('SYSTEM_DATE_FORMAT', '%SYSTEM_DATE_FORMAT%');
 // Dir Config
 define('ASENINE_DIR_ROOT', '%ASENINE_DIR_ROOT%'); // Installation Dir
 	
-	define('DIR_LOG', ASENINE_DIR_ROOT.'log/');
+	define('ASENINE_DIR_LOG', ASENINE_DIR_ROOT.'log/');
 	define('ASENINE_DIR_TEMP', '/tmp/');
 
 	define('DIR_SYSTEM',			ASENINE_DIR_ROOT.'system/');
@@ -74,10 +74,10 @@ define('ASENINE_DIR_ROOT', '%ASENINE_DIR_ROOT%'); // Installation Dir
 
 		define('DIR_MEDIA_BULLETIN', DIR_GRAPHICS.'bulletin/');
 	
-	define('DIR_ARCHIVE', ASENINE_DIR_ROOT.'archive/');
-		define('DIR_PRESS',		DIR_ARCHIVE.'press/');
-		define('DIR_PUBLIC',	DIR_ARCHIVE.'public/');
-		define('DIR_WORKORDER',	DIR_ARCHIVE.'workorder/');
+	define('ASENINE_DIR_ARCHIVE', ASENINE_DIR_ROOT.'archive/');
+		define('DIR_PRESS',		ASENINE_DIR_ARCHIVE.'press/');
+		define('DIR_PUBLIC',	ASENINE_DIR_ARCHIVE.'public/');
+		define('DIR_WORKORDER',	ASENINE_DIR_ARCHIVE.'workorder/');
 
 
 	define('DIR_RESOURCE', DIR_SYSTEM.'resources/');

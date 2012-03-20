@@ -80,7 +80,7 @@ abstract class Preset implements iPreset
 
 	final public function getFullFilePath()
 	{
-		return DIR_MEDIA_PUBLIC . $this->getFilePath();
+		return ASENINE_DIR_MEDIA_PUBLIC . $this->getFilePath();
 	}
 
 	final public function getMediaHash()
@@ -99,7 +99,7 @@ abstract class Preset implements iPreset
 		{
 			if( !$this->getFile($wait) ) return false;
 
-			return URL_MEDIA . $this->getFilePath();
+			return ASENINE_URL_MEDIA . $this->getFilePath();
 		}
 		catch(\Exception $e)
 		{

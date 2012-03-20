@@ -2,7 +2,7 @@
 namespace Element;
 
 global $css;
-$css[] = '/css/page/Media.css';
+$css[] = URL_ADMIN . 'css/page/Media.css';
 
 class MediaPreview
 {

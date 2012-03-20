@@ -5,10 +5,10 @@ define('RENDERSTART', microtime(true));
 
 require __DIR__ . '/Settings.Asenine.inc.php';
 
-define('ASENINE_DIR_CLASS',		DIR_ASENINE . 'class/');
-define('ASENINE_DIR_COMMON',	DIR_ASENINE . 'common/');
-define('ASENINE_DIR_CONFIG',	DIR_ASENINE . 'config/');
-define('ASENINE_DIR_INCLUDE',	DIR_ASENINE . 'include/');
+define('ASENINE_DIR_CLASS',		ASENINE_DIR . 'class/');
+define('ASENINE_DIR_COMMON',	ASENINE_DIR . 'common/');
+define('ASENINE_DIR_CONFIG',	ASENINE_DIR . 'config/');
+define('ASENINE_DIR_INCLUDE',	ASENINE_DIR . 'include/');
 define('ASENINE_DIR_SITES',		ASENINE_DIR_ROOT . 'sites/');
 
 require ASENINE_DIR_INCLUDE . 'Functions.Global.inc.php';
@@ -21,8 +21,9 @@ asenineDef('ASENINE_DIR_TEMP', '/tmp/');
 
 asenineDef('ASENINE_DIR_SITES', ASENINE_DIR_ROOT . 'sites/');
 
-asenineDef('DIR_MEDIA', ASENINE_DIR_ROOT . 'media/');
-asenineDef('DIR_MEDIA_SOURCE', DIR_MEDIA . 'source/');
+asenineDef('ASENINE_DIR_ARCHIVE', ASENINE_DIR_ROOT . 'archive/');
+asenineDef('ASENINE_DIR_MEDIA', ASENINE_DIR_ARCHIVE . 'media/');
+asenineDef('ASENINE_DIR_MEDIA_PUBLIC', ASENINE_DIR_MEDIA . 'public/');
 
 
 define('HTTPS', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');

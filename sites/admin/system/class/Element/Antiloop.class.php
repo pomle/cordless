@@ -2,8 +2,8 @@
 namespace Element;
 
 global $css, $js;
-$css[] = '/css/Antiloop.css';
-$js[] = '/js/Antiloop.js';
+$css[] = URL_ADMIN . 'css/Antiloop.css';
+$js[] = URL_ADMIN . 'js/Antiloop.js';
 
 define('URL_ANTILOOP_FETCHER', '/ajax/AjaxAntiloopFetcher.php');
 define('DIR_ANTILOOP_LISTS', DIR_ADMIN_INCLUDE . 'antiloopLists/');
