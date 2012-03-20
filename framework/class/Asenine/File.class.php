@@ -26,7 +26,7 @@ class File
 				throw New FileException('URL empty');
 
 			if( !$toFile )
-				$toFile = tempnam(DIR_TEMP, 'AsenineDownload');
+				$toFile = tempnam(ASENINE_DIR_TEMP, 'AsenineDownload');
 
 			if( !$d = @fopen($toFile, 'w') )
 				throw New FileException(sprintf('Could not open destination "%s" for writing', $toFile));

@@ -57,8 +57,8 @@ abstract class Root implements _Root
 	final public function getTempFile()
 	{
 		$prefix = str_replace('\\', '_', get_called_class()) . '_';
-		$tmpFile = tempnam(DIR_TEMP, $prefix);
-		if( $tmpFile === false ) throw New \Exception('Failed to create temporary file in ' . DIR_TEMP);
+		$tmpFile = tempnam(ASENINE_DIR_TEMP, $prefix);
+		if( $tmpFile === false ) throw New \Exception('Failed to create temporary file in ' . ASENINE_DIR_TEMP);
 		return $tmpFile;
 	}
 

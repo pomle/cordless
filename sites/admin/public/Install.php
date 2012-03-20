@@ -39,12 +39,12 @@ define('SYSTEM_TIME_FORMAT', '%SYSTEM_TIME_FORMAT%');
 define('SYSTEM_DATE_FORMAT', '%SYSTEM_DATE_FORMAT%');
 
 // Dir Config
-define('DIR_ROOT', '%DIR_ROOT%'); // Installation Dir
+define('ASENINE_DIR_ROOT', '%ASENINE_DIR_ROOT%'); // Installation Dir
 	
-	define('DIR_LOG', DIR_ROOT.'log/');
-	define('DIR_TEMP', '/tmp/');
+	define('DIR_LOG', ASENINE_DIR_ROOT.'log/');
+	define('ASENINE_DIR_TEMP', '/tmp/');
 
-	define('DIR_SYSTEM',			DIR_ROOT.'system/');
+	define('DIR_SYSTEM',			ASENINE_DIR_ROOT.'system/');
 		define('DIR_SYSTEM_CONFIG',	DIR_SYSTEM.'config/');
 		define('DIR_SYSTEM_CLASS',	DIR_SYSTEM.'class/');
 		define('DIR_SYSTEM_MODULE',	DIR_SYSTEM.'module/');
@@ -53,18 +53,18 @@ define('DIR_ROOT', '%DIR_ROOT%'); // Installation Dir
 
 		define('DIR_SYSTEM_INCLUDE',	DIR_SYSTEM.'include/');
 
-	define('DIR_LANGUAGE', DIR_ROOT.'language/');
+	define('DIR_LANGUAGE', ASENINE_DIR_ROOT.'language/');
 
-	define('DIR_STORE', DIR_ROOT.'sites/store/');
+	define('DIR_STORE', ASENINE_DIR_ROOT.'sites/store/');
 		define('DIR_STORE_SYSTEM', DIR_STORE.'system/');
 		define('DIR_STORE_PUBLIC', DIR_STORE.'public/');
 
-	define('DIR_ADMIN', DIR_ROOT.'sites/admin/');
+	define('DIR_ADMIN', ASENINE_DIR_ROOT.'sites/admin/');
 		define('DIR_ADMIN_SYSTEM', DIR_ADMIN.'system/');
 		define('DIR_ADMIN_PUBLIC', DIR_ADMIN.'public/');
 
 
-	define('DIR_MEDIA', DIR_ROOT.'media/');
+	define('DIR_MEDIA', ASENINE_DIR_ROOT.'media/');
 		define('DIR_MEDIA_SOURCE',	DIR_MEDIA.'source/');
 		
 		define('DIR_IMAGE',			DIR_MEDIA.'image/');
@@ -74,7 +74,7 @@ define('DIR_ROOT', '%DIR_ROOT%'); // Installation Dir
 
 		define('DIR_MEDIA_BULLETIN', DIR_GRAPHICS.'bulletin/');
 	
-	define('DIR_ARCHIVE', DIR_ROOT.'archive/');
+	define('DIR_ARCHIVE', ASENINE_DIR_ROOT.'archive/');
 		define('DIR_PRESS',		DIR_ARCHIVE.'press/');
 		define('DIR_PUBLIC',	DIR_ARCHIVE.'public/');
 		define('DIR_WORKORDER',	DIR_ARCHIVE.'workorder/');
@@ -110,14 +110,14 @@ define('KREDITOR_SECRET', 'ZjZoOlzCCZBEk6F');
 define('KREDITOR_HOST', 'payment.kreditor.se');
 define('KREDITOR_PORT', 80);";
 
-define('DIR_ROOT', __DIR__.'/../../../');
-$settingsFile = DIR_ROOT.'system/Settings.inc.php';
+define('ASENINE_DIR_ROOT', __DIR__.'/../../../');
+$settingsFile = ASENINE_DIR_ROOT.'system/Settings.inc.php';
 
 if( file_exists($settingsFile) ) {
 	die('Already configured...');
 }
 
-if( !is_writeable(DIR_ROOT.'system/') ) {
+if( !is_writeable(ASENINE_DIR_ROOT.'system/') ) {
 	die('Settings path not writeable...');
 }
 
@@ -145,7 +145,7 @@ if( isset($_POST['install']) ) {
 			'%SYSTEM_TIME_FORMAT%',
 			'%SYSTEM_DATE_FORMAT%',
 
-			'%DIR_ROOT%'
+			'%ASENINE_DIR_ROOT%'
 		),
 		array(
 			(int)$_POST['DEBUG'],
@@ -168,7 +168,7 @@ if( isset($_POST['install']) ) {
 			$_POST['SYSTEM_TIME_FORMAT'],
 			$_POST['SYSTEM_DATE_FORMAT'],
 
-			$_POST['DIR_ROOT']
+			$_POST['ASENINE_DIR_ROOT']
 		),
 		$settingsTemplate
 	);
@@ -193,7 +193,7 @@ if( isset($_POST['install']) ) {
 			<table>
 			<tr><td>DEBUG</td><td><input type="radio" name="DEBUG" value="1">1 <input type="radio" name="DEBUG" value="0">0 </td></tr>
 
-			<tr><td>DIR_ROOT</td><td><input type="text" name="DIR_ROOT" value="<? echo htmlspecialchars(str_replace('sites/admin/public', '', __DIR__)); ?>" /></td></tr>
+			<tr><td>ASENINE_DIR_ROOT</td><td><input type="text" name="ASENINE_DIR_ROOT" value="<? echo htmlspecialchars(str_replace('sites/admin/public', '', __DIR__)); ?>" /></td></tr>
 
 			<tr><td>DB_HOST</td><td><input type="text" name="CACHE_PREFIX" value="FLIPSHOP" /></td></tr>
 

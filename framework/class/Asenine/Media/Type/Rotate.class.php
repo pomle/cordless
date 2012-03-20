@@ -3,7 +3,7 @@ namespace Asenine\Media\Type;
 
 class Rotate extends _Visual
 {
-	const TYPE = MEDIA_TYPE_ROTATE;
+	const TYPE = ASENINE_MEDIA_TYPE_ROTATE;
 	const DESCRIPTION = '360 Image';
 
 	protected

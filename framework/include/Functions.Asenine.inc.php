@@ -10,7 +10,7 @@ function getTempDir($prefix = null)
 
 function getTempFile($prefix = null)
 {
-	return tempnam(DIR_TEMP, $prefix ? $prefix . '_' : null);
+	return tempnam(ASENINE_DIR_TEMP, $prefix ? $prefix . '_' : null);
 }
 
 function sendFile($filePath, $fileName = '', $contentType = 'application/octet-stream')

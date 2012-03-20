@@ -31,7 +31,7 @@ class MediaPreview
 				<?
 			}
 
-			if( $Media::TYPE == MEDIA_TYPE_IMAGE && $imageInfo = $Media->getInfo() )
+			if( $Media::TYPE == ASENINE_MEDIA_TYPE_IMAGE && $imageInfo = $Media->getInfo() )
 			{
 				$x = $imageInfo['size']['x'];
 				$y = $imageInfo['size']['y'];
@@ -43,7 +43,7 @@ class MediaPreview
 					->addRow(_('Aspect Ratio'), $x && $y ? sprintf('%.3f', $x / $y) : TEXT_NOT_AVAILABLE);
 			}
 
-			if( $Media::TYPE == MEDIA_TYPE_VIDEO )
+			if( $Media::TYPE == ASENINE_MEDIA_TYPE_VIDEO )
 			{
 				//$thumbURL = \Media\Producer\CrossSite::createFromMedia($Media)->getThumb() ?: URL_FALLBACK_THUMB;
 				$stripURL = $Media->mediaID ? sprintf('/helpers/liveGen/VideoStrip.php?mediaID=%u&frames=5&size=100', $Media->mediaID) : null;
@@ -59,7 +59,7 @@ class MediaPreview
 
 				$downloads[] = array(sprintf('/helpers/liveGen/VideoStrip.php?mediaID=%u', $Media->mediaID), 'Frame Strip');
 
-				if( $Media::TYPE == MEDIA_TYPE_VIDEO )
+				if( $Media::TYPE == ASENINE_MEDIA_TYPE_VIDEO )
 				{
 					$streamInfo = $Media->getInfo();
 

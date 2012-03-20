@@ -37,7 +37,7 @@ class Dataset
 
 	public static function getPlugins()
 	{
-		$pluginFiles = glob(DIR_CLASS . 'Asenine/Media/Type/*.class.php');
+		$pluginFiles = glob(ASENINE_DIR_CLASS . 'Asenine/Media/Type/*.class.php');
 
 		$plugins = array();
 		foreach($pluginFiles as $pluginFile)

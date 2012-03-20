@@ -222,9 +222,9 @@ class DB
 
 try
 {
-	DB::addPDO(new \PDO(PDO_DSN, PDO_USER, PDO_PASS));
+	DB::addPDO(new \PDO(ASENINE_PDO_DSN, ASENINE_PDO_USER, ASENINE_PDO_PASS));
 }
 catch(\Exception $e)
 {
-	die( DEBUG ? sprintf('Database Initialization Failed with DSN %s, Reason: %s', PDO_DSN, $e->getMessage()) : 'System Failure');
+	die( DEBUG ? sprintf('Database Initialization Failed with DSN %s, Reason: %s', ASENINE_PDO_DSN, $e->getMessage()) : 'System Failure');
 }
