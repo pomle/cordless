@@ -22,7 +22,7 @@ abstract class Preset implements iPreset
 			$sleepTime = 100000; // 100 ms
 
 
-			$dirPath = DIR_MEDIA_PUBLIC . $this->getPath();
+			$dirPath = ASENINE_DIR_MEDIA_PUBLIC . $this->getPath();
 			if( !file_exists($dirPath) && !is_dir($dirPath) && !mkdir($dirPath, 0755, true) ) throw New \Exception("Path not reachable \"$dirPath\"");
 
 			$filePath = $this->getFullFilePath();

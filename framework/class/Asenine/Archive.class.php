@@ -35,28 +35,28 @@ class Archive
 	}
 
 
-	public function getFile($hash)
+	public function getFile($name)
 	{
-		return new File( $this->getFileName($hash), $hash );
+		return new File( $this->getFileName($name), $name );
 	}
 
-	public function getFileName($hash)
+	public function getFileName($name)
 	{
-		return $this->getFilePath($hash) . $hash;
+		return $this->getFilePath($name) . $name;
 	}
 
-	public function getFilePath($hash)
+	public function getFilePath($name)
 	{
-		return $this->workPath . $this->resolveHash($hash);
+		return $this->workPath . $this->resolveHash($name);
 	}
 
 	public function putFile(File $File, $overwrite = false)
 	{
-		$hash = $File->hash;
+		$name = $File->name;
 
 		$inputFileName = (string)$File;
 
-		$archiveFilePath = $this->getFilePath($hash);
+		$archiveFilePath = $this->getFilePath($name);
 
 		if( file_exists($archiveFilePath) )
 		{
@@ -70,30 +70,25 @@ class Archive
 			throw New ArchiveException(sprintf('Could not create dir "%s"', $archiveFilePath));
 
 
-		$archiveFileName = $this->getFileName($hash);
+		$archiveFileName = $this->getFileName($name);
 
-		if( $overwrite !== true && file_exists($archiveFileName) )
-		{
-			if( $hash !== md5_file($archiveFileName) )
-				throw new ArchiveException(sprintf('File "%s" already exists', $archiveFileName));
-		}
-		elseif( !copy($inputFileName, $archiveFileName) )
-			throw New ArchiveException(sprintf('Could not copy "%s" to "%s"', $inputFileName, $archiveFileName));
+		if( !file_exists($archiveFileName) || $overwrite === true )
+			if( !copy($inputFileName, $archiveFileName) )
+				throw New ArchiveException(sprintf('Could not copy "%s" to "%s"', $inputFileName, $archiveFileName));
 
 		$ArchivedFile = new File($archiveFileName);
-		$ArchivedFile->archiveHash = $hash;
 
 		return $ArchivedFile;
 	}
 
 
-	protected function resolveHash($hash)
+	protected function resolveHash($name)
 	{
 		$path = '';
 
 		$i = 0;
 		while($i < ASENINE_ARCHIVE_DIR_DEPTH)
-			$path .= substr($hash, $i++ * ASENINE_ARCHIVE_DIR_SPLIT_LEN, ASENINE_ARCHIVE_DIR_SPLIT_LEN) . '/';
+			$path .= substr($name, $i++ * ASENINE_ARCHIVE_DIR_SPLIT_LEN, ASENINE_ARCHIVE_DIR_SPLIT_LEN) . '/';
 
 		return $path;
 	}
