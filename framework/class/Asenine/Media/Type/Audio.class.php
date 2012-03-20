@@ -3,7 +3,7 @@ namespace Asenine\Media\Type;
 
 class Audio extends _Audible
 {
-	const TYPE = MEDIA_TYPE_AUDIO;
+	const TYPE = ASENINE_MEDIA_TYPE_AUDIO;
 	const DESCRIPTION = 'Audio';
 
 	protected

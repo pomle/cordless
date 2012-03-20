@@ -110,7 +110,7 @@ switch($action)
 			Message::addAlert("No files found");
 		}
 
-		break;
+	break;
 
 	case 'save':
 		ensurePolicies('AllowEditMedia');
@@ -121,7 +121,7 @@ switch($action)
 
 
 		$query = \Asenine\DB::prepareQuery("UPDATE
-				Media
+				Asenine_Media
 			SET
 				mediaType = %s,
 				fileOriginalName = IF(%u, NULLIF(%s, ''), fileOriginalName)
@@ -138,15 +138,17 @@ switch($action)
 
 	case 'load':
 		ensurePolicies('AllowViewMedia');
-		$query = \Asenine\DB::prepareQuery("SELECT ID AS mediaID, mediaType FROM Media WHERE ID = %u", $mediaID);
+		$query = \Asenine\DB::prepareQuery("SELECT ID AS mediaID, mediaType FROM Asenine_Media WHERE ID = %u", $mediaID);
 		$result = \Asenine\DB::queryAndFetchOne($query);
-		break;
+	break;
 
 	case 'delete':
 		ensurePolicies('AllowDeleteMedia');
-		if( !\Asenine\Media::removeFromDB($mediaID) )
-			throw New Exception(_('Kunde inte ta bort media'));
+		if( !$Media = \Asenine\Media::loadFromDB($mediaID) )
+			throw new Exception(MESSAGE_ROW_MISSING);
+
+		\Asenine\Media::removeFromDB($Media);
 
 		Message::addNotice(MESSAGE_ROW_DELETED);
-		break;
+	break;
 }

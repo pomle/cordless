@@ -10,7 +10,7 @@ function getTempDir($prefix = null)
 
 function getTempFile($prefix = null)
 {
-	return tempnam(DIR_TEMP, $prefix ? $prefix . '_' : null);
+	return tempnam(ASENINE_DIR_TEMP, $prefix ? $prefix . '_' : null);
 }
 
 function sendFile($filePath, $fileName = '', $contentType = 'application/octet-stream')
@@ -22,10 +22,10 @@ function sendFile($filePath, $fileName = '', $contentType = 'application/octet-s
 
 		ini_set('zlib.output_compression', 'off');
 		header('Accept-Ranges: bytes');
-		header('Content-Type: '.$contentType);
-		header('Content-Disposition: attachment; filename="'.$fileName.'"');
-		header('Content-Length: '.filesize($filePath));
-		header('X-sendfile: '.$filePath);
+		header('Content-Type: ' . $contentType);
+		header('Content-Disposition: attachment; filename="' . $fileName . '"');
+		header('Content-Length: ' . filesize($filePath));
+		header('X-sendfile: ' . $filePath);
 		exit();
 	}
 

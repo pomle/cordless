@@ -3,7 +3,7 @@ namespace Asenine\Media\Type;
 
 class Video extends _Visual
 {
-	const TYPE = MEDIA_TYPE_VIDEO;
+	const TYPE = ASENINE_MEDIA_TYPE_VIDEO;
 	const DESCRIPTION = 'Video';
 
 	protected

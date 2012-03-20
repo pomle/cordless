@@ -2,11 +2,11 @@
 namespace Element;
 
 global $js;
-$js[] = '/js/jquery/jquery.selection.js';
-$js[] = '/js/jquery/jquery.insertAtCaret.js';
-$js[] = '/js/jquery/jquery.textInsert.js';
-$js[] = '/js/plugins/TextEditor.plugin.js';
-$js[] = '/js/Populus.js';
+$js[] = URL_ADMIN . 'js/jquery/jquery.selection.js';
+$js[] = URL_ADMIN . 'js/jquery/jquery.insertAtCaret.js';
+$js[] = URL_ADMIN . 'js/jquery/jquery.textInsert.js';
+$js[] = URL_ADMIN . 'js/plugins/TextEditor.plugin.js';
+$js[] = URL_ADMIN . 'js/Populus.js';
 
 class TextEditor extends TextArea
 {

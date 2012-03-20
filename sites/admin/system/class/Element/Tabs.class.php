@@ -2,8 +2,8 @@
 namespace Element;
 
 global $css, $js;
-$css[] = '/css/Tabs.css';
-$js[] = '/js/Tabs.js';
+$css[] = URL_ADMIN . 'css/Tabs.css';
+$js[] = URL_ADMIN . 'js/Tabs.js';
 
 class Tabs
 {

@@ -5,56 +5,41 @@ define('RENDERSTART', microtime(true));
 
 require __DIR__ . '/Settings.inc.php';
 
-if( !defined('DIR_MEDIA') )
-	die('DIR_MEDIA not defined');
+define('ASENINE_DIR_CLASS',		ASENINE_DIR . 'class/');
+define('ASENINE_DIR_COMMON',	ASENINE_DIR . 'common/');
+define('ASENINE_DIR_CONFIG',	ASENINE_DIR . 'config/');
+define('ASENINE_DIR_INCLUDE',	ASENINE_DIR . 'include/');
+define('ASENINE_DIR_SITES',		ASENINE_DIR_ROOT . 'sites/');
 
-if( !defined('DIR_ASENINE') )
-	define('DIR_ASENINE', DIR_ROOT . 'framework/');
-
-define('DIR_CLASS',		DIR_ASENINE . 'class/');
-define('DIR_COMMON',	DIR_ASENINE . 'common/');
-define('DIR_CONFIG',	DIR_ASENINE . 'config/');
-define('DIR_INCLUDE',	DIR_ASENINE . 'include/');
-define('DIR_SITES',		DIR_ROOT . 'sites/');
-
-require DIR_INCLUDE . 'Functions.Global.inc.php';
-require DIR_INCLUDE . 'Functions.Asenine.inc.php';
+require ASENINE_DIR_INCLUDE . 'Functions.Global.inc.php';
+require ASENINE_DIR_INCLUDE . 'Functions.Asenine.inc.php';
 
 asenineDef('DEBUG', false);
 asenineDef('HOST', isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null);
 
-asenineDef('DIR_TEMP', '/tmp/');
+asenineDef('ASENINE_DIR_TEMP', '/tmp/');
 
-asenineDef('DIR_SITES', DIR_ROOT . 'sites/');
-asenineDef('DIR_MEDIA', DIR_ROOT . 'media/');
-asenineDef('DIR_MEDIA_SOURCE', DIR_MEDIA . 'source/');
+asenineDef('ASENINE_DIR_SITES', ASENINE_DIR_ROOT . 'sites/');
+
+asenineDef('ASENINE_DIR_ARCHIVE', ASENINE_DIR_ROOT . 'archive/');
+asenineDef('ASENINE_DIR_MEDIA', ASENINE_DIR_ARCHIVE . 'media/');
+asenineDef('ASENINE_DIR_MEDIA_PUBLIC', ASENINE_DIR_MEDIA . 'public/');
 
 
 define('HTTPS', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
 define('PROTOCOL', HTTPS ? 'https' : 'http');
 
+define('ASENINE_MEDIA_TYPE_AUDIO',	'audio');
+define('ASENINE_MEDIA_TYPE_IMAGE',	'image');
+define('ASENINE_MEDIA_TYPE_ROTATE',	'rotate');
+define('ASENINE_MEDIA_TYPE_VIDEO',	'video');
 
-$_domain = array_reverse(explode('.', HOST));
-$_subdomain = array_slice($_domain, 2);
-
-define('DOMAIN_ACTUAL', join('.', array_reverse($_domain)));
-define('SUBDOMAIN_ACTUAL', count($_subdomain) ? join('.', $_subdomain) . '.' : '');
-define('DOMAIN_FULL', SUBDOMAIN_ACTUAL . DOMAIN_ACTUAL);
-define('DOMAIN', DOMAIN_ACTUAL);
-
-unset($_domain, $_subdomain);
-
-define('CLIENT_HOST_ADDRESS', getenv('REMOTE_ADDR'));
-
-
-define('MEDIA_TYPE_AUDIO',	'audio');
-define('MEDIA_TYPE_IMAGE',	'image');
-define('MEDIA_TYPE_ROTATE',	'rotate');
-define('MEDIA_TYPE_VIDEO',	'video');
+define('ARCHIVE_NAMESPACE_MEDIA_SOURCE', 'media/source');
+define('ARCHIVE_NAMESPACE_MEDIA_AUTOGEN', 'media/autogen');
 
 if( !defined('CACHE_FORCE_REGENERATE') )
 	define('CACHE_FORCE_REGENERATE', isset($_GET['cacheForceRegenerate']));
 
 mb_internal_encoding('UTF-8');
 
-\addIncludePath(DIR_CLASS);
+\addIncludePath(ASENINE_DIR_CLASS);

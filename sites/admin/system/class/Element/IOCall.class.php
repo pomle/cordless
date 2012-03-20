@@ -2,8 +2,8 @@
 namespace Element;
 
 global $js;
-$js[] = '/js/objects/AjaxEvent.js';
-$js[] = '/js/IOCall.js';
+$js[] = URL_ADMIN . 'js/objects/AjaxEvent.js';
+$js[] = URL_ADMIN . 'js/IOCall.js';
 
 class IOCall
 {

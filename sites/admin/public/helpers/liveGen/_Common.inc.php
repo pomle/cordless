@@ -17,7 +17,7 @@ function tempSendFile($filePath, $fileName, $contentType)
 
 function getLiveTemp()
 {
-	return tempnam(DIR_TEMP, 'LiveGen_');
+	return tempnam(ASENINE_DIR_TEMP, 'LiveGen_');
 }
 
 if( !$Media = \Asenine\Media::loadFromDB($_GET['mediaID']) )

@@ -67,7 +67,7 @@ if( isset($filter['search']) && $filter['search'] )
 
 $mediaTypes = \Asenine\Media\Dataset::getTypes();
 
-if( $filter['type'] )
+if( isset($filter['type']) && $filter['type'] )
 {
 	$Stmt->addWhere('mediaType = %s', $filter['type']);
 	$Antiloop->addNotice(sprintf(_('Filtrerar på mediatyp "%s"'), $mediaTypes[$filter['type']] ?: $filter['type']));

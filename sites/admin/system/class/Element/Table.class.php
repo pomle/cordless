@@ -2,7 +2,7 @@
 namespace Element;
 
 ## global $css;
-## $css[] = '/css/QuickTable.css';
+## $css[] = URL_ADMIN . 'css/QuickTable.css';
 
 class Table
 {

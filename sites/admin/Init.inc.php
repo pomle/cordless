@@ -1,6 +1,6 @@
 <?
-require __DIR__ . '/Settings.inc.php';
 require __DIR__ . '/../Init.inc.php';
+require __DIR__ . '/Settings.inc.php';
 
 header("Content-Type: text/html; charset=utf-8");
 
@@ -18,7 +18,7 @@ foreach
 }
 
 if( !defined('DIR_ADMIN') )
-	define('DIR_ADMIN', DIR_SITES . 'admin/');
+	define('DIR_ADMIN', ASENINE_DIR_SITES . 'admin/');
 
 define('DIR_ADMIN_CONFIG', DIR_ADMIN . 'config/');
 define('DIR_ADMIN_PUBLIC', DIR_ADMIN . 'public/');
@@ -56,16 +56,16 @@ require DIR_ADMIN_INCLUDE . 'Messages.General.inc.php';
 
 $pageTitlePrefix = 'Asenine Admin';
 
-$css[] = '/css/Admin.css';
-$css[] = '/css/Awesome.css';
+$css[] = URL_ADMIN . 'css/Admin.css';
+$css[] = URL_ADMIN . 'css/Awesome.css';
 
 $js[] = DEBUG ? '//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js' : '//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
 
-$js[] = '/js/objects/AjaxEvent.js';
-$js[] = '/js/objects/FormManager.js';
-$js[] = '/js/objects/Messenger.js';
+$js[] = URL_ADMIN . 'js/objects/AjaxEvent.js';
+$js[] = URL_ADMIN . 'js/objects/FormManager.js';
+$js[] = URL_ADMIN . 'js/objects/Messenger.js';
 
-$js[] = '/js/Admin.js';
+$js[] = URL_ADMIN . 'js/Admin.js';
 
 $userPanel = array();
 

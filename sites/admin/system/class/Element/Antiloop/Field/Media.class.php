@@ -27,7 +27,7 @@ class Media extends Common\Root
 			{
 				if( strlen($value) != 32 ) return false;
 
-				if( isset($dataRow['mediaType']) && $dataRow['mediaType'] == MEDIA_TYPE_AUDIO )
+				if( isset($dataRow['mediaType']) && $dataRow['mediaType'] == ASENINE_MEDIA_TYPE_AUDIO )
 					return false;
 
 				if( $Field->crop )

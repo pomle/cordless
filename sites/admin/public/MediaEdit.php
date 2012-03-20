@@ -52,7 +52,7 @@ $MediaControl = new \Element\IOControl($IOCall);
 $MediaControl
 	->addButton(new \Element\Button\Save())
 	->addButton(new \Element\Button\Delete())
-	->addButton(\Element\Button::IO('publishToImgur', 'world', _('Publish')))
+	#->addButton(\Element\Button::IO('publishToImgur', 'world', _('Publish')))
 	;
 
 $AutogenControl = new \Element\IOControl($IOCall);

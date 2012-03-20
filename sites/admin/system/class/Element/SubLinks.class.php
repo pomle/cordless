@@ -2,7 +2,7 @@
 namespace Element;
 
 global $css;
-$css[] = '/css/SubLinks.css';
+$css[] = URL_ADMIN . 'css/SubLinks.css';
 
 class SubLinks
 {

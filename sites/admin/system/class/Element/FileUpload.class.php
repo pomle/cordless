@@ -2,10 +2,10 @@
 namespace Element;
 
 global $css, $js;
-$css[] = '/css/FileUpload.css';
-$js[] = '/js/jquery/jquery.serializeJSON.js';
-$js[] = '/js/jquery/jquery.dropUpload.js';
-$js[] = '/js/FileUpload.js';
+$css[] = URL_ADMIN . 'css/FileUpload.css';
+$js[] = URL_ADMIN . 'js/jquery/jquery.serializeJSON.js';
+$js[] = URL_ADMIN . 'js/jquery/jquery.dropUpload.js';
+$js[] = URL_ADMIN . 'js/FileUpload.js';
 
 class FileUpload extends IOControl
 {

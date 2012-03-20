@@ -6,6 +6,7 @@ use
 	Asenine\User\Manager,
 	Asenine\User\Operation;
 
+$pageTitle = _('Install');
 $username = null;
 
 if( isset($_POST['register']) )

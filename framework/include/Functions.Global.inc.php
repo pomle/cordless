@@ -23,9 +23,9 @@ function asenineDef($const, $value)
 
 function asenineLog($string, $space = 'Global')
 {
-	if( defined('DIR_LOG') )
+	if( defined('ASENINE_DIR_LOG') )
 	{
-		$filename = DIR_LOG . $space . '.log';
+		$filename = ASENINE_DIR_LOG . $space . '.log';
 		file_put_contents($filename, date('c: ') . $string . "\n", FILE_APPEND);
 	}
 }

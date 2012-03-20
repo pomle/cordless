@@ -9,11 +9,12 @@ class File
 	protected
 		$location,
 		$size,
-		$hash,
-		$name;
+		$hash;
+
 
 	public
-		$mime;
+		$mime,
+		$name;
 
 
 	public static function fromURL($fromURL, $toFile = null)
@@ -26,7 +27,7 @@ class File
 				throw New FileException('URL empty');
 
 			if( !$toFile )
-				$toFile = tempnam(DIR_TEMP, 'AsenineDownload');
+				$toFile = tempnam(ASENINE_DIR_TEMP, 'AsenineDownload');
 
 			if( !$d = @fopen($toFile, 'w') )
 				throw New FileException(sprintf('Could not open destination "%s" for writing', $toFile));
@@ -98,7 +99,7 @@ class File
 		if( !is_null($size) && ( !is_int($size) && ( $size < 0 ) ) )
 			throw New FileException(sprintf("File must be integer and 0 or more"));
 
-		$this->size = $size;
+		$this->size = $size ?: filesize($this->location);
 		$this->mime = $mime;
 		$this->name = $name ?: basename($this->location);
 	}

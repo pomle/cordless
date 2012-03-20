@@ -42,7 +42,7 @@ class LastFM
 	public function getArtistImage($artist)
 	{
 		if( $imageURLs = $this->getArtistImageURLs($artist) )
-			if( $Media = \Asenine\Media\Operation::downloadFileToLibrary(reset($imageURLs), MEDIA_TYPE_IMAGE) )
+			if( $Media = \Asenine\Media\Operation::downloadFileToLibrary(reset($imageURLs), ASENINE_MEDIA_TYPE_IMAGE) )
 				return $Media;
 
 		return false;

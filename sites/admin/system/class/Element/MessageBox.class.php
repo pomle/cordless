@@ -2,8 +2,8 @@
 namespace Element;
 
 global $css, $js;
-$css[] = '/css/MessageBox.css';
-$js[] = '/js/MessageBox.js';
+$css[] = URL_ADMIN . 'css/MessageBox.css';
+$js[] = URL_ADMIN . 'js/MessageBox.js';
 
 class MessageBox
 {

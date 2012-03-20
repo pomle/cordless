@@ -3,7 +3,7 @@ namespace Asenine\Media\Type;
 
 class Image extends _Visual
 {
-	const TYPE = MEDIA_TYPE_IMAGE;
+	const TYPE = ASENINE_MEDIA_TYPE_IMAGE;
 	const DESCRIPTION = 'Image / Graphic';
 
 	public static function canHandleFile($filePath)
