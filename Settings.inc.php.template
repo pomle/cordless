@@ -32,10 +32,10 @@ define('ASENINE_PDO_PASS', 'cordless');
 define('ASENINE_USER_PASSWORD_SALT', 'y7j123c86gh5768G&%)¤)/E98h6871h56/('); ### Set this to something funny
 
 
+### Most of the time "./" works well as URL prefix, but it can sometimes be needed to specifiy an absolute URL to where Cordless is hosted. Set to "/cordless/", "http://cordless.mydomain.com/" or as suitable
+define('URL_PLAYER', './'); ### Cordless
+define('URL_ADMIN', './'); ### Admin (not required)
 
-### Cordless Settings
-define('URL_ADMIN', '/');
-define('URL_PLAYER', '');
 
 ### To use the Last.fm API with your installation, obtain your own key from http://www.last.fm/api/account
 #define('LAST_FM_API_KEY', false);
