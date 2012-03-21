@@ -27,7 +27,7 @@ if( $isLastFmAvailable )
 <div class="home">
 
 	<section class="status">
-		<h3><img src="/img/Cordless_Last.fm-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars(_($User->username)); ?></h3>
+		<h3><img src="./img/Cordless_Last.fm-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars(_($User->username)); ?></h3>
 
 		<ul>
 			<li><? echo htmlspecialchars(sprintf(_("Tracks in Library: %s"), formatCount($userTrackCount))); ?></li>
@@ -74,7 +74,7 @@ if( $isLastFmAvailable )
 
 		?>
 		<section class="lastfm_status">
-			<h3><img src="/img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars($User->last_fm_username); ?></h3>
+			<h3><img src="./img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars($User->last_fm_username); ?></h3>
 
 			<ul id="last_fm_status" data-lastfm-username="<? echo htmlspecialchars($User->last_fm_username); ?>">
 				<li><a href="<? echo $lastHomeURL; ?>" target="last_fm_userhome"><? echo _("Last.fm Home"); ?></a></li>
@@ -105,7 +105,7 @@ if( $isLastFmAvailable )
 		{
 			?>
 			<ul>
-				<li><a href="<? echo $urlLastFmConnect; ?>" target="last_fm_connect"><img src="/img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo _("Connect to Last.fm"); ?></a></li>
+				<li><a href="<? echo $urlLastFmConnect; ?>" target="last_fm_connect"><img src="./img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo _("Connect to Last.fm"); ?></a></li>
 			</ul>
 			<?
 		}

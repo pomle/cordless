@@ -2,7 +2,7 @@ body {
 	color: #4f4f4f;
 	background-attachment: fixed, scroll;
 	background-color: none, #0f0f0f;
-	background-image: url('/img/Background_TT.jpg'), url('../img/Noise_Dark.png');
+	background-image: url('../img/Turntable.jpg'), url('../img/Noise_Dark.png');
 	background-repeat: no-repeat, repeat;
 	background-position: top center, 0 0;
 	background-size: cover, auto;
@@ -53,6 +53,12 @@ header .search input {
 header nav {
 }
 
+header .home {
+	background: transparent url('../img/Cordless_Logo.png') 0 0 no-repeat;
+	display: inline-block;
+	height: 31px;
+	width: 132px;
+}
 
 .sidebar {
 	box-shadow: 0 0 15px rgba(0,0,0,1);

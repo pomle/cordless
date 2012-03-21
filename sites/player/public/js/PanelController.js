@@ -11,7 +11,7 @@ function PanelController(type, canvas, trail)
 
 	this.goTo = function(name, params)
 	{
-		return this.goToURL('/ajax/Panel.php?type=Library&name=' + name, params);
+		return this.goToURL('./ajax/Panel.php?type=Library&name=' + name, params);
 	}
 
 	this.goToHistoryIndex = function(index)

@@ -1,8 +1,8 @@
-function APIController()
+function APIController(api_endpoint_url)
 {
 	var self = this;
 
-	var cordless_api_url = '/api/?method=';
+	api_endpoint_url += '?method=';
 
 	var
 		queue = [],
@@ -20,7 +20,7 @@ function APIController()
 	{
 		$.ajax({
 			'type': 'POST',
-			'url': cordless_api_url + method,
+			'url': api_endpoint_url + method,
 			'data': params,
 			'dataType': 'json',
 			'error': function(jqXHR, textStatus, errorThrows) { console.log(textStatus); },

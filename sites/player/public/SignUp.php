@@ -87,7 +87,7 @@ if( isset($_POST['signup']) )
 
 		echo Element\Page\Message::notice(
 			sprintf(_("Welcome %s!"), $User->username),
-			_('You are now a Cordless user.') . ' ' . sprintf('<a href="/">%s &raquo;</a>', htmlspecialchars(_("Go listen!")))
+			_('You are now a Cordless user.') . ' ' . sprintf('<a href="./">%s &raquo;</a>', htmlspecialchars(_("Go listen!")))
 		);
 
 		exit();

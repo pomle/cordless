@@ -6,7 +6,7 @@ if( isset($_POST['login']) )
 	echo Element\Page\Message::error(
 		_("Login Failed"),
 		_('And this extra page is to annoy you for being careless with your precious login details.')
-			. ' ' . sprintf('<a href="/Login.php">%s</a>', htmlspecialchars(_("Try again?")))
+			. ' ' . sprintf('<a href="%sLogin.php">%s</a>', URL_PLAYER, htmlspecialchars(_("Try again?")))
 	);
 
 	die();
@@ -18,7 +18,7 @@ include DIR_ELEMENT . 'Header.Outside.inc.php';
 ?>
 <h1><? echo _("Login"); ?></h1>
 
-<a href="/SignUp.php"><? echo _("I have an invite"), ' &raquo;'; ?></a>
+<a href="./SignUp.php"><? echo _("I have an invite"), ' &raquo;'; ?></a>
 
 <form action="<? echo getenv('REQUEST_URI'); ?>" method="post">
 	<table class="login">

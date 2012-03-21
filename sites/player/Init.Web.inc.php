@@ -32,7 +32,7 @@ if( !defined('NO_LOGIN') || constant('NO_LOGIN') !== true )
 	{
 		header('HTTP/1.1 403 Forbidden');
 
-		echo \Element\Page\Message::error(
+		echo Element\Page\Message::error(
 			_("Access Denied"),
 			_("Sorry, this account can not access Cordless")
 		);

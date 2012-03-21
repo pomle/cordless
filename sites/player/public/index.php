@@ -50,7 +50,8 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 
 	?>
 	<style type="text/css">
-		body {
+		body
+		{
 			<? if( $bg = $User->getSetting('WebUI_Global_Background_URL') ) printf("background-image: url('%s');", $bg); ?>
 		}
 	</style>
@@ -59,19 +60,24 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 	<meta name="viewport" content="width=800">
 </head>
 
-<body id="cordless" class="<? echo trim(join(' ', $bodyClass)); ?>" data-lastfmapikey="<? echo LAST_FM_API_KEY; ?>">
+<body
+	id="cordless"
+	class="<? echo trim(join(' ', $bodyClass)); ?>"
+	data-cordless-api-url="<? echo htmlspecialchars(URL_PLAYER_API); ?>"
+	data-last-fm-api-key="<? echo htmlspecialchars(LAST_FM_API_KEY); ?>
+	">
 	<header id="control">
 
 		<div class="inner">
 
-			<form action="/ajax/Panel.php?type=Library&amp;name=Tracks-Search" method="get" id="search">
+			<form action="./ajax/Panel.php?type=Library&amp;name=Tracks-Search" method="get" id="search">
 				<div class="search">
 					<input type="text" name="q" value="<? if( isset($_COOKIE['searchQuery']) ) echo htmlspecialchars($_GET['searchQuery']); ?>">
 				</div>
 			</form>
 
 			<div class="torus">
-				<a href="#Home" class="panelLibrary"><img src="/img/Cordless_Logo.png" alt="Cordless"></a>
+				<a href="#Home" class="home panelLibrary"></a>
 
 				<nav class="library">
 					<div class="goTo">
@@ -101,7 +107,7 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 
 		<div class="content">
 			<?
-			$UploadForm = new Element\Upload('/api/?method=Import.ReceiveFile');
+			$UploadForm = new Element\Upload( apiLink('Import.ReceiveFile') );
 			echo $UploadForm;
 			?>
 			<a href="#Tracks-AddTime" class="panelLibrary"><? echo _("Go to Recent Tracks"), ' &raquo;'; ?></a>

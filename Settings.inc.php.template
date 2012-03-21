@@ -35,7 +35,7 @@ define('ASENINE_USER_PASSWORD_SALT', 'y7j123c86gh5768G&%)¤)/E98h6871h56/('); ##
 
 ### Cordless Settings
 define('URL_ADMIN', '/');
-define('URL_PLAYER', '//dev.cordless.se//');
+define('URL_PLAYER', '');
 
 ### To use the Last.fm API with your installation, obtain your own key from http://www.last.fm/api/account
 #define('LAST_FM_API_KEY', false);
