@@ -5,10 +5,10 @@ class Artwork
 {
 	public static function createFromArtist(\Cordless\Artist $Artist)
 	{
-		$LastFM = \Cordless\getLastFM();
+		if( $LastFM = \Cordless\getLastFM() )
+			if( $Image = $LastFM->getArtistImage($Artist->name) )
+				return $Image;
 
-		$Image = $LastFM->getArtistImage($Artist->name);
-
-		return $Image;
+		return false;
 	}
 }

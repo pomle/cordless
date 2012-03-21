@@ -6,11 +6,13 @@ class UserTrack
 	public static function importFile(\Cordless\User $User, \Asenine\File $File)
 	{
 		if( !\Asenine\Media\Type\Audio::canHandleFile($File) )
-			throw New \Exception(_("Unsupported File =/"));
+			throw new \Exception(_("Unsupported File =/"));
 
-		$Audio = \Asenine\Media\Type\Audio::createFromFile($File);
+		if( !$Audio = \Asenine\Media\Type\Audio::createFromFile($File) )
+			throw new \Exception(_("Failed to create Audio object"));
 
-		$Audio = \Asenine\Media::integrateIntoLibrary($Audio, $File->name);
+		if( !$Audio = \Asenine\Media::integrateIntoLibrary($Audio, $File->name) )
+			throw new \Exception(_("Failed to import file to library"));
 
 		$Track = Track::createFromAudio($Audio);
 

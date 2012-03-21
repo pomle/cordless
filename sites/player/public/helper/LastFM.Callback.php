@@ -1,6 +1,8 @@
 <?
 namespace Cordless;
 
+$baseHref = '../';
+
 require '../../Init.Web.inc.php';
 
 $last_fm_string_html = '<span style="color: #e60000;">Last.fm</span>';
@@ -9,10 +11,11 @@ try
 {
 	if( !isset($_GET['token']) ) throw New \Exception('Token missing');
 
-	$LastFM = getLastFM();
+	if( !$LastFM = getLastFM() )
+		throw new \Exception("This installation of Cordless does not have an API key installed");
 
 	if( !$Session = $LastFM->getSession($_GET['token']) )
-		throw New \Exception("Could not obtain Last fm Session");
+		throw new \Exception("Could not obtain Last.fm Session");
 
 
 	$User->last_fm_username = $Session->name;

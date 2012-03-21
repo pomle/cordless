@@ -20,18 +20,11 @@ abstract class UserTrackList
 
 	public static function createFromUserTracks(Array $userTracks)
 	{
-		$fallbackImageURLs = array('/img/UserTrackList_Blue.png', '/img/UserTrackList_Purple.png', '/img/UserTrackList_Swamp.png');
-		$fallbackCount = count($fallbackImageURLs);
-
 		$I = new static();
 		$i = 0;
 		foreach($userTracks as $UserTrack)
 		{
 			$UserTrackItem = UserTrackItem::fromUserTrack($UserTrack);
-
-			if( !isset($UserTrackItem->imageURL) )
-				$UserTrackItem->imageURL = $fallbackImageURLs[$i++ % $fallbackCount];
-
 			$I->addUserTrackItem($UserTrackItem);
 		}
 		return $I;

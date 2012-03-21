@@ -1,6 +1,9 @@
-<!DOCTYPE html>
+<?
+global $baseHref;
+?><!DOCTYPE html>
 <html lang="en">
 <head>
+	<base href="<? echo $baseHref; ?>">
 	<?
 	if( isset($pageTitle) ) printf('<title>%s</title>', htmlspecialchars($pageTitle));
 

@@ -10,6 +10,9 @@ require DIR_SITE_SYSTEM . 'init/User.inc.php';
 define('HEADER', DIR_ELEMENT . 'Header.inc.php');
 define('FOOTER', DIR_ELEMENT . 'Footer.inc.php');
 
+if( !isset($baseHref) )
+	$baseHref = './';
+
 $pageTitle = 'Cordless';
 
 $css = array();

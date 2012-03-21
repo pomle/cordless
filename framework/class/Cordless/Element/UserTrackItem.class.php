@@ -58,7 +58,7 @@ class UserTrackItem
 			>
 
 			<div class="image">
-				<img src="<? echo $this->imageURL; ?>">
+				<? if( $this->imageURL ) printf('<img src="%s">', $this->imageURL); ?>
 			</div>
 
 			<div class="control track">

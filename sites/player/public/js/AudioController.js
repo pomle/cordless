@@ -1,4 +1,4 @@
-function AudioController( PlayQueue )
+function AudioController( PlayQueue , api_url )
 {
 	var self = this;
 
@@ -232,7 +232,7 @@ function AudioController( PlayQueue )
 
 		this.playbackReset();
 
-		if( this.trackLoadURL('/api/?method=Stream&userTrackID=' + userTrackID) )
+		if( this.trackLoadURL( api_url + '?method=Stream&userTrackID=' + userTrackID ) )
 		{
 			this.isTrackLoaded = true;
 

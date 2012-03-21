@@ -117,7 +117,7 @@ if( $isLastFmAvailable )
 		</ul>
 
 		<ul>
-			<li><a href="/Logout.php"><? echo _("Logout"); ?></a></li>
+			<li><a href="./Logout.php"><? echo _("Logout"); ?></a></li>
 		</ul>
 	</section>
 

@@ -1,10 +1,12 @@
 function CordlessController()
 {
-	this.API		= new APIController( $('#cordless').data('cordless-api-url') );
+	var api_url = $('#cordless').data('cordless-api-url');
+
+	this.API		= new APIController( api_url );
 	this.Interface	= new InterfaceController( $('#player'), $('#playqueue'), $('#upload') );
 	this.Library	= new PanelController('Library', $('#library>.content'), $('#library>.history>.trail'));
 	this.PlayQueue	= new PlaylistController( $('#playqueue').find('.playlist') );
-	this.Player		= new AudioController( this.PlayQueue );
+	this.Player		= new AudioController( this.PlayQueue, api_url );
 	this.NowPlaying = new NowPlayingController( this.Player );
 
 	this.LAST_FM_API_KEY = $('#cordless').data('last-fm-api-key') || null;
