@@ -8,7 +8,7 @@ use
 
 echo Element\Library::head(_("Last.fm Settings"));
 ?>
-<form action="/api/?method=User.Settings.Lastfm" method="POST">
+<form action="<? echo apiLink('User.Settings.Lastfm'); ?>" method="POST">
 	<div class="settings">
 
 		<?

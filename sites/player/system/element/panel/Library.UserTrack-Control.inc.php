@@ -24,7 +24,7 @@ echo Element\Library::head(
 
 ?>
 <div class="edit">
-	<form action="/api/?method=UserTrack.Edit" method="POST">
+	<form action="<? echo apiLink('UserTrack.Edit'); ?>" method="POST">
 		<div class="settings">
 
 			<?
