@@ -22,7 +22,7 @@ class Archive
 		if( strlen($namespace) == 0 )
 			throw New ArchiveException('Required arg #1 missing from ' . __METHOD__);
 
-		if( preg_match('%[^A-Za-z/]%', $namespace) )
+		if( preg_match('%[^A-Za-z0-9/]%', $namespace) )
 			throw New ArchiveException("Archive namespace argument ($namespace) contains illegal characters");
 
 		$this->namespace = (string)$namespace;
