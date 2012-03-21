@@ -88,6 +88,7 @@ abstract class Media implements iMedia
 		$Archive = self::getArchive();
 
 		$File = new File( $Media->getFilePath() );
+		$File->name = $File->hash;
 
 		$LibraryFile = $Archive->putFile($File);
 
