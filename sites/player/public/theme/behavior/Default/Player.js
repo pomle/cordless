@@ -9,6 +9,10 @@ $(function()
 	var eTrackArtist = eCordless.find('.trackinfo .artist');
 	var eTrackError = eCordless.find('.trackinfo .error');
 
+	var 
+		isNextTrackChecked = false,
+		isNextTrackReady = false; 
+
 	// "Global" functions
 	function updateProgressBar(value)
 	{
@@ -44,6 +48,21 @@ $(function()
 		var time = formatDuration(Track.position);
 		if( eTrackPosition.text() != time )
 			eTrackPosition.text(time).trigger('onUpdate');
+
+		if( !isNextTrackChecked && Track.progress > 0.75 )
+		{
+			isNextTrackChecked = true;
+			eUserTrack = Cordless.PlayQueue.itemNext();
+			var userTrackID = eUserTrack.data('usertrackid');
+
+			Cordless.API.makeCall(
+				'Stream', 
+				{'userTrackID': userTrackID, 'prepare': 1},
+				function(response) {
+					isNextTrackReady = response.data.isPrepared;
+				}
+			);
+		}
 	}
 
 	Cordless.Player.eventTrackEnded = function(Track)
@@ -53,13 +72,16 @@ $(function()
 
 	Cordless.Player.eventTrackLoaded = function(Track, userTrack)
 	{
+		isNextTrackReady = false;
+		isNextTrackChecked = false;
+
 		eTrackTitle.html(Track.artist + ' - ' + Track.title);
 		eTrackError.text('');
 
 		eCordless
 			.addClass('isBusy')
-			.data('playing-artist', this.playingArtist)
-			.data('playing-title', this.playingTitle)
+			.data('playing-artist', Track.artist)
+			.data('playing-title', Track.title)
 			.trigger('onTrackLoaded')
 			;
 
@@ -84,6 +106,8 @@ $(function()
 
 	Cordless.Player.eventTrackUnloaded = function(Track)
 	{
+
+
 		eCordless.removeClass('isReady');
 
 		eTrackPosition.text( formatDuration(0) ).trigger('onUpdate');
