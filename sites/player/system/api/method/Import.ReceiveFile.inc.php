@@ -9,19 +9,24 @@ function APIMethod($User, $params)
 	if( !isset($_FILES) || !is_array($_FILES) || !count($_FILES) )
 		throw new APIException(_("No files received"));
 
-	try
+	foreach($_FILES as $file)
 	{
-		foreach($_FILES as $file)
+		$fileName = $file['name'];
+
+		try
 		{
+			if( empty($file['tmp_name']) )
+				throw new APIException(_('File data empty'));
+
 			$File = \Asenine\File::fromPHPUpload($file);
 			$UserTrack = Event\UserTrack::importFile($User, $File);
-
-			break;
 		}
-	}
-	catch(\Exception $e)
-	{
-		throw new APIException($File->name . ": " . $e->getMessage());
+		catch(\Exception $e)
+		{
+			throw new APIException($fileName . ": " . $e->getMessage());
+		}
+
+		break;
 	}
 
 	return (string)$UserTrack;
