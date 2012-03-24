@@ -26,22 +26,14 @@ try
 	if( !file_exists($methodFile = DIR_CORDLESS_API_METHODS . $method . '.inc.php') )
 		throw DEBUG ? new \Exception("Method file missing: " . $methodFile) : new APIException("Method " . $method . " does not exist");
 
-
 	require $methodFile;
 
 
 	session_start();
-
-	### Always be $User:ing!
-	if( !isset($_SESSION['User']) || !$_SESSION['User'] instanceof User )
-		$_SESSION['User'] = new User();
-
-	$User = $_SESSION['User'];
-
+	require DIR_SITE_SYSTEM . 'init/User.inc.php';
 
 	if( $keepSession !== true )
 		session_write_close();
-
 
 	if( $requireLogin !== false )
 		ensureLogin($User);
