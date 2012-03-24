@@ -3,15 +3,13 @@ namespace Cordless;
 
 require __DIR__ . '/Init.Application.inc.php';
 
-session_start();
-
-require DIR_SITE_SYSTEM . 'init/User.inc.php';
+header("Content-type: text/html; charset=utf-8");
 
 define('HEADER', DIR_ELEMENT . 'Header.inc.php');
 define('FOOTER', DIR_ELEMENT . 'Footer.inc.php');
 
-if( !isset($baseHref) )
-	$baseHref = './';
+
+if( !isset($baseHref) ) $baseHref = './';
 
 $pageTitle = 'Cordless';
 
@@ -21,7 +19,10 @@ $css[] = URL_PLAYER . 'css/Base.css';
 
 $js = array();
 
-header("Content-type: text/html; charset=utf-8");
+
+session_start();
+require DIR_SITE_SYSTEM . 'init/User.inc.php';
+
 
 if( !defined('NO_LOGIN') || constant('NO_LOGIN') !== true )
 {
