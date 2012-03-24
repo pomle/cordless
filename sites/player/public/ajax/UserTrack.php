@@ -1,7 +1,11 @@
 <?
 namespace Cordless;
 
-require '../../Init.Web.inc.php';
+require '../../Init.Application.inc.php';
+
+session_start();
+require DIR_SITE_SYSTEM . 'init/User.inc.php';
+session_write_close();
 
 try
 {
