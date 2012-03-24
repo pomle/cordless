@@ -13,10 +13,10 @@ function no($a)
 	return (strlen($a) == 1 && strpos('Nn', $a) !== false);
 }
 
+if( !isset($argv[1]) )
+	die("Usage " . exec("which php") . " " . basename(__FILE__) . " path/to/media\n");
 
-list(, $src, $dst) = $argv;
-
-$src = realpath($src);
+$src = realpath($argv[1]);
 $dst = realpath(ASENINE_DIR_ARCHIVE);
 
 if( !file_exists($src) || !is_dir($src) || !is_readable($src) )
@@ -38,19 +38,26 @@ for(;;)
 		break;
 }
 
-$src_Source = new DirectoryIterator($src . '/source/');
-$dst_Source = new \Asenine\Archive('media/source/');
-
-foreach($src_Source as $pFile)
+try
 {
-	if( $pFile->isFile() )
+	$src_Source = new DirectoryIterator($src . '/source/');
+	$dst_Source = new \Asenine\Archive('media/source/');
+
+	foreach($src_Source as $pFile)
 	{
-		$sourceFile = $pFile->getPathname();
-		$File = new \Asenine\File($sourceFile);
-		$NewFile = $dst_Source->putFile($File);
+		if( $pFile->isFile() )
+		{
+			$sourceFile = $pFile->getPathname();
+			$File = new \Asenine\File($sourceFile);
+			$NewFile = $dst_Source->putFile($File);
 
-		$destFile = $NewFile->location;
+			$destFile = $NewFile->location;
 
-		printf("Copied %s to %s\n", $sourceFile, $destFile);
+			printf("Copied %s to %s\n", $sourceFile, $destFile);
+		}
 	}
+}
+catch(Exception $e)
+{
+	die( $e->getMessage() );
 }
