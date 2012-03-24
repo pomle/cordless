@@ -38,12 +38,17 @@ function APIMethod($User, $params)
 			throw New APIException(sprintf(_('MIME format was "%s", expected */%s'), $mimeType, join('|', $allowFormats)));
 	}
 
+	try
+	{
+		$File = \Asenine\File::fromURL($url);
+		$File->mime = $mimeType;
 
-
-	$File = \Asenine\File::fromURL($url);
-	$File->mime = $mimeType;
-
-	$UserTrack = Event\UserTrack::importFile($User, $File);
+		$UserTrack = Event\UserTrack::importFile($User, $File);
+	}
+	catch(\Exception $e)
+	{
+		throw new APIException($e->getMessage());
+	}
 
 	return (string)$UserTrack;
 }
