@@ -10,29 +10,7 @@ class APIException extends \Exception
 class ParamException extends \Exception
 {}
 
-define("IS_USING_TOKEN", false); //!(bool)preg_match('/Mozilla/', $_SERVER['HTTP_USER_AGENT']) );
-
-if( IS_USING_TOKEN )
-{
-	if( isset($_SERVER['HTTP_X_CORDLESS_TOKEN']) )
-		$token = $_SERVER['HTTP_X_CORDLESS_TOKEN'];
-	elseif( isset($_GET['token']) )
-		$token = $_GET['token'];
-	else
-		$token = null;
-
-	if( strlen($token) != 32 ) ### If session id set fails, generate new
-	{
-		$token = md5(time() . '+01+1ur9m1u09cj1m049un1');
-		header("X-Cordless-Token: " . $token);
-	}
-
-	session_id($token);
-}
-else
-{
-	header("Content-Type: text/plain");
-}
+header("Content-Type: application/json");
 
 try
 {
@@ -66,17 +44,8 @@ try
 
 
 	if( $requireLogin !== false )
-	{
 		ensureLogin($User);
 
-		if( IS_USING_TOKEN )
-		{
-			if( !isset($_GET['sig']) )
-				throw New APIException("Signature Missing");
-
-			ensureSignature($User, $_GET['sig']);
-		}
-	}
 
 	jsonResponse(true, APIMethod($User, $_POST ? $_POST : $_GET));
 }
