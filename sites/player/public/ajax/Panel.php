@@ -3,19 +3,17 @@ namespace Cordless;
 
 require '../../Init.Application.inc.php';
 
+session_start();
+require DIR_SITE_SYSTEM . 'init/User.inc.php';
+session_write_close();
+
 class PanelException extends \Exception
 {}
 
 try
 {
-	session_start();
-
-	if( !isset($_SESSION['User']) || !$_SESSION['User'] instanceof User )
-		throw new PanelException(_("Session lost.") . ' <a href="/Login.php">' . _("Go to Login") . ' &raquo;</a>');
-
-	$User = $_SESSION['User'];
-
-	session_write_close();
+	if( !$User->isLoggedIn() )
+		throw new PanelException(_("Session lost.") . sprintf(' <a href="%s">%s</a> &raquo;', URL_LOGIN, _("Go to Login")));
 
 	if( !isset($_GET['type']) )
 		throw New PanelException('Panel type not specified');

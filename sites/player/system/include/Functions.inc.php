@@ -13,7 +13,7 @@ function apiLink($method, $params = null)
 		foreach($params as $key => $value)
 			$getStr .= '&' . urlencode($key) . '=' . urlencode($value);
 
-	return URL_PLAYER_API . "?method=" . urlencode($method) . $getStr;
+	return URL_API . "?method=" . urlencode($method) . $getStr;
 }
 
 function formatDuration($seconds)
