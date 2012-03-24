@@ -1,7 +1,7 @@
 body {
 	color: #4f4f4f;
 	background-attachment: fixed, scroll;
-	background-color: none, #0f0f0f;
+	background-color: transparent, #0f0f0f;
 	background-image: url('../img/Turntable.jpg'), url('../img/Noise_Dark.png');
 	background-repeat: no-repeat, repeat;
 	background-position: top center, 0 0;
