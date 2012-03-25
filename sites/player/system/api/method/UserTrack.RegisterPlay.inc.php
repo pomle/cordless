@@ -4,6 +4,7 @@ namespace Cordless;
 function APIMethod($User, $params)
 {
 	$timeNow = time();
+	$cordless_doRegister = false;
 	$lastFM_wasScrobbled = false;
 
 	$UserTrack = getUserTrack($params, $User);
@@ -12,11 +13,10 @@ function APIMethod($User, $params)
 	$duration = isset($params['duration']) ? (float)$params['duration'] : null;
 	$playedTime = isset($params['playedTime']) ? (float)$params['playedTime'] : 0;
 
-
+	$cordless_doRegister = ($playedTime > 60*4 || $playedTime > $duration / 2);
 	$lastFM_doScrobble = ( $duration > 30 && ($playedTime > 60*4 || $playedTime > $duration / 2) );
 
-	### We apply the same rules for registering a play as Last.fm
-	if( $lastFM_doScrobble && !$UserTrack->registerPlay($playedTime) )
+	if( $cordless_doRegister && !$UserTrack->registerPlay($playedTime) )
 		throw New \Exception('UserTrack::registerPlay() returned false');
 
 
@@ -39,7 +39,7 @@ function APIMethod($User, $params)
 
 	return array(
 		'userTrackID' => $UserTrack->userTrackID,
-		'wasRegistered' => $lastFM_doScrobble,
+		'wasRegistered' => $cordless_doRegister,
 		'lastFM_wasScrobbled' => $lastFM_wasScrobbled
 	);
 }

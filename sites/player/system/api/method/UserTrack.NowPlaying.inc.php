@@ -3,20 +3,13 @@ namespace Cordless;
 
 function APIMethod($User, $params)
 {
-	$timeNow = time();
+	$UserTrack = getUserTrack($params, $User);
 
+	$timeNow = time();
 	$lastFM_wasNotified = false;
 
-	if( isset($params['userTrackID']) && $UserTrack = getUserTrack($params, $User) )
-	{
-		$artist = $UserTrack->artist;
-		$title = $UserTrack->title;
-	}
-	else
-	{
-		$artist = isset($params['artist']) ? $params['artist'] : null;
-		$title = isset($params['title']) ? $params['title'] : null;
-	}
+	$artist = $UserTrack->artist;
+	$title = $UserTrack->title;
 
 	$duration = isset($params['duration']) ? $params['duration'] : null;
 

@@ -3,31 +3,36 @@ namespace Cordless;
 
 function APIMethod($User, $params)
 {
-	if( !isset($params['isStarred']) )
-		throw new ParamException('isStarred');
+	ensureParams($params, 'userTrackID');
 
-	$UserTrack = getUserTrack($params, $User);
+	$isModify = isset($params['isStarred']);
+	$lastFM_wasPropagated = null;
 
-	$lastFM_wasPropagated = false;
+	$UserTrack = getUserTrack($params, $isModify ? $User : null);
 
-	if( $params['isStarred'] )
+	if( $isModify )
 	{
-		$UserTrack->star();
+		$lastFM_wasPropagated = false;
 
-		if( $User->last_fm_love_starred_tracks && $LastFM = getLastFM() )
+		if( $params['isStarred'] )
 		{
-			$lastFM_wasPropagated = true;
-			$xml = $LastFM->trackLove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
+			$UserTrack->star();
+
+			if( $User->last_fm_love_starred_tracks && $LastFM = getLastFM() )
+			{
+				$lastFM_wasPropagated = true;
+				$xml = $LastFM->trackLove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
+			}
 		}
-	}
-	else
-	{
-		$UserTrack->unstar();
-
-		if( $User->last_fm_unlove_unstarred_tracks && $LastFM = getLastFM() )
+		else
 		{
-			$lastFM_wasPropagated = true;
-			$xml = $LastFM->trackUnlove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
+			$UserTrack->unstar();
+
+			if( $User->last_fm_unlove_unstarred_tracks && $LastFM = getLastFM() )
+			{
+				$lastFM_wasPropagated = true;
+				$xml = $LastFM->trackUnlove($User->last_fm_key, $UserTrack->artist, $UserTrack->title);
+			}
 		}
 	}
 
