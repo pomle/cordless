@@ -233,6 +233,16 @@ class UserTrack
 		return $this->queryToUserTracks($query);
 	}
 
+	public function getUserTracks($userTrackIDs)
+	{
+		$userTracks = \Cordless\UserTrack::loadFromDB($userTrackIDs);
+
+		foreach($userTracks as $UserTrack)
+			$UserTrack->isOwner = ($UserTrack->userID === $this->userID);
+
+		return $userTracks;
+	}
+
 	public function queryToUserTracks($query) ### Helper function that appends LIMIT clause if $this->limit is set and avoids extra query if ID count is zero
 	{
 		if( $this->limit )
@@ -253,12 +263,7 @@ class UserTrack
 		if( $resultLen == 0 )
 			return array();
 
-		$userTracks = \Cordless\UserTrack::loadFromDB(array_slice($userTrackIDs, 0, $this->limit ?: null));
-
-		foreach($userTracks as $UserTrack)
-			$UserTrack->isOwner = ($UserTrack->userID === $this->userID);
-
-		return $userTracks;
+		return self::getUserTracks(array_slice($userTrackIDs, 0, $this->limit ?: null));
 	}
 
 	public function pageSkip($diff)

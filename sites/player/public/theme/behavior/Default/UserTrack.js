@@ -26,5 +26,23 @@ $(function()
 				}
 			);
 		})
+
+		.on("click", ".userTrackPlay", function(e) {
+			e.preventDefault();
+
+			var userTrackID = $(this).data('usertrackid');
+
+			Cordless.API.makeCall(
+				'UserTrack.HTML',
+				{'userTrackIDs': userTrackID},
+				function(response)
+				{
+					var userTrack = $(response.data[userTrackID]);
+					Cordless.PlayQueue.afterCurrent(userTrack);
+					if( Cordless.Player.trackLoadItem(userTrack) )
+						Cordless.Player.playbackStart();
+				}
+			);
+		})
 		;
 });

@@ -20,7 +20,8 @@ class UserTrack
 		$filename,
 		$artist,
 		$title,
-		$isStarred;
+		$isStarred,
+		$isOwner;
 
 
 	public static function addStars(Array $userTrackIDs)

@@ -222,7 +222,7 @@ nav.library .goTo .next {
 	width: 200px;
 }
 
-#library .userTrackEdit .canvas .image .play {
+#library .userTrackEdit .canvas .image .userTrackPlay {
 	background: transparent url('../img/UserTrackControl-Play.png') no-repeat center;
 	display: block;
 	height: 100%;
@@ -230,7 +230,7 @@ nav.library .goTo .next {
 	width: 100%;
 }
 
-#library .userTrackEdit .canvas .image .play:hover {
+#library .userTrackEdit .canvas .image .userTrackPlay:hover {
 	opacity: 1;
 }
 

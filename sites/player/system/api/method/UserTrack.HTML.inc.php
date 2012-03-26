@@ -5,14 +5,16 @@ function APIMethod(User $User, $params)
 {
 	list($userTrackIDs) = ensureParams($params, 'userTrackIDs');
 
-	$userTracks = UserTrack::loadFromDB((array)$userTrackIDs);
+	$userTrackIDs = (array)$userTrackIDs;
+
+	$Fetch = new Fetch\UserTrack($User);
+
+	$userTracks = $Fetch->getUserTracks($userTrackIDs);
 
 	$response = array();
 
 	foreach($userTracks as $UserTrack)
-		$reponse[$UserTrack->userTrackID] = (string)Element\UserTrackItem::fromUserTrack($UserTrack);
-
-	return 'blaha';
+		$response[$UserTrack->userTrackID] = trim(preg_replace("/[\n\t]+/", " ", (string)Element\UserTrackItem::fromUserTrack($UserTrack)));
 
 	return $response;
 }
