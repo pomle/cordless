@@ -57,27 +57,19 @@ function loadPanel($type, $name, $title = null)
 {
 	global $User;
 
-	try
-	{
-		if( preg_match('/[^A-Za-z]/', $type) > 0 )
-			throw New \Exception('Invalid Panel Type');
+	if( preg_match('/[^A-Za-z]/', $type) > 0 )
+		throw new \Exception('Invalid Panel Type');
 
-		if( preg_match('/[^A-Za-z\-]/', $name) > 0 )
-			throw New \Exception('Invalid Panel Name');
+	if( preg_match('/[^A-Za-z\-]/', $name) > 0 )
+		throw new \Exception('Invalid Panel Name');
 
-		$includeFile = DIR_ELEMENT_PANEL . sprintf('%s.%s.inc.php', $type, $name);
+	$includeFile = DIR_ELEMENT_PANEL . sprintf('%s.%s.inc.php', $type, $name);
 
-		if( !file_exists($includeFile) )
-			throw New \Exception(sprintf("File %s does not exist", $includeFile));
+	if( !file_exists($includeFile) )
+		throw new \Exception(sprintf("File %s does not exist", $includeFile));
 
-		require $includeFile;
+	require $includeFile;
 
-		return true;
-	}
-	catch(\Exception $e)
-	{
-		if( DEBUG ) die($e->getMessage());
-		return false;
-	}
+	return;
 }
 

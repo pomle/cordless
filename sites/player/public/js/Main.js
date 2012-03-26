@@ -2,6 +2,8 @@ function CordlessController()
 {
 	var api_url = $('#cordless').data('cordless-api-url');
 
+	this.API_URL = api_url;
+
 	this.API		= new APIController( api_url );
 	this.Interface	= new InterfaceController( $('#player'), $('#playqueue'), $('#upload') );
 	this.Library	= new PanelController('Library', $('#library>.content'), $('#library>.history>.trail'));

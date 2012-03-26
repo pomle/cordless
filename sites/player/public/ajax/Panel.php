@@ -16,10 +16,10 @@ try
 		throw new PanelException(_("Session lost.") . sprintf(' <a href="%s">%s</a> &raquo;', URL_LOGIN, _("Go to Login")));
 
 	if( !isset($_GET['type']) )
-		throw New PanelException('Panel type not specified');
+		throw new PanelException('Panel type not specified');
 
 	if( !isset($_GET['name']) )
-		throw New PanelException('Panel name not specified');
+		throw new PanelException('Panel name not specified');
 
 
 	loadPanel($_GET['type'], $_GET['name'], isset($_GET['title']) ? $_GET['title'] : '');
@@ -27,8 +27,10 @@ try
 catch(PanelException $e)
 {
 	echo
-		Element\Library::head(_('Error')),
-		$e->getMessage();
+		Element\Library::head(
+			_('Error'),
+			$e->getMessage()
+		);
 }
 catch(\Exception $e)
 {

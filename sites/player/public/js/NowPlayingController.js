@@ -38,11 +38,10 @@ function NowPlayingController(Player)
 
 		var onComplete = function()
 		{
-			console.log("isRunning: " + isRunning);
 			isRunning--;
 			if( isRunning == 0 )
 			{
-				console.log("Done with " + artistName);
+				//console.log("Done with " + artistName);
 				self.artistAdd(artistName, Artist);
 				if( jQuery.isFunction(callback) ) callback(Artist);
 			}
@@ -109,7 +108,7 @@ function NowPlayingController(Player)
 
 	this.artistImageLoop = function(diff)
 	{
-		console.log("Running artist imageloop");
+		//console.log("Running artist imageloop");
 
 		clearTimeout(imageTimer);
 
@@ -122,9 +121,9 @@ function NowPlayingController(Player)
 	this.artistImageSkip = function(diff)
 	{
 		var Artist = this.getArtistCurrent();
-		if( !Artist ) return console.log("No artist found") && false;
+		if( !Artist ) return false;
 
-		if( Artist.images.length == 0 ) return console.log("Images count 0") && false;
+		if( Artist.images.length == 0 ) return false;
 
 		var index = (Artist.imagePointer + diff) % Artist.images.length;
 		if(index < 0) index += Artist.images.length;
@@ -134,7 +133,7 @@ function NowPlayingController(Player)
 
 	this.artistImageSeek = function(Artist, index)
 	{
-		if( !Artist.images[index] ) return console.log("Images Index out of bounds") && false;
+		if( !Artist.images[index] ) return false;
 
 		Artist.imagePointer = index;
 
@@ -160,7 +159,7 @@ function NowPlayingController(Player)
 
 	this.backgroundLoop = function(diff)
 	{
-		console.log("Running backgroundLoop");
+		//console.log("Running backgroundLoop");
 
 		clearTimeout(backgroundTimer);
 
@@ -182,9 +181,9 @@ function NowPlayingController(Player)
 	this.backgroundSkip = function(diff)
 	{
 		var Artist = this.getArtistCurrent();
-		if( !Artist ) return console.log("No artist found") && false;
+		if( !Artist ) return false;
 
-		if( Artist.backgrounds.length == 0 ) return console.log("Background count 0") && false;
+		if( Artist.backgrounds.length == 0 ) return false;
 
 		var index = (Artist.backgroundPointer + diff) % Artist.backgrounds.length;
 		if(index < 0) index += Artist.backgrounds.length;
@@ -194,7 +193,7 @@ function NowPlayingController(Player)
 
 	this.backgroundSeek = function(Artist, index)
 	{
-		if( !Artist.backgrounds[index] ) return console.log("Background Index out of bounds") && false;
+		if( !Artist.backgrounds[index] ) return false;
 
 		Artist.backgroundPointer = index;
 
@@ -207,7 +206,7 @@ function NowPlayingController(Player)
 	{
 		var body = $('body');
 
-		if( body.hasClass('backgroundLocked') ) return console.log("Background is locked") && false;
+		if( body.hasClass('backgroundLocked') ) return false;
 
 		var I = new Image();
 		I.onload = function()
@@ -254,7 +253,7 @@ function NowPlayingController(Player)
 		var userTrackID_current = eNowPlaying.data('userTrackID');
 
 		if( userTrackID_current == userTrackID )
-			return console.log(userTrackID_current + ":UserTrackID not changed") || true;
+			return true;
 
 		var artist_current =  eNowPlaying.data('artist');
 		var title_current =  eNowPlaying.data('title');

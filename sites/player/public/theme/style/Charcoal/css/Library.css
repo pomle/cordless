@@ -30,6 +30,20 @@
 	font-size: 11pt;
 }
 
+#library button {
+	background: rgba(0, 138, 255, .6) url('../img/Button_Overlay.png') repeat-x;
+	border: 0 none;
+	border-radius: 10px 10px 10px 10px;
+	color: rgba(255,255,255,.8);
+	cursor: pointer;
+	padding: 2px 6px;
+}
+
+#library button:hover {
+	box-shadow: 0 0 9px rgba(0,138,255,1);
+	color: rgba(255,255,255,1);
+}
+
 
 nav.library {
 	margin: 0 0 0 60px;
@@ -191,4 +205,43 @@ nav.library .goTo .next {
 	max-width: 900px;
 	margin: 10px 0;
 	text-align: justify;
+}
+
+
+#library .userTrackEdit {
+
+}
+
+#library .userTrackEdit .canvas {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+#library .userTrackEdit .canvas .image {
+	height: 200px;
+	width: 200px;
+}
+
+#library .userTrackEdit .canvas .image .play {
+	background: transparent url('../img/UserTrackControl-Play.png') no-repeat center;
+	display: block;
+	height: 100%;
+	opacity: .5;
+	width: 100%;
+}
+
+#library .userTrackEdit .canvas .image .play:hover {
+	opacity: 1;
+}
+
+#library .userTrackEdit .meta .artist,
+#library .userTrackEdit .meta .title {
+	color: #fff;
+	font-family: Delicious;
+	font-size: 24px;
+}
+
+#library .userTrackEdit .meta input {
+	background: transparent;
+	border: 0;
 }

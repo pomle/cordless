@@ -11,7 +11,8 @@ class UserTrack
 	protected
 		$userTrackID,
 		$playcount,
-		$Track;
+		$Track,
+		$Image;
 
 	public
 		$userID,
@@ -110,6 +111,7 @@ class UserTrack
 				ut.ID AS userTrackID,
 				ut.userID,
 				ut.trackID,
+				ut.image_mediaID,
 				ut.timeCreated,
 				ut.playcount,
 				ut.filename,
@@ -125,7 +127,7 @@ class UserTrack
 
 		$Result = DB::queryAndFetchResult($query);
 
-		$trackIDs = array();
+		$imageIDs = $trackIDs = array();
 
 		foreach($Result as $userTrack)
 		{
@@ -134,6 +136,7 @@ class UserTrack
 			$UserTrack->userTrackID = (int)$userTrack['userTrackID'];
 			$UserTrack->userID = (int)$userTrack['userID'];
 			$UserTrack->trackID = (int)$userTrack['trackID'];
+			$UserTrack->imageID = (int)$userTrack['image_mediaID'] ?: null;
 
 			$UserTrack->timeCreated = (int)$userTrack['timeCreated'] ?: null;
 			$UserTrack->playcount = (int)$userTrack['playcount'];
@@ -146,13 +149,26 @@ class UserTrack
 
 			$userTracks[$UserTrack->userTrackID] = $UserTrack;
 
-			$trackIDs[] = $userTrack['trackID'];
+			if( $UserTrack->imageID )
+				$imageIDs[] = $UserTrack->imageID;
+
+			$trackIDs[] = $UserTrack->trackID;
 		}
 
 		$userTracks = array_filter($userTracks);
 
-		$tracks = Track::loadFromDB($trackIDs);
+		if( count($imageIDs) )
+		{
+			$images = \Asenine\Media::loadFromDB($imageIDs);
+			foreach($userTracks as $UserTrack)
+				if( isset($images[$UserTrack->imageID]) )
+					$UserTrack->setImage($images[$UserTrack->imageID]);
 
+			unset($images);
+		}
+
+
+		$tracks = Track::loadFromDB($trackIDs);
 		foreach($userTracks as $UserTrack)
 		{
 			if( isset($tracks[$UserTrack->trackID]) )
@@ -160,6 +176,15 @@ class UserTrack
 				$Track = $tracks[$UserTrack->trackID];
 
 				$UserTrack->setTrack($Track);
+
+				if( !isset($UserTrack->Image) )
+				{
+					if( isset($Track->Image) )
+						$UserTrack->setImage($Track->Image);
+
+					elseif( isset($Track->artists[0]->Image) )
+						$UserTrack->setImage($Track->artists[0]->Image);
+				}
 
 				if( !isset($UserTrack->artist) )
 					$UserTrack->artist = $Track->getArtist();
@@ -234,6 +259,7 @@ class UserTrack
 
 		$userTrack_Insert = "INSERT INTO Cordless_UserTracks (
 			ID,
+			image_mediaID,
 			filename,
 			artist,
 			title
@@ -241,12 +267,14 @@ class UserTrack
 
 		$userTrack_Value = "(
 			%u,
+			NULLIF(%d, 0),
 			NULLIF(%s, ''),
 			NULLIF(%s, ''),
 			NULLIF(%s, '')
 		)";
 
 		$userTrack_Update = " ON DUPLICATE KEY UPDATE
+			image_mediaID = VALUES(image_mediaID),
 			filename = VALUES(filename),
 			artist = VALUES(artist),
 			title = VALUES(title)";
@@ -261,6 +289,7 @@ class UserTrack
 
 			$userTrack_Values .= DB::prepareQuery($userTrack_Value,
 				$UserTrack->userTrackID,
+				isset($UserTrack->Image) ? $UserTrack->Image->mediaID : 0,
 				$UserTrack->filename,
 				$UserTrack->artist,
 				$UserTrack->title) . ",";
@@ -329,6 +358,12 @@ class UserTrack
 	public function registerPlay($duration = 0)
 	{
 		return ( self::registerPlays($this->userTrackID, time(), $duration) );
+	}
+
+	public function setImage(\Asenine\Media\Type\Image $Image)
+	{
+		$this->Image = $Image;
+		return $this;
 	}
 
 	public function setTrack(Track $Track)

@@ -25,11 +25,8 @@ class UserTrackItem
 		$UTI->isStarred = $UserTrack->isStarred;
 		$UTI->duration = $UserTrack->Track->duration;
 
-		if( isset($UserTrack->Track->Image) )
-			$UTI->imageURL = \Cordless\getUserTrackItemImageURL($UserTrack->Track->Image->mediaHash);
-
-		elseif( isset($Artist->Image) )
-			$UTI->imageURL = \Cordless\getUserTrackItemImageURL($Artist->Image->mediaHash);
+		if( isset($UserTrack->Image) )
+			$UTI->imageURL = \Cordless\getUserTrackItemImageURL($UserTrack->Image->mediaHash);
 
 		return $UTI;
 	}
