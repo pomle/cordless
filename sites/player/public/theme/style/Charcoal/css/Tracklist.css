@@ -157,16 +157,21 @@
 }
 
 .tracklist .userTracks .fetchMore {
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 1) url('../img/Tracklist_Tile_More.png') no-repeat center;
 	border-radius: 0 0 15px 0;
+	opacity: .5;
+	text-indent: 300px;
 }
 
+.tracklist .userTracks .fetchMore:hover {
+	opacity: 1;
+}
 
 .tracklistList .tracklist .userTracks .fetchMore {
 	border-radius: 0 0 10px 10px;
 	float: none;
 	display: block;
-	line-height: 25px;
+	line-height: 100px;
 	height: 25px;
 	text-align: center;
 	width: auto;
