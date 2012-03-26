@@ -3,9 +3,7 @@ namespace Cordless;
 
 function APIMethod($User, $params)
 {
-	ensureParams($params, 'userTrackID');
-
-	$isModify = isset($params['isStarred']);
+	$isModify = isset($params->isStarred);
 	$lastFM_wasPropagated = null;
 
 	$UserTrack = getUserTrack($params, $isModify ? $User : null);
@@ -14,7 +12,7 @@ function APIMethod($User, $params)
 	{
 		$lastFM_wasPropagated = false;
 
-		if( $params['isStarred'] )
+		if( $params->isStarred )
 		{
 			$UserTrack->star();
 

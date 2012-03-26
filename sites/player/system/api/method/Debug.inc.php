@@ -3,7 +3,7 @@ namespace Cordless;
 
 function APIMethod($User, $params)
 {
-	if( !DEBUG ) throw New APIException("Application not in Debug Mode");
+	#if( !DEBUG ) throw New APIException("Application not in Debug Mode");
 
-	print_r($User);
+	#print_r($User);#
 }

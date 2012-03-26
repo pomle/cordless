@@ -39,11 +39,36 @@ try
 		ensureLogin($User);
 
 
-	jsonResponse(true, APIMethod($User, $_POST ? $_POST : $_GET));
+	### POST has priority over GET. If parameter name "params" are set in any response we excpect it to be JSON. JSON is always preferred since it obeys strict handling of data types as NULL, true/false and integers
+	if( isset($_POST) && count($_POST) )
+	{
+		if( isset($_POST['params']) )
+		{
+			if( !$params = json_decode($_POST['params']) )
+				throw new APIException('POST "params" is not valid JSON');
+		}
+		else
+			$params = (object)$_POST;
+	}
+	else
+	{
+		if( isset($_GET['params']) )
+		{
+			if( !$params = json_decode($_GET['params']) )
+				throw new APIException('GET "params" is not valid JSON');
+		}
+		else
+			$params = (object)$_GET;
+	}
+
+	if( !$params instanceof \stdClass )
+		throw new \Exception("Parameters could not be cast as object");
+
+	jsonResponse(true, APIMethod($User, $params));
 }
 catch(ParamException $e)
 {
-	jsonResponse(false, sprintf('Missing parameter "%s"', $e->getMessage()));
+	jsonResponse(false, sprintf('Missing required parameter "%s"', $e->getMessage()));
 }
 catch(APIException $e)
 {

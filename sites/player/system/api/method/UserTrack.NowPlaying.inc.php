@@ -11,7 +11,7 @@ function APIMethod($User, $params)
 	$artist = $UserTrack->artist;
 	$title = $UserTrack->title;
 
-	$duration = isset($params['duration']) ? $params['duration'] : null;
+	$duration = isset($params->duration) ? $params->duration : null;
 
 	if( isset($User->last_fm_username, $User->last_fm_key) && ($User->last_fm_scrobble === true) && ($LastFM = getLastFM()) )
 	{

@@ -13,7 +13,7 @@ function APIMethod($User, $params)
 	);
 
 	foreach($settings as $setting)
-		$User->setSetting($setting, isset($params[$setting]) ? $params[$setting] : null);
+		$User->setSetting($setting, isset($params->$setting) ? $params->$setting : null);
 
 	return _("User Settings Saved");
 }

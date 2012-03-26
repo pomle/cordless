@@ -9,9 +9,9 @@ function APIMethod($User, $params)
 
 	$UserTrack = getUserTrack($params, $User);
 
-	$timePlayStart = isset($params['startTime']) ? (int)$params['startTime'] : $timeNow;
-	$duration = isset($params['duration']) ? (float)$params['duration'] : null;
-	$playedTime = isset($params['playedTime']) ? (float)$params['playedTime'] : 0;
+	$timePlayStart = isset($params->startTime) ? (int)$params->startTime : $timeNow;
+	$duration = isset($params->duration) ? (float)$params->duration : null;
+	$playedTime = isset($params->playedTime) ? (float)$params->playedTime : 0;
 
 	$cordless_doRegister = ($playedTime > 60*4 || $playedTime > $duration / 2);
 	$lastFM_doScrobble = ( $duration > 30 && ($playedTime > 60*4 || $playedTime > $duration / 2) );

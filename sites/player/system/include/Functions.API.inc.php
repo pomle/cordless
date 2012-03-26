@@ -14,9 +14,16 @@ function ensureLogin(User $User)
 
 function ensureParams($availableParams)
 {
+	$returnParams = array();
 	$checkParams = array_slice(func_get_args(), 1);
 	foreach($checkParams as $key)
-		if( !isset($availableParams[$key]) ) throw new ParamException($key);
+	{
+		if( !isset($availableParams->$key) ) throw new ParamException($key);
+
+		$returnParams[] = $availableParams->$key;
+	}
+
+	return $returnParams;
 }
 
 function ensureSignature($User, $signature)
@@ -47,7 +54,7 @@ function getUserTrack($params, User $User = null)
 {
 	ensureParams($params, 'userTrackID');
 
-	if( !$UserTrack = UserTrack::loadFromDB($params['userTrackID']) )
+	if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID) )
 		throw new APIException("UserTrack not found");
 
 	if( $User && !$UserTrack->isOwner($User) )

@@ -6,10 +6,10 @@ function APIMethod($User, $params)
 	if( !$User->hasPolicy('AllowCordlessFetch') )
 		throw New APIException(_("Fetch access denied by policy"));
 
-	if( !isset($params['url']) || strlen($params['url']) < 5 || preg_match('%.+://.+%', $params['url']) == 0 )
+	if( !isset($params->url) || strlen($params->url) < 5 || preg_match('%.+://.+%', $params->url) == 0 )
 		throw New APIException(_("URL invalid"));
 
-	$url = $params['url'];
+	$url = $params->url;
 
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_URL, $url);
@@ -22,7 +22,7 @@ function APIMethod($User, $params)
 
 	$mimeType = preg_match("%^Content-Type:(.+/.+)(;|$)%mUi", $header, $match) ? trim($match[1]) : null;
 
-	if( !isset($params['ignoreHeader']) || !$params['ignoreHeader'] )
+	if( !isset($params->ignoreHeader) || !$params->ignoreHeader )
 	{
 		if( !$mimeType )
 			throw New APIException(_("Could not parse MIME type"));

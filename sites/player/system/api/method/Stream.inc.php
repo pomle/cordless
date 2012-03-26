@@ -11,14 +11,14 @@ function APIMethod($User, $params)
 	if( !$UserTrack->isAccessible($User) )
 		throw new APIException("UserTrack access denied");
 
-	$forceDownload = ( isset($params['download']) && (bool)$params['download'] );
+	$forceDownload = ( isset($params->download) && (bool)$params->download );
 
 	$playFormat = $User->getSetting('Stream_Play_Format');
 	$downloadFormat = $User->getSetting('Stream_Play_Format');
 
 
-	if( isset($params['format']) )
-		$format = $params['format'];
+	if( isset($params->format) )
+		$format = $params->format;
 
 	elseif( $forceDownload && $downloadFormat )
 		$format = $downloadFormat;
@@ -62,7 +62,7 @@ function APIMethod($User, $params)
 
 	$fileName = trackPrepare($UserTrack, $format);
 
-	if( isset($params['prepare']) && (bool)$params['prepare'] )
+	if( isset($params->prepare) && (bool)$params->prepare )
 	{
 		return array(
 			'userTrackID' => $UserTrack->userTrackID,

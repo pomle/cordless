@@ -8,7 +8,7 @@ $keepSession = true;
 function APIMethod($User, $params)
 {
 	foreach(array('last_fm_scrobble', 'last_fm_love_starred_tracks', 'last_fm_unlove_unstarred_tracks') as $key)
-		$$key = (bool)(isset($params[$key]) ? $params[$key] : false);
+		$$key = (bool)(isset($params->$key) ? $params->$key : false);
 
 	$query = DB::prepareQuery("INSERT INTO
 		Cordless_Users (

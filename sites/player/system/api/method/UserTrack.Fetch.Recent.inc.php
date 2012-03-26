@@ -3,7 +3,7 @@ namespace Cordless;
 
 function APIMethod(User $User, $params)
 {
-	$limit = (int)(isset($params['limit']) ? $params['limit'] : 25);
+	$limit = (int)(isset($params->limit) ? $params->limit : 25);
 
 	$Fetch = new \Fetch\UserTrack($User);
 	$Fetch->limit = min($limit, 100);

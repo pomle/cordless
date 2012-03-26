@@ -6,10 +6,7 @@ $keepSession = true;
 
 function APIMethod($User, $params)
 {
-	ensureParams($params, 'username', 'password');
-
-	$username = $params['username'];
-	$password = $params['password'];
+	list($username, $password) = ensureParams($params, 'username', 'password');
 
 	if( !$User = User::login($username, $password, null) )
 		throw new APIException("Credentials");
