@@ -9,9 +9,9 @@ $(function()
 	var eTrackArtist = eCordless.find('.trackinfo .artist');
 	var eTrackError = eCordless.find('.trackinfo .error');
 
-	var 
+	var
 		isNextTrackChecked = false,
-		isNextTrackReady = false; 
+		isNextTrackReady = false;
 
 	// "Global" functions
 	function updateProgressBar(value)
@@ -51,17 +51,23 @@ $(function()
 
 		if( !isNextTrackChecked && Track.progress > 0.75 )
 		{
-			isNextTrackChecked = true;
-			eUserTrack = Cordless.PlayQueue.itemNext();
-			var userTrackID = eUserTrack.data('usertrackid');
+			var
+				eUserTrack,
+				userTrackID;
 
-			Cordless.API.makeCall(
-				'Stream', 
-				{'userTrackID': userTrackID, 'prepare': 1},
-				function(response) {
-					isNextTrackReady = response.data.isPrepared;
-				}
-			);
+			isNextTrackChecked = true;
+			if( eUserTrack = Cordless.PlayQueue.itemNext() )
+			{
+				var userTrackID = eUserTrack.data('usertrackid');
+
+				Cordless.API.makeCall(
+					'Stream',
+					{'userTrackID': userTrackID, 'prepare': 1},
+					function(response) {
+						isNextTrackReady = response.data.isPrepared;
+					}
+				);
+			}
 		}
 	}
 
