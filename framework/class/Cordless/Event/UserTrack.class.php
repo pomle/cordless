@@ -3,7 +3,7 @@ namespace Cordless\Event;
 
 class UserTrack
 {
-	public static function importFile(\Cordless\User $User, \Asenine\File $File, $symlinkOnly = false)
+	public static function importFile(\Cordless\User $User, \Asenine\File $File)
 	{
 		if( !\Asenine\Media\Type\Audio::canHandleFile($File) )
 			throw new \Exception(_("Unsupported File =/"));
@@ -11,7 +11,7 @@ class UserTrack
 		if( !$Audio = \Asenine\Media\Type\Audio::createFromFile($File) )
 			throw new \Exception(_("Failed to create Audio object"));
 
-		if( !$Audio = \Asenine\Media::integrateIntoLibrary($Audio, $symlinkOnly) )
+		if( !$Audio = \Asenine\Media::integrateIntoLibrary($Audio, $File->name) )
 			throw new \Exception(_("Failed to import file to library"));
 
 		$Track = Track::createFromAudio($Audio);

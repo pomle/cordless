@@ -6,12 +6,14 @@ $src = isset($argv[1]) ? $argv[1] : '.';
 $src = realpath($src);
 $dst = realpath(ASENINE_DIR_ARCHIVE);
 
+fwrite(STDOUT, "This script will import files recursively from a local folder and assign to a user. Please log in to continue.\n");
+
+
 if( !file_exists($src) || !is_dir($src) || !is_readable($src) )
 	die("'$src' is not a valid, readable dir");
 
 if( !file_exists($dst) || !is_dir($dst) || !is_writeable($dst) )
 	die("'$dst' is not a valid, writeable dir");
-
 
 fwrite(STDOUT, "Username: ");
 $username = trim(fgets(STDIN), "\n");
@@ -25,7 +27,6 @@ fwrite(STDOUT, "\n");
 
 if( !$User = \Cordless\User::login($username, $password) )
 	die("User authentication failed\n");
-
 
 for(;;)
 {
@@ -43,6 +44,8 @@ for(;;)
 $SourceDir = new RecursiveDirectoryIterator($src);
 $Iterator = new RecursiveIteratorIterator($SourceDir);
 
+$i = 0;
+
 foreach($Iterator as $pFile)
 {
 	try
@@ -52,14 +55,18 @@ foreach($Iterator as $pFile)
 			$sourceFile = $pFile->getPathname();
 
 			$File = new \Asenine\File($sourceFile, null, true);
+			$File->isCopySymlink = true;
 
-			$UserTrack = \Cordless\Event\UserTrack::importFile($User, $File, true);
+			$UserTrack = \Cordless\Event\UserTrack::importFile($User, $File);
 
 			printf("Imported file \"%s\" as \"%s\"\n", $sourceFile, $UserTrack);
+
+			if( $i++ > 10 ) break;
 		}
 	}
 	catch(\Exception $e)
 	{
 		printf("Import of \"%s\" failed, Reason: %s\n", $sourceFile, $e->getMessage());
+		if( $i++ > 10 ) break;
 	}
 }
