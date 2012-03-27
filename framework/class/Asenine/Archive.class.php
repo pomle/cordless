@@ -50,7 +50,7 @@ class Archive
 		return $this->workPath . $this->resolveHash($name);
 	}
 
-	public function putFile(File $File, $overwrite = false)
+	public function putFile(File $File, $overwrite = false, $linkOnly = false)
 	{
 		$name = $File->name;
 
@@ -67,14 +67,24 @@ class Archive
 				throw New ArchiveException(sprintf('"%s" is not writeable', $archiveFilePath));
 		}
 		elseif( !@mkdir($archiveFilePath, ASENINE_ARCHIVE_PERM_CREATE, true) )
-			throw New ArchiveException(sprintf('Could not create dir "%s"', $archiveFilePath));
+			throw new ArchiveException(sprintf('Could not create dir "%s"', $archiveFilePath));
 
 
 		$archiveFileName = $this->getFileName($name);
 
 		if( !file_exists($archiveFileName) || $overwrite === true )
-			if( !copy($inputFileName, $archiveFileName) )
-				throw New ArchiveException(sprintf('Could not copy "%s" to "%s"', $inputFileName, $archiveFileName));
+		{
+			if( $linkOnly )
+			{
+				if( !symlink($inputFileName, $archiveFileName) )
+					throw new ArchiveException(sprintf('Could not create symlink from "%s" pointing to "%s"', $inputFileName, $archiveFileName));
+			}
+			else
+			{
+				if( !copy($inputFileName, $archiveFileName) )
+					throw new ArchiveException(sprintf('Could not copy "%s" to "%s"', $inputFileName, $archiveFileName));
+			}
+		}
 
 		$ArchivedFile = new File($archiveFileName);
 

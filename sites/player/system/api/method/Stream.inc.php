@@ -55,6 +55,12 @@ function APIMethod($User, $params)
 			$ext = 'mp3';
 		break;
 
+		case 'raw':
+			$File = $UserTrack->Track->Audio->File;
+			serveFilePartial($File->location, $File->name, $File->mime);
+			die();
+		break;
+
 		default:
 			throw New \Exception(sprintf('Unknown format "%s"', $format));
 	}
