@@ -23,7 +23,7 @@ class UserGroupIO extends AjaxIO
 		$this->importArgs('name', 'label', 'description', 'isTaskAssignable');
 
 		$query = DB::prepareQuery("UPDATE
-				UserGroups
+				Asenine_UserGroups
 			SET
 				name = %s,
 				label = NULLIF(%s, ''),
@@ -56,7 +56,7 @@ class UserGroupIO extends AjaxIO
 		// Only delete policies that current user has power over or all if is Administrator
 		$allowedPolicyIDs = \Asenine\User\Dataset::getPolicies(USER_ID);
 
-		$query = DB::prepareQuery("DELETE FROM UserGroupPolicies WHERE userGroupID = %u", $this->userGroupID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_UserGroupPolicies WHERE userGroupID = %u", $this->userGroupID);
 
 		if( !USER_IS_ADMIN )
 			$query .= DB::prepareQuery(" AND policyID IN %a", $allowedPolicyIDs);
@@ -71,7 +71,7 @@ class UserGroupIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$policyIDs = array_intersect($policyIDs, $allowedPolicyIDs);
 
-			$query = DB::prepareQuery("INSERT INTO UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Asenine_Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
+			$query = DB::prepareQuery("INSERT INTO Asenine_UserGroupPolicies (userGroupID, policyID) SELECT %u, ID FROM Asenine_Policies WHERE ID IN %a", $this->userGroupID, $policyIDs);
 			DB::queryAndGetID($query);
 		}
 
@@ -87,14 +87,14 @@ class UserGroupIO extends AjaxIO
 
 		$this->importArgs('userIDs');
 
-		$query = DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userGroupID = %u", $this->userGroupID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_UserGroupUsers WHERE userGroupID = %u", $this->userGroupID);
 		DB::queryAndCountAffected($query);
 
 		if( isset($this->userIDs) && is_array($this->userIDs) )
 		{
 			#$userGroupIDs = $this->userGroupIDs;
 
-			$query = DB::prepareQuery("INSERT INTO UserGroupUsers (userGroupID, userID) SELECT %u, ID FROM Users WHERE ID IN %a", $this->userGroupID, $this->userIDs);
+			$query = DB::prepareQuery("INSERT INTO Asenine_UserGroupUsers (userGroupID, userID) SELECT %u, ID FROM Users WHERE ID IN %a", $this->userGroupID, $this->userIDs);
 			DB::queryAndGetID($query);
 		}
 
@@ -115,7 +115,7 @@ class UserGroupIO extends AjaxIO
 
 		$this->ensureExistence();
 
-		$query = DB::prepareQuery("DELETE FROM UserGroups WHERE ID = %u", $this->userGroupID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_UserGroups WHERE ID = %u", $this->userGroupID);
 		DB::queryAndCountAffected($query);
 
 		Message::addNotice(_('Grupp borttagen'));

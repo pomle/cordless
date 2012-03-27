@@ -26,7 +26,7 @@ class Dataset
 
 	public static function getGroups($userID)
 	{
-		$query = DB::prepareQuery("SELECT userGroupID FROM UserGroupUsers ugu WHERE ugu.userID = %u", $userID);
+		$query = DB::prepareQuery("SELECT userGroupID FROM Asenine_UserGroupUsers ugu WHERE ugu.userID = %u", $userID);
 		return DB::queryAndFetchArray($query);
 	}
 

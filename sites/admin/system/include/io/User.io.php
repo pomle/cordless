@@ -60,7 +60,7 @@ class UserIO extends AjaxIO
 		}
 
 		$query = DB::prepareQuery("UPDATE
-				Users
+				Asenine_Users
 			SET
 				isEnabled = IF(%u, %u, isAdministrator),
 				isAdministrator = IF(%u, %u, isAdministrator),
@@ -144,7 +144,7 @@ class UserIO extends AjaxIO
 		$this->importArgs('email', 'fullname', 'phone');
 
 		$query = DB::prepareQuery("UPDATE
-				Users
+				Asenine_Users
 			SET
 				fullname = %s,
 				email = %s,
@@ -173,7 +173,7 @@ class UserIO extends AjaxIO
 		### Only delete policies that current user has power over
 		$allowedUserGroupIDs = Dataset::getGroups(USER_ID);
 
-		$query = DB::prepareQuery("DELETE FROM UserGroupUsers WHERE userID = %u", $this->userID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_UserGroupUsers WHERE userID = %u", $this->userID);
 
 		if( !USER_IS_ADMIN ) $query .= DB::prepareQuery(" AND userGroupID IN %a", $allowedUserGroupIDs);
 		DB::queryAndCountAffected($query);
@@ -185,7 +185,7 @@ class UserIO extends AjaxIO
 			if( !USER_IS_ADMIN )
 				$userGroupIDs = array_intersect($userGroupIDs, $allowedUserGroupIDs);
 
-			$query = DB::prepareQuery("INSERT INTO UserGroupUsers (userID, userGroupID) SELECT %u, ID FROM UserGroups WHERE ID IN %a", $this->userID, $userGroupIDs);
+			$query = DB::prepareQuery("INSERT INTO Asenine_UserGroupUsers (userID, userGroupID) SELECT %u, ID FROM Asenine_UserGroups WHERE ID IN %a", $this->userID, $userGroupIDs);
 			DB::queryAndCountAffected($query);
 		}
 
@@ -225,7 +225,7 @@ class UserIO extends AjaxIO
 		if( Dataset::isAdministrator($this->userID) && !USER_IS_ADMIN )
 			throw New Exception(_('Du måste vara administratör för att ta bort en annan administratör'));
 
-		$query = DB::prepareQuery("DELETE FROM Users WHERE ID = %u", $this->userID);
+		$query = DB::prepareQuery("DELETE FROM Asenine_Users WHERE ID = %u", $this->userID);
 		DB::queryAndCountAffected($query);
 
 		Message::addNotice(_('Användare borttagen'));
