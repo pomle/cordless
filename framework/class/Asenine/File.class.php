@@ -74,6 +74,9 @@ class File
 
 	public static function fromPHPUpload($phpfile)
 	{
+		if( empty($phpfile['tmp_name']) )
+			return false;
+
 		$File = new self($phpfile['tmp_name'], $phpfile['size'], $phpfile['type']);
 		$File->name = $phpfile['name'];
 		return $File;
@@ -82,13 +85,10 @@ class File
 
 	public function __construct($location, $size = null, $mime = null, $name = null)
 	{
-		if( !is_string($location) )
-			trigger_error(__METHOD__ . ' expects arg #1 to be string, ' . gettype($location) . ' given', E_USER_WARNING);
-
 		$location = (string)$location;
 
-		if( !file_exists($location) )
-			throw New FileException(sprintf("Path does not exist: %s", $location));
+		if( empty($location) || !file_exists($location) )
+			throw New FileException(sprintf("Path does not exist: \"%s\"", $location));
 
 		if( !is_file($location) )
 			throw New FileException(sprintf("Path is not a file: %s", $location));
