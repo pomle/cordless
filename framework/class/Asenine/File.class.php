@@ -9,11 +9,10 @@ class File
 	protected
 		$location,
 		$size,
-		$hash;
-
+		$hash,
+		$mime;
 
 	public
-		$mime,
 		$name;
 
 
@@ -116,6 +115,16 @@ class File
 				return $this->hash;
 			break;
 
+			case 'mime':
+				if( is_null($this->mime) )
+				{
+					$finfo = finfo_open(FILEINFO_MIME_TYPE);
+					$this->mime = finfo_file($finfo, $this->location);
+					finfo_close($finfo);
+				}
+				return $this->mime;
+			break;
+
 			case 'size':
 				if( is_null($this->size) )
 					$this->size = filesize($this->location);
@@ -130,6 +139,16 @@ class File
 	public function __isset($key)
 	{
 		return isset($this->$key);
+	}
+
+	public function __set($key, $value)
+	{
+		switch($key)
+		{
+			case 'mime':
+				$this->mime = $value;
+			break;
+		}
 	}
 
 	public function __toString()
