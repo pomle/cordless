@@ -15,7 +15,8 @@ echo Element\Library::head(_("Cordless Settings"));
 		$formats = array(
 			'' => _('Auto'),
 			'mp3' => _('MP3'),
-			'ogg' => _('OGG')
+			'ogg' => _('OGG'),
+			'raw' => _('Raw')
 		);
 
 		$Format_Stream = SelectBox::keyPair('Stream_Play_Format', $User->getSetting('Stream_Play_Format'), $formats);
