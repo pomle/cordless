@@ -15,6 +15,9 @@ class File
 	public
 		$name;
 
+	public
+		$isCopySymlink = false;
+
 
 	public static function fromURL($fromURL, $toFile = null)
 	{
@@ -159,8 +162,11 @@ class File
 
 	public function copy($to)
 	{
+		if( $this->isCopySymlink )
+			return $this->link($to);
+
 		if( !copy($this->location, $to) )
-			throw New FileException(sprintf("File copy from %s to %s failed", $this->location, $to));
+			throw new FileException(sprintf('File copy from "%s" to "%s" failed', $this->location, $to));
 
 		$File_New = clone $this;
 		$File_New->location = $to;
@@ -168,27 +174,39 @@ class File
 		return $File_New;
 	}
 
+	public function delete()
+	{
+		if( !unlink($this->location) )
+			throw new FileException(sprintf('File delete from "%s" failed', $this->location));
+
+		return true;
+	}
+
+	public function link($at)
+	{
+		if( !symlink($this->location, $at) )
+			throw new FileException(sprintf('File symlinking from "%s" to "%s" failed', $this->location, $at));
+
+		$File_Link = clone $this;
+		$File_Link->location = $at;
+
+		return $File_Link;
+	}
+
 	public function move($to)
 	{
 		if( !rename($this->location, $to) )
-			throw New FileException(sprintf("File move from %s to %s failed", $this->location, $to));
+			throw new FileException(sprintf('File move from "%s" to "%s" failed', $this->location, $to));
 
 		$this->location = $to;
 
 		return true;
 	}
 
-	public function delete()
-	{
-		if( !unlink($this->location) )
-			throw New FileException(sprintf("File delete at %s failed", $this->location));
-
-		return true;
-	}
 
 	public function isExisting()
 	{
-		return file_exists($this->location) && is_file($this->location);
+		return file_exists($this->location);
 	}
 
 	public function isReadable()
@@ -198,6 +216,6 @@ class File
 
 	public function isWriteable()
 	{
-		return is_readable($this->location);
+		return is_writeable($this->location);
 	}
 }

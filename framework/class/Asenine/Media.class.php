@@ -9,7 +9,7 @@ class MediaException extends \Exception
 interface iMedia
 {
 	public static function canHandleFile($filePath);
-	public function __construct($mediaHash = null, \File $File = null);
+	public function __construct($mediaHash = null, File $File = null);
 	public function getInfo();
 }
 
@@ -83,14 +83,14 @@ abstract class Media implements iMedia
 		return new \Asenine\Archive('media/source/');
 	}
 
-	public static function integrateIntoLibrary(self $Media, $symlinkOnly = false)
+	public static function integrateIntoLibrary(self $Media)
 	{
 		$Archive = self::getArchive();
 
-		$File = new File( $Media->getFilePath() );
+		$File = $Media->File;
 		$File->name = $File->hash;
 
-		$LibraryFile = $Archive->putFile($File, false, $symlinkOnly);
+		$LibraryFile = $Archive->putFile($File);
 
 		$query = DB::prepareQuery("SELECT ID FROM Asenine_Media WHERE fileHash = %s", $LibraryFile->hash);
 		$mediaID = DB::queryAndFetchOne($query);
@@ -208,8 +208,7 @@ abstract class Media implements iMedia
 		{
 			if( is_file($file) || !is_writable($file) || !unlink($file) )
 			{
-				$skipSourceDelete = true;
-				trigger_error("File \"$file\" was found but could not be removed", E_USER_WARNING);
+				throw new \Exception("File \"$file\" was found but could not be removed");
 			}
 		}
 
@@ -217,9 +216,9 @@ abstract class Media implements iMedia
 		if( $skipSourceDelete === false )
 		{
 			$sourceFile = $Media->getFilePath();
-			if( file_exists($sourceFile) && ( !is_writable($sourceFile) || !unlink($sourceFile) ) )
+			if( file_exists($sourceFile) && ( !is_writable($sourceFile) || @!unlink($sourceFile) ) )
 			{
-				trigger_error("Source file \"$sourceFile\" was found but could not be removed", E_USER_WARNING);
+				throw new \Exception("Source file \"$sourceFile\" was found but could not be removed");
 
 				### Only delete DB row if source file could be deleted to avoid stray files
 				$skipDBDelete = true;
