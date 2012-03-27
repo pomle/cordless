@@ -83,14 +83,14 @@ abstract class Media implements iMedia
 		return new \Asenine\Archive('media/source/');
 	}
 
-	public static function integrateIntoLibrary(self $Media)
+	public static function integrateIntoLibrary(self $Media, $symlinkOnly = false)
 	{
 		$Archive = self::getArchive();
 
 		$File = new File( $Media->getFilePath() );
 		$File->name = $File->hash;
 
-		$LibraryFile = $Archive->putFile($File);
+		$LibraryFile = $Archive->putFile($File, false, $symlinkOnly);
 
 		$query = DB::prepareQuery("SELECT ID FROM Asenine_Media WHERE fileHash = %s", $LibraryFile->hash);
 		$mediaID = DB::queryAndFetchOne($query);
