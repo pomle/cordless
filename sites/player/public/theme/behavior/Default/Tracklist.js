@@ -62,6 +62,7 @@ $(function()
 				'success': function(response)
 				{
 					eTracks.replaceWith(response);
+					$(window).scrollTop( $('body').height() );
 				}
 			});
 		})
@@ -94,7 +95,7 @@ $(function()
 			var userTrackID = $(this).closest('.userTrack').data('usertrackid');
 
 			if( e.ctrlKey )
-				window.location = "./api/?method=Stream&format=mp3&userTrackID=" + userTrackID;
+				window.location = "./api/?method=Stream&userTrackID=" + userTrackID;
 			else
 				Library.goTo('UserTrack-Control', {'userTrackID': userTrackID});
 		})
