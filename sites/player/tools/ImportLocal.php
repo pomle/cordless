@@ -1,4 +1,7 @@
 <?
+if( !defined('STDOUT') || !defined('STDIN') )
+	die("This program is a CLI script only");
+
 require __DIR__ . '/_Common.inc.php';
 
 $src = isset($argv[1]) ? $argv[1] : '.';
