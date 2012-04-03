@@ -1,7 +1,5 @@
 $(function()
 {
-	var queueItemTemplate = '<div class="item"><div class="caption">-</div><div class="progressBar"><div class="progress"></div></div></div>';
-
 	var upload = $('#upload');
 	var dropArea = upload.find('.dropArea');
 
@@ -64,7 +62,8 @@ $(function()
 		}
 	});
 
-	$(window)
+	//$(window)
+	$('#upload')
 		.on('dragenter.cordless', function(e)
 		{
 			// Make sure it's files
