@@ -27,10 +27,8 @@ try
 catch(PanelException $e)
 {
 	echo
-		Element\Library::head(
-			_('Error'),
-			$e->getMessage()
-		);
+		Element\Library::head(_('Error')),
+		$e->getMessage();
 }
 catch(\Exception $e)
 {
