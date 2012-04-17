@@ -30,15 +30,17 @@ function APIMethod($User, $params)
 	elseif( isset($_SERVER['HTTP_ACCEPT']) && preg_match('%audio/(ogg|mp3)%', $_SERVER['HTTP_ACCEPT'], $match) )
 		$format = $match[1];
 
-	// If Opera, send ogg
-	elseif( isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%^Opera%', $_SERVER['HTTP_USER_AGENT'], $match) )
-	{
-		unset($_SERVER['HTTP_RANGE']);
+	// If Opera or Firefox, send ogg
+	elseif( isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%(^Opera|Firefox)%', $_SERVER['HTTP_USER_AGENT'], $match) )
 		$format = 'ogg';
-	}
+
+	// Default to MP3
 	else
 		$format = 'mp3';
 
+
+	if( isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%^Opera%', $_SERVER['HTTP_USER_AGENT'], $match) )
+		unset($_SERVER['HTTP_RANGE']);
 
 
 	switch($format)
@@ -62,7 +64,7 @@ function APIMethod($User, $params)
 		break;
 
 		default:
-			throw New \Exception(sprintf('Unknown format "%s"', $format));
+			throw New APIException( sprintf('Unknown format "%s"', $format) );
 	}
 
 
@@ -72,6 +74,7 @@ function APIMethod($User, $params)
 	{
 		return array(
 			'userTrackID' => $UserTrack->userTrackID,
+			'format' => $format,
 			'isPrepared' => file_exists($fileName)
 		);
 	}
