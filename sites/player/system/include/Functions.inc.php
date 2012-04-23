@@ -48,10 +48,26 @@ function getUserTrackItemImageURL($mediaHash)
 }
 
 
-function libraryLink($text, $panel, $qs = '')
+function libraryLink($text, $panel, $params = null)
 {
-	return sprintf('<a class="panelLibrary" href="/ajax/Panel.php?type=Library&amp;name=%s&%s">%s</a>', htmlspecialchars($panel), htmlspecialchars($qs), $text);
+	return sprintf('<a class="panelLibrary" href="%s">%s</a>',htmlspecialchars(libraryURL($panel, $params)), $text);
 }
+
+function libraryURL($panel, $params = null)
+{
+	$qs = '';
+
+	if( is_array($params) )
+	{
+		foreach($params as $key => $value)
+			$qs .= urlencode($key) . '=' . urlencode($value) . '&';
+	}
+	else
+		$qs = $params;
+
+	return URL_PLAYER . sprintf('ajax/Panel.php?type=Library&name=%s&%s', urlencode($panel), $qs);
+}
+
 
 function loadPanel($type, $name, $title = null)
 {
