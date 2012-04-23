@@ -12,7 +12,7 @@ $(function()
 			if( href.match(/^#/) )
 				Library.goTo(href.substr(1));
 			else
-				Library.goToURL(href.substr(1));
+				Library.goToURL(href);
 		});
 
 
