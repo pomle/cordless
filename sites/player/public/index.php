@@ -18,6 +18,11 @@ $js[] = URL_PLAYER . 'js/Main.js';
 $js[] = URL_PLAYER . 'js/LastFM.js';
 
 
+$goToURL = null;
+
+if( isset($_GET['userTrackID']) )
+	$goToURL = libraryURL('UserTrack-Control', array('userTrackID' => (int)$_GET['userTrackID']));
+
 
 $style = $User->getSetting("WebUI_Theme_Style") ?: 'Charcoal';
 $stylePath = 'theme/style/' . $style . '/';
@@ -134,7 +139,11 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 		</div>
 	</section>
 
-	<section id="library">
+	<section
+		id="library"
+		data-goToURL="<? echo htmlspecialchars($goToURL); ?>"
+		>
+
 		<nav class="history">
 			<div class="trail">
 			</div>
@@ -142,9 +151,10 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 
 		<div class="content">
 			<?
-			loadPanel('Library', isset($_GET['l']) ? $_GET['l'] : 'Home');
+			loadPanel('Library', 'Home');
 			?>
 		</div>
+
 	</section>
 
 	<footer class="footer">

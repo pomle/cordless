@@ -23,12 +23,17 @@ try
 
 	$(function()
 	{
+		var
+			goToURL;
+
 		window.onbeforeunload = function(e)
 		{
 			if( Cordless.Player.isPlaying )
 			{
-				e.returnValue = 'Sound will stop';
-				return 'Sound will stop';
+				var msg = 'Sound will stop';
+
+				e.returnValue = msg;
+				return msg;
 			}
 		}
 
@@ -36,6 +41,9 @@ try
 		{
 			Cordless.Player.trackUnload();
 		}
+
+		if( goToURL = $('#library').data('gotourl') )
+			Cordless.Library.goToURL(goToURL);
 	});
 }
 catch (e)

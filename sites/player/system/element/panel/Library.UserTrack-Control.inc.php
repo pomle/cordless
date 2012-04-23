@@ -46,6 +46,11 @@ if( isset($UserTrack->Image) )
 			</li>
 		</ul>
 
+		<ul>
+			<li><a href="#" class="userTrackPlay" data-usertrackid="<? printf('%d', $UserTrack->userTrackID); ?>"><? echo _("Play Now"); ?></a></li>
+			<li><a href="<? echo URL_PLAYER, sprintf('?userTrackID=%d', $UserTrack->userTrackID); ?>"><? echo _("Direct Link"); ?></a></li>
+		</ul>
+
 		<button type="submit" name="action" value="update" class="formTrigger"><? echo _("Save"); ?></button>
 		<button type="submit" name="action" value="delete" class="formTrigger"><? echo _("Delete"); ?></button>
 
