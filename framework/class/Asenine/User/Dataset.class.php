@@ -76,7 +76,7 @@ class Dataset
 
 	public static function getUserID($username)
 	{
-		$query = DB::prepareQuery("SELECT userID FROM Asenine_Users WHERE username = %s LIMIT 1", $username);
+		$query = DB::prepareQuery("SELECT ID FROM Asenine_Users WHERE username = %s LIMIT 1", $username);
 		$userID = (int)DB::queryAndFetchOne($query);
 		return $userID;
 	}
