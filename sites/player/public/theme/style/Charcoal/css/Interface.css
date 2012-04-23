@@ -13,7 +13,7 @@ body {
 }
 
 header {
-	background: rgba(10,10,10,.95);
+	background: rgba(12,12,12,1);
 	box-shadow: 0 0 15px rgba(0,0,0,1);
 	font-size: 12px;
 	overflow: hidden;
