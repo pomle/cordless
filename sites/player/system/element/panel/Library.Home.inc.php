@@ -35,16 +35,43 @@ if( $isLastFmAvailable )
 			<li><? echo htmlspecialchars(sprintf(_("Playduration: %s"), formatDuration($userPlayDurationTotal))); ?></li>
 			<li><? echo libraryLink(_("Settings"), 'Settings-Cordless'); ?></li>
 		</ul>
-	</section>
-
-	<section class="quickplay">
-		<h3><? echo htmlspecialchars(_("Quick Play")); ?></h3>
 
 		<ul>
-			<li><? echo actionLink(_("Random"), 'Cordless.Player.playbackStart();'); ?></li>
-
+			<li><a href="./Logout.php"><? echo _("Logout"); ?></a></li>
 		</ul>
 	</section>
+
+	<?
+	if( $isLastFmConnected )
+	{
+		$lastHomeURL = 'http://www.last.fm/user/' . htmlspecialchars($User->last_fm_username);
+
+		?>
+		<section class="lastfm_status">
+			<h3><img src="./img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars($User->last_fm_username); ?></h3>
+
+			<ul id="last_fm_status" data-lastfm-username="<? echo htmlspecialchars($User->last_fm_username); ?>">
+				<li><a href="<? echo $lastHomeURL; ?>" target="last_fm_userhome"><? echo _("Last.fm Home"); ?></a></li>
+				<li class="playcount"><? echo _('Plays'); ?>:&nbsp;</li>
+			</ul>
+
+			<ul>
+				<li><? echo libraryLink(_("Settings"), 'Settings-Lastfm'); ?></li>
+			<ul>
+
+			<ul>
+				<li><a href="<? echo $urlLastFmConnect; ?>" target="last_fm_connect"><? echo _("Reconnect"); ?></a></li>
+			<ul>
+
+			<script type="text/javascript">
+				$(function() {
+					LastFM.updateHomeStatus();
+				});
+			</script>
+		</section>
+		<?
+	}
+	?>
 
 	<section class="browse">
 		<h3><? echo htmlspecialchars(_("Browse")); ?></h3>
@@ -67,36 +94,6 @@ if( $isLastFmAvailable )
 		</ul>
 	</section>
 
-	<?
-	if( $isLastFmConnected )
-	{
-		$lastHomeURL = 'http://www.last.fm/user/' . htmlspecialchars($User->last_fm_username);
-
-		?>
-		<section class="lastfm_status">
-			<h3><img src="./img/Last.fm-Frontpage-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars($User->last_fm_username); ?></h3>
-
-			<ul id="last_fm_status" data-lastfm-username="<? echo htmlspecialchars($User->last_fm_username); ?>">
-				<li><a href="<? echo $lastHomeURL; ?>" target="last_fm_userhome"><? echo _("Last.fm Home"); ?></a></li>
-				<li class="playcount"><? echo _('Plays'); ?>:&nbsp;</li>
-			</ul>
-
-			<ul>
-				<li><? echo libraryLink(_("Settings"), 'Settings-Lastfm'); ?></li>
-				<li><a href="<? echo $urlLastFmConnect; ?>" target="last_fm_connect"><? echo _("Reconnect"); ?></a></li>
-			<ul>
-
-			<script type="text/javascript">
-				$(function() {
-					LastFM.updateHomeStatus();
-				});
-			</script>
-		</section>
-		<?
-	}
-	?>
-
-
 	<section class="misc">
 		<h3><? echo htmlspecialchars(_("Misc")); ?></h3>
 
@@ -116,9 +113,6 @@ if( $isLastFmAvailable )
 			<li><? echo libraryLink(_("Advanced Track Import"), 'Import'); ?></li>
 		</ul>
 
-		<ul>
-			<li><a href="./Logout.php"><? echo _("Logout"); ?></a></li>
-		</ul>
 	</section>
 
 </div>
