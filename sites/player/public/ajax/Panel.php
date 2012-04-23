@@ -32,5 +32,6 @@ catch(PanelException $e)
 }
 catch(\Exception $e)
 {
+	header("HTTP/1.1 500 Internal Server Error");
 	echo DEBUG ? $e->getMessage() : _("Error Updating Panel");
 }
