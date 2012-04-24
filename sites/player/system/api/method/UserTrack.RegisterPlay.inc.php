@@ -7,7 +7,7 @@ function APIMethod($User, $params)
 	$cordless_doRegister = false;
 	$lastFM_wasScrobbled = false;
 
-	$UserTrack = getUserTrack($params, $User);
+	$UserTrack = getUserTrack($params, $User, true, false);
 
 	$timePlayStart = isset($params->startTime) ? (int)$params->startTime : $timeNow;
 	$duration = isset($params->duration) ? (float)$params->duration : null;

@@ -3,7 +3,7 @@ namespace Cordless;
 
 function APIMethod($User, $params)
 {
-	$UserTrack = getUserTrack($params, $User);
+	$UserTrack = getUserTrack($params, $User, true, false);
 
 	$timeNow = time();
 	$lastFM_wasNotified = false;

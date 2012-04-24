@@ -9,7 +9,33 @@ $wildcards = array(' ', '*', '%');
 
 try
 {
-	$search = $_GET['q'];
+	global $params;
+
+	$search = $params->q;
+
+	if( preg_match('/^cordless:(.+):(.+)$/U', $search, $match) )
+	{
+		list(, $action, $arg) = $match;
+
+		switch( strtolower($action) )
+		{
+			case 'user':
+				if( !$params->userID = \Asenine\User\Dataset::getUserID($arg) )
+					throw new PanelException(str_replace('%USERNAME%', $arg, _('User "%USERNAME%" not found')));
+
+				libraryPanel('User-Overview');
+				exit;
+			break;
+
+			case 'usertrack':
+				$params->userTrackID = (int)$arg;
+				libraryPanel('UserTrack-Control');
+				exit;
+			break;
+		}
+	}
+
+
 
 	$title = _("Search");
 	if( mb_strlen($search) > 0 ) $title .= sprintf(" (%s)", mb_strlen($search) > $searchPreviewMaxLen + 3 ? mb_substr($search, 0, $searchPreviewMaxLen) . '...' : $search);

@@ -6,10 +6,7 @@ require DIR_SITE_INCLUDE . 'TrackPrepare.inc.php';
 
 function APIMethod($User, $params)
 {
-	$UserTrack = getUserTrack($params);
-
-	if( !$UserTrack->isAccessible($User) )
-		throw new APIException("UserTrack access denied");
+	$UserTrack = getUserTrack($params, $User, true, false);
 
 	$forceDownload = ( isset($params->download) && (bool)$params->download );
 

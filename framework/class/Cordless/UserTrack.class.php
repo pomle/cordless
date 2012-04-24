@@ -353,7 +353,7 @@ class UserTrack
 
 	public function isOwner(User $User)
 	{
-		return ( $this->userID == $User->userID );
+		return ( (int)$this->userID === (int)$User->userID );
 	}
 
 	public function registerPlay($duration = 0)
@@ -380,10 +380,10 @@ class UserTrack
 		return true;
 	}
 
-	public function takeOwnership($userID)
+	public function takeOwnership(User $User)
 	{
 		$this->userTrackID = null;
-		$this->userID = (int)$userID;
+		$this->userID = $User->userID;
 		return true;
 	}
 

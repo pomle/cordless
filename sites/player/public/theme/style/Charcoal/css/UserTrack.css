@@ -13,6 +13,10 @@
 	background: url('../img/UserTrack_Icon_StarToggle_On.png');
 }
 
+.userTrack .control.track .takeOwnership {
+	background-image: url('../img/UserTrack_Icon_TakeOwnership.png');
+}
+
 .userTrack .control.playqueue .queueLast {
 	background-image: url('../img/UserTrack_Icon_QueueAppend.png');
 }

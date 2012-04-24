@@ -5,11 +5,17 @@ use
 	\Asenine\DB,
 	\Asenine\Element\Input;
 
-if( !isset($_GET['userTrackID']) )
+global $params;
+
+if( !isset($params->userTrackID) )
 	throw new PanelException('No userTrackID given');
 
-if( !$UserTrack = UserTrack::loadFromDB($_GET['userTrackID']) )
+if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID) )
 	throw new PanelException('Track not found');
+
+if( !$UserTrack->isAccessible($User->userID) )
+	throw new PanelException('Track not accessible');
+
 
 $userTrackTitle = (string)$UserTrack;
 $userTrackTitlePreviewMaxLen = 15;

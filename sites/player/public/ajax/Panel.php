@@ -21,6 +21,7 @@ try
 	if( !isset($_GET['name']) )
 		throw new PanelException('Panel name not specified');
 
+	$params = (object)array_merge($_GET, $_POST);
 
 	loadPanel($_GET['type'], $_GET['name'], isset($_GET['title']) ? $_GET['title'] : '');
 }

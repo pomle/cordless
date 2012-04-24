@@ -50,15 +50,21 @@ function ensureSignature($User, $signature)
 	return;
 }
 
-function getUserTrack($params, User $User = null)
+function getUserTrack($params, User $User = null, $requireAccess = true, $requireOwner = true)
 {
 	ensureParams($params, 'userTrackID');
 
 	if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID) )
 		throw new APIException("UserTrack not found");
 
-	if( $User && !$UserTrack->isOwner($User) )
-		throw new APIException("User not owner");
+	if( $User )
+	{
+		if( $requireAccess && !$UserTrack->isAccessible($User) )
+			throw new APIException("UserTrack Access Denied");
+
+		if( $requireOwner && !$UserTrack->isOwner($User) )
+			throw new APIException("UserTrack Ownage");
+	}
 
 	return $UserTrack;
 }

@@ -53,7 +53,7 @@ class UserTrack
 				AND (0 = %d OR ut.timeCreated BETWEEN %d AND %d)
 			ORDER BY
 				ut.timeCreated DESC",
-			$this->userIDs,
+			$this->userID,
 			(bool)$timeStart,
 			$timeStart,
 			$timeEnd ?: time());
@@ -80,7 +80,7 @@ class UserTrack
 				)
 			ORDER BY
 				at.trackNO ASC",
-			$this->userIDs,
+			$this->userID,
 			$name);
 
 		return $this->queryToUserTracks($query);
@@ -103,7 +103,7 @@ class UserTrack
 				)
 			ORDER BY
 				ut.title ASC",
-			$this->userIDs,
+			$this->userID,
 			$name);
 
 		return $this->queryToUserTracks($query);
@@ -124,7 +124,7 @@ class UserTrack
 				p.ID = %d
 			ORDER BY
 				pt.sortOrder ASC",
-			$this->userIDs,
+			$this->userID,
 			$playlistID);
 
 		return $this->queryToUserTracks($query);

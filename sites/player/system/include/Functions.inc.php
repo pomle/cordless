@@ -53,6 +53,11 @@ function libraryLink($text, $panel, $params = null)
 	return sprintf('<a class="panelLibrary" href="%s">%s</a>',htmlspecialchars(libraryURL($panel, $params)), $text);
 }
 
+function libraryPanel($name, $title = null)
+{
+	loadPanel('Library', $name, $title);
+}
+
 function libraryURL($panel, $params = null)
 {
 	$qs = '';
@@ -67,6 +72,8 @@ function libraryURL($panel, $params = null)
 
 	return URL_PLAYER . sprintf('ajax/Panel.php?type=Library&name=%s&%s', urlencode($panel), $qs);
 }
+
+
 
 
 function loadPanel($type, $name, $title = null)

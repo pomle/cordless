@@ -24,7 +24,7 @@ echo Element\Library::head(_('Friends'));
 <ul>
 	<?
 	foreach($users as $User)
-		printf('<li>%s</li>', libraryLink($User->username, 'Friends-Home', 'userID=' + $User->userID));
+		printf('<li>%s</li>', libraryLink($User->username, 'User-Overview', sprintf('userID=%d', $User->userID)));
 	?>
 </ul>
 <?

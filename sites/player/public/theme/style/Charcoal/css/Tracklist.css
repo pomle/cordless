@@ -128,12 +128,17 @@
 }
 
 /* Enable these controls for Tracklist */
-.tracklist .userTrack .control .starToggle,
+.tracklist .userTrack.isOwner .control .starToggle,
+.tracklist .userTrack .control .takeOwnership,
 .tracklist .userTrack .control .queuePlay,
 .tracklist .userTrack .control .queueNext,
 .tracklist .userTrack .control .queueLast {
 	display: block;
 	margin: 0 auto 4px auto;
+}
+
+.tracklist .userTrack.isOwner .control .takeOwnership {
+	display: none;
 }
 
 .tracklist .userTrack.isStarred .control .starToggle {

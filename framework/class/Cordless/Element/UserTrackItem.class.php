@@ -60,6 +60,7 @@ class UserTrackItem
 
 			<div class="control track">
 				<a href="#" class="item starToggle" title="<? echo htmlspecialchars(_("Star/Unstar track")); ?>"><? echo htmlspecialchars(_('Star/Unstar')); ?></a>
+				<a href="#" class="item takeOwnership" title="<? echo htmlspecialchars(_("Claim track")); ?>"><? echo htmlspecialchars(_('Claim')); ?></a>
 			</div>
 
 			<div class="control playqueue">
