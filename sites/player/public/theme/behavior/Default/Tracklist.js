@@ -62,7 +62,7 @@ $(function()
 				'success': function(response)
 				{
 					eTracks.replaceWith(response);
-					$(window).scrollTop( $('body').height() );
+					//$(window).scrollTop( $('body').height() );
 				}
 			});
 		})
