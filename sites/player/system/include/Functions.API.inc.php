@@ -63,7 +63,7 @@ function getUserTrack($params, User $User = null, $requireAccess = true, $requir
 			throw new APIException("UserTrack Access Denied");
 
 		if( $requireOwner && !$UserTrack->isOwner($User) )
-			throw new APIException("UserTrack Ownage");
+			throw new APIException("UserTrack Ownage Required");
 	}
 
 	return $UserTrack;
