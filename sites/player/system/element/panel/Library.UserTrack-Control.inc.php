@@ -13,7 +13,7 @@ if( !isset($params->userTrackID) )
 if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID) )
 	throw new PanelException('Track not found');
 
-if( !$UserTrack->isAccessible($User->userID) )
+if( !$UserTrack->isAccessible($User) )
 	throw new PanelException('Track not accessible');
 
 
