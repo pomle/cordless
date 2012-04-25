@@ -23,13 +23,12 @@ try
 
 	$params = (object)array_merge($_GET, $_POST);
 
-	loadPanel($_GET['type'], $_GET['name'], isset($_GET['title']) ? $_GET['title'] : '');
+	loadPanel($_GET['type'], $_GET['name'], $params);
 }
 catch(PanelException $e)
 {
-	echo
-		Element\Library::head(_('Error')),
-		$e->getMessage();
+	echo Element\Library::head(_('Error'));
+	printf('<p>%s</p>', $e->getMessage());
 }
 catch(\Exception $e)
 {
