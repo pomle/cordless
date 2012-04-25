@@ -54,11 +54,17 @@ $(function()
 			var eTracks = $(this);
 			var fetcher = eTracks.attr('data-fetcher');
 
+			eTracks.addClass('isBusy');
+
 			$.ajax({
 				'url': './ajax/Tracklist.php?skipWhat=page&skipAmount=1&fetcher=' + encodeURIComponent(fetcher),
 				'type': 'GET',
 				'data': fetcher,
 				'dataType': 'html',
+				'complete': function()
+				{
+					eTracks.removeClass('isBusy');
+				},
 				'success': function(response)
 				{
 					eTracks.replaceWith(response);

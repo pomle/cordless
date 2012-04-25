@@ -54,15 +54,15 @@ function getUserTrack($params, User $User = null, $requireAccess = true, $requir
 {
 	ensureParams($params, 'userTrackID');
 
-	if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID) )
+	if( !$UserTrack = UserTrack::loadFromDB($params->userTrackID, $User->userID) )
 		throw new APIException("UserTrack not found");
 
 	if( $User )
 	{
-		if( $requireAccess && !$UserTrack->isAccessible($User) )
+		if( $requireAccess && !$UserTrack->isAccessible )
 			throw new APIException("UserTrack Access Denied");
 
-		if( $requireOwner && !$UserTrack->isOwner($User) )
+		if( $requireOwner && !$UserTrack->isOwner )
 			throw new APIException("UserTrack Ownage Required");
 	}
 
