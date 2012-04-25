@@ -2,6 +2,7 @@
 ### You should not edit this file. If you want to customize, set your options in /Settings.X.inc.php with define()
 asenineDef('URL_PLAYER', '/');
 
+asenineDef('URL_AJAX', URL_PLAYER . 'ajax/');
 asenineDef('URL_API', URL_PLAYER . 'api/');
 asenineDef('URL_LOGIN', URL_PLAYER . 'Login.php');
 

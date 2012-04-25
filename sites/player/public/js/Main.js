@@ -1,7 +1,9 @@
 function CordlessController()
 {
 	var api_url = $('#cordless').data('cordless-api-url');
+	var ajax_url = $('#cordless').data('cordless-ajax-url');
 
+	this.AJAX_URL = ajax_url;
 	this.API_URL = api_url;
 
 	this.API		= new APIController( api_url );
