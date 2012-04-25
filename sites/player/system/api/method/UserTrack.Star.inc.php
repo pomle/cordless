@@ -6,7 +6,7 @@ function APIMethod($User, $params)
 	$isModify = isset($params->isStarred);
 	$lastFM_wasPropagated = null;
 
-	$UserTrack = getUserTrack($params, $isModify ? $User : null);
+	$UserTrack = getUserTrack($params, $isModify ? $User : null, true, true);
 
 	if( $isModify )
 	{
