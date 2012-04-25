@@ -3,9 +3,11 @@ namespace Cordless;
 
 use \Asenine\DB;
 
+$userID = isset($params->userID) ? $params->userID : $User->userID;
+
 echo Element\Library::head(_('Most Played'));
 
-$query = DB::prepareQuery("SELECT utp.timeCreated FROM Cordless_UserTrackPlays utp JOIN Cordless_UserTracks ut ON ut.ID = utp.userTrackID WHERE ut.userID = %d ORDER BY ID ASC LIMIT 1", $User->userID);
+$query = DB::prepareQuery("SELECT utp.timeCreated FROM Cordless_UserTrackPlays utp JOIN Cordless_UserTracks ut ON ut.ID = utp.userTrackID WHERE ut.userID = %d ORDER BY ID ASC LIMIT 1", $userID);
 $timeUntil = (int)DB::queryAndFetchOne($query) ?: null;
 
 if( $timeUntil )
@@ -55,7 +57,7 @@ else
 {
 	?>
 	<p>
-		<? echo _("You haven't played anything yet."); ?>
+		<? echo _("No registered plays"); ?>
 	</p>
 	<?
 }

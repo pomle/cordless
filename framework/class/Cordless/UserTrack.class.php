@@ -101,7 +101,7 @@ class UserTrack
 	}
 
 
-	public static function loadFromDB($userTrackIDs)
+	public static function loadFromDB($userTrackIDs, $clientUserID = null)
 	{
 		if( !($returnArray = is_array($userTrackIDs)) )
 			$userTrackIDs = array($userTrackIDs);
@@ -118,12 +118,18 @@ class UserTrack
 				ut.filename,
 				ut.artist,
 				ut.title,
-				uts.userTrackID AS isStarred
+				(NOT uts.userTrackID IS NULL) AS isStarred,
+				(ut.userID = %d) AS isOwner,
+				((ut.userID = %d) OR (NOT uf.friendUserID IS NULL)) AS isAccessible
 			FROM
 				Cordless_UserTracks ut
 				LEFT JOIN Cordless_UserTracksStarred uts ON uts.userTrackID = ut.ID
+				LEFT JOIN Cordless_UserFriends uf ON uf.userID = ut.userID AND uf.friendUserID = %d
 			WHERE
 				ut.ID IN %a",
+			$clientUserID,
+			$clientUserID,
+			$clientUserID,
 			$userTrackIDs);
 
 		$Result = DB::queryAndFetchResult($query);
@@ -147,6 +153,8 @@ class UserTrack
 			$UserTrack->title = $userTrack['title'];
 
 			$UserTrack->isStarred = (bool)$userTrack['isStarred'];
+			$UserTrack->isOwner = (bool)$userTrack['isOwner'];
+			$UserTrack->isAccessible = (bool)$userTrack['isAccessible'];
 
 			$userTracks[$UserTrack->userTrackID] = $UserTrack;
 

@@ -1,11 +1,9 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+$userID = isset($params->userID) ? $params->userID : $User->userID;
 
-echo Element\Library::head(_('Albums'));
-
-$query = DB::prepareQuery("SELECT
+$query = \Asenine\DB::prepareQuery("SELECT
 		IFNULL(ut.album, a.title) AS title,
 		IFNULL(ut.timeReleased, a.timeReleased) AS timeReleased,
 		COUNT(*) AS trackCount
@@ -19,11 +17,13 @@ $query = DB::prepareQuery("SELECT
 		a.ID
 	ORDER BY
 		title ASC",
-	$User->userID);
+	$userID);
 
-$Result = DB::queryAndFetchResult($query);
+$Result = \Asenine\DB::queryAndFetchResult($query);
 $len = $Result->rowCount();
 
+
+echo Element\Library::head(_('Albums'));
 ?>
 <div class="indexlist">
 	<?

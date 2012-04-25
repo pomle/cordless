@@ -5,9 +5,11 @@ use \Asenine\DB;
 
 class UserTrack
 {
-	private $lastQuery;
+	private
+		$lastQuery;
 
-	protected $userID;
+	protected
+		$userID;
 
 	public
 		$method,
@@ -19,11 +21,6 @@ class UserTrack
 	public function __construct(\Cordless\User $User, $method = null)
 	{
 		$this->userID = $User->userID;
-
-		$query = DB::prepareQuery("SELECT userID FROM Cordless_UserFriends WHERE friendUserID = %d", $this->userID);
-		$this->userIDs = DB::queryAndFetchArray($query);
-
-		$this->userIDs[] = $this->userID;
 
 		$this->method = $method;
 		$this->args = array_slice(func_get_args(), 2);
@@ -39,7 +36,7 @@ class UserTrack
 	}
 
 
-	protected function byAddTime($timeStart = null, $timeEnd = null)
+	protected function byAddTime($timeStart = null, $timeEnd = null, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -53,7 +50,7 @@ class UserTrack
 				AND (0 = %d OR ut.timeCreated BETWEEN %d AND %d)
 			ORDER BY
 				ut.timeCreated DESC",
-			$this->userID,
+			$userIDs ?: $this->userID,
 			(bool)$timeStart,
 			$timeStart,
 			$timeEnd ?: time());
@@ -61,7 +58,7 @@ class UserTrack
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byAlbum($name)
+	protected function byAlbum($name, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -80,13 +77,13 @@ class UserTrack
 				)
 			ORDER BY
 				at.trackNO ASC",
-			$this->userID,
+			$userIDs ?: $this->userID,
 			$name);
 
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byArtist($name)
+	protected function byArtist($name, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -103,7 +100,7 @@ class UserTrack
 				)
 			ORDER BY
 				ut.title ASC",
-			$this->userID,
+			$userIDs ?: $this->userID,
 			$name);
 
 		return $this->queryToUserTracks($query);
@@ -130,7 +127,7 @@ class UserTrack
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byPlayRank($uts_f = null, $uts_t = null)
+	protected function byPlayRank($uts_f = null, $uts_t = null, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -148,7 +145,7 @@ class UserTrack
 			ORDER BY
 				COUNT(*) DESC,
 				ut.timeLastPlayed DESC",
-			$this->userID,
+			$userIDs ?: $this->userID,
 			(bool)$uts_f,
 			$uts_f,
 			$uts_t ?: time());
@@ -156,7 +153,7 @@ class UserTrack
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byPlayTime()
+	protected function byPlayTime(Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -166,18 +163,20 @@ class UserTrack
 			FROM
 				Cordless_UserTracks
 			WHERE
-				userID = %d
+				userID IN %a
 			ORDER BY
 				timeLastPlayed DESC",
-			$this->userID);
+			$userIDs ?: $this->userID);
 
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function bySearch($string)
+	protected function bySearch($string, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
+
+		$userIDs = $userIDs ?: $this->userID;
 
 		### Search own and friends libraries and always prefers owned tracks
 
@@ -199,15 +198,15 @@ class UserTrack
 				t.ID
 			ORDER BY
 				CAST( IFNULL(GROUP_CONCAT(uto.playcount), ut.playcount) AS SIGNED ) DESC",
-			$this->userID,
-			$this->userIDs,
+			$userIDs,
+			$userIDs,
 			$string,
 			$string);
 
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byStarTime($uts_f = null, $uts_t = null)
+	protected function byStarTime($uts_f = null, $uts_t = null, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -218,14 +217,14 @@ class UserTrack
 				Cordless_UserTracks ut
 				JOIN Cordless_UserTracksStarred uts ON uts.userTrackID = ut.ID
 			WHERE
-				ut.userID = %d
+				ut.userID = %a
 				AND (0 = %d OR uts.timeCreated BETWEEN %d AND %d)
 			GROUP BY
 				ut.ID
 			ORDER BY
 				COUNT(*) DESC,
 				uts.timeCreated DESC",
-			$this->userID,
+			$userIDs ?: $this->userID,
 			(bool)$uts_f,
 			$uts_f,
 			$uts_t ?: time());
@@ -235,10 +234,7 @@ class UserTrack
 
 	public function getUserTracks($userTrackIDs)
 	{
-		$userTracks = \Cordless\UserTrack::loadFromDB($userTrackIDs);
-
-		foreach($userTracks as $UserTrack)
-			$UserTrack->isOwner = ($UserTrack->userID === $this->userID);
+		$userTracks = \Cordless\UserTrack::loadFromDB($userTrackIDs, $this->userID);
 
 		return $userTracks;
 	}

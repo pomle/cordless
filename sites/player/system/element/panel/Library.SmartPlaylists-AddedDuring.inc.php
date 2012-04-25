@@ -3,6 +3,8 @@ namespace Cordless;
 
 use \Asenine\DB;
 
+$userID = isset($params->userID) ? $params->userID : $User->userID;
+
 echo Element\Library::head(_('Added During'));
 ?>
 <ul>
@@ -18,7 +20,7 @@ echo Element\Library::head(_('Added During'));
 		WHERE
 			ut.userID = %u
 			AND ut.timeCreated > %d",
-		$User->userID,
+		$userID,
 		$timePre24h = ($timeNow - 60*60*24*1));
 
 	$trackCount = DB::queryAndFetchOne($query);
@@ -41,7 +43,7 @@ echo Element\Library::head(_('Added During'));
 		WHERE
 			ut.userID = %u
 			AND ut.timeCreated > %d",
-		$User->userID,
+		$userID,
 		$timePre7d);
 
 	$trackCount = DB::queryAndFetchOne($query);
@@ -69,7 +71,7 @@ echo Element\Library::head(_('Added During'));
 		ORDER BY
 			year DESC,
 			month DESC",
-		$User->userID);
+		$userID);
 
 	$Result = DB::queryAndFetchResult($query);
 

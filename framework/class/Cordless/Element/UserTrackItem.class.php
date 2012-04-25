@@ -22,6 +22,7 @@ class UserTrackItem
 		}
 
 		$UTI->isOwner = $UserTrack->isOwner;
+		$UTI->isAccessible = $UserTrack->isAccessible;
 		$UTI->isStarred = $UserTrack->isStarred;
 		$UTI->duration = $UserTrack->Track->duration;
 
@@ -47,6 +48,7 @@ class UserTrackItem
 		<div class="userTrack <?
 			printf(' id%d', $this->userTrackID);
 			if( $this->isOwner ) echo " isOwner";
+			if( $this->isAccessible ) echo " isAccessible";
 			if( $this->isStarred ) echo " isStarred";
 			?>"
 			data-usertrackid="<? echo $this->userTrackID; ?>"

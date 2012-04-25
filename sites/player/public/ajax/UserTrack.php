@@ -26,6 +26,8 @@ try
 		echo Element\UserTrackItem::fromUserTrack($UserTrack);
 
 	echo ob_get_clean();
+
+	die();
 }
 catch(\Exception $e)
 {

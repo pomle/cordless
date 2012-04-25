@@ -1,9 +1,9 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+$userID = isset($params->userID) ? $params->userID : $User->userID;
 
-$query = DB::prepareQuery("SELECT
+$query = \Asenine\DB::prepareQuery("SELECT
 		artist AS name,
 		COUNT(*) AS trackCount
 	FROM
@@ -14,9 +14,9 @@ $query = DB::prepareQuery("SELECT
 		artist
 	ORDER BY
 		artist ASC",
-	$User->userID);
+	$userID);
 
-$Result = DB::queryAndFetchResult($query);
+$Result = \Asenine\DB::queryAndFetchResult($query);
 $len = $Result->rowCount();
 
 echo Element\Library::head(_('Artists'));

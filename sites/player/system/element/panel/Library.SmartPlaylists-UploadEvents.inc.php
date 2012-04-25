@@ -1,14 +1,12 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+$userID = isset($params->userID) ? $params->userID : $User->userID;
 
 $timeGap = 60*15;
 $trackLimit = 1000;
 
-echo Element\Library::head(_('Upload Events'), sprintf(_("Last %d added tracks grouped by time separated by minimum of %d minutes"), $trackLimit, floor($timeGap / 60)));
-
-$query = DB::prepareQuery("SELECT
+$query = \Asenine\DB::prepareQuery("SELECT
 		ut.ID AS userTrackID,
 		ut.timeCreated
 	FROM
@@ -18,10 +16,12 @@ $query = DB::prepareQuery("SELECT
 	ORDER BY
 		ut.ID DESC
 	LIMIT %d",
-	$User->userID,
+	$userID,
 	$trackLimit);
 
-$Result = DB::queryAndFetchResult($query);
+$Result = \Asenine\DB::queryAndFetchResult($query);
+
+echo Element\Library::head(_('Upload Events'), sprintf(_("Last %d added tracks grouped by time separated by minimum of %d minutes"), $trackLimit, floor($timeGap / 60)));
 ?>
 <ul>
 	<?

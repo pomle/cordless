@@ -76,7 +76,7 @@ function libraryURL($panel, $params = null)
 
 
 
-function loadPanel($type, $name, $title = null)
+function loadPanel($type, $name, \stdClass $params = null)
 {
 	global $User;
 

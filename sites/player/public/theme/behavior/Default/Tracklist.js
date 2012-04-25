@@ -9,7 +9,7 @@ $(function()
 		// User Tracklist as PlayQueue
 		.on("click", ".tracklist>.control .queueReplace", function(e) {
 			e.preventDefault();
-			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack').clone();
+			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack.isAccessible').clone();
 			PlayQueue.replaceWith(userTracks);
 			if( Player.playlistSeek(0) )
 				Player.playbackStart();
@@ -18,14 +18,14 @@ $(function()
 		// Append Tracklist to PlayQueue
 		.on("click", ".tracklist>.control .queueLast", function(e) {
 			e.preventDefault();
-			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack').clone();
+			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack.isAccessible').clone();
 			PlayQueue.appendTo(userTracks);
 		})
 
 		// Insert Tracklist to PlayQueue after current item
 		.on("click", ".tracklist>.control .queueNext", function(e) {
 			e.preventDefault();
-			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack').clone();
+			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack.isAccessible').clone();
 			PlayQueue.afterCurrent(userTracks);
 		})
 

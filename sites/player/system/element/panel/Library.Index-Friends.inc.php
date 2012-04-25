@@ -1,9 +1,9 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+$userID = isset($params->userID) ? $params->userID : $User->userID;
 
-$query = DB::prepareQuery("SELECT
+$query = \Asenine\DB::prepareQuery("SELECT
 		uf.friendUserID AS userID
 	FROM
 		Cordless_UserFriends uf
@@ -12,9 +12,9 @@ $query = DB::prepareQuery("SELECT
 		uf.userID = %d
 	ORDER BY
 		u.username ASC",
-	$User->userID);
+	$userID);
 
-$userIDs = DB::queryAndFetchArray($query);
+$userIDs = \Asenine\DB::queryAndFetchArray($query);
 
 $users = User::loadFromDB($userIDs);
 
