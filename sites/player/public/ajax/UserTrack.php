@@ -9,14 +9,16 @@ session_write_close();
 
 try
 {
+	$userTracks = array();
+
 	if( isset($_GET['userTrackID']) )
 	{
 		$userTrackIDs = (array)$_GET['userTrackID'];
-		$userTracks = UserTrack::loadFromDB($userTrackIDs);
-	}
 
-	if( !isset($userTracks) )
-		throw New \Exception("No UserTracks found");
+		$Fetcher = new Fetch\UserTrack($User);
+
+		$userTracks = $Fetcher->getUserTracks($userTrackIDs);
+	}
 
 	ob_start();
 

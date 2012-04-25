@@ -27,6 +27,35 @@ $(function()
 			);
 		})
 
+		.on("click", ".userTrack .takeOwnership", function(e) {
+			e.preventDefault();
+
+			var eUserTrack = $(this).closest('.userTrack');
+			var userTrackID = eUserTrack.data('usertrackid');
+
+			eUserTrack.addClass('isBusy');
+
+			Cordless.API.makeCall(
+				'UserTrack.Edit',
+				{'action': 'grab', 'userTrackID': userTrackID},
+				function(response)
+				{
+					var userTrackID = response.data.userTrackID;
+
+					$.ajax(
+					{
+						'url': Cordless.AJAX_URL + 'UserTrack.php',
+						'type': 'GET',
+						'data': {'userTrackID': userTrackID},
+						'success': function(response)
+						{
+							eUserTrack.replaceWith(response);
+						}
+					});
+				}
+			);
+		})
+
 		.on("click", ".userTrackPlay", function(e) {
 			e.preventDefault();
 

@@ -6,11 +6,11 @@
 }
 
 .userTrack .control.track .starToggle {
-	background: url('../img/UserTrack_Icon_StarToggle.png');
+	background-image: url('../img/UserTrack_Icon_StarToggle.png');
 }
 
 .userTrack.isStarred .control.track .starToggle {
-	background: url('../img/UserTrack_Icon_StarToggle_On.png');
+	background-image: url('../img/UserTrack_Icon_StarToggle_On.png');
 }
 
 .userTrack .control.track .takeOwnership {

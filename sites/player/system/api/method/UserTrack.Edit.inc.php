@@ -17,14 +17,17 @@ function APIMethod($User, $params)
 		break;
 
 		case 'grab':
-			$UserTrack = getUserTrack($params);
+			$UserTrack = getUserTrack($params, $User, true, false);
 
-			if( $UserTrack_Existing = UserTrack::loadByTrack($User, $UserTrack->Track->trackID) )
-				return array('userTrackID' => $UserTrack_Existing->userTrackID);
-
-			$UserTrack->takeOwnership($User->userID);
-
-			UserTrack::saveToDB($UserTrack);
+			if( $UserTrack_Owned = UserTrack::loadByTrack($User, $UserTrack->Track->trackID) )
+			{
+				$UserTrack = $UserTrack_Owned;
+			}
+			else
+			{
+				$UserTrack->takeOwnership($User);
+				UserTrack::saveToDB($UserTrack);
+			}
 
 			return array('userTrackID' => $UserTrack->userTrackID);
 		break;
