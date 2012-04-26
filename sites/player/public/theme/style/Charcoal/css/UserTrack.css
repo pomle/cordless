@@ -5,6 +5,11 @@
 	width: 12px;
 }
 
+.userTrack  ul {
+	list-style: none !important;
+	margin: 0 !important;
+}
+
 .userTrack .control.track .starToggle {
 	background-image: url('../img/UserTrack_Icon_StarToggle.png');
 }
