@@ -10,8 +10,9 @@ global $baseHref;
 	foreach($css as $path)
 		printf('<link rel="stylesheet" type="text/css" href="%s">', $path);
 
+	if( isset($imageURL) )
+		printf('<link rel="image_src" href="%s">', htmlspecialchars($imageURL));
 	?>
-	<link href="http://public.pomle.com/Cordless-Interface-NowPlaying-Nero.png" rel="image_src">
 </head>
 
 <body>
