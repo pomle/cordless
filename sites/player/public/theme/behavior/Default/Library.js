@@ -13,7 +13,12 @@ $(function()
 				Library.goTo(href.substr(1));
 			else
 				Library.goToURL(href);
-		});
+		})
+		.on("click", 'a.apiCall', function(e) {
+			e.preventDefault();
+			$.get(this.href, function(response) { if( response.status === true ) alert(response.data.message); });
+		})
+		;
 
 
 	$('nav.library')

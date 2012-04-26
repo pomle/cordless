@@ -10,34 +10,52 @@ function APIMethod($User, $params)
 		throw new APIException('Friend user does not exist');
 
 
+	$beFriend = function($userID, $friendUserID)
+	{
+		$query = \Asenine\DB::prepareQuery("INSERT IGNORE INTO
+			Cordless_UserFriends (
+				userID,
+				friendUserID
+			) VALUES(
+				%d,
+				%d)",
+			$userID,
+			$friendUserID);
+
+		\Asenine\DB::query($query);
+	};
+
+	$unFriend = function($userID, $friendUserID)
+	{
+		$query = \Asenine\DB::prepareQuery("DELETE FROM
+				Cordless_UserFriends
+			WHERE
+				userID = %d
+				AND friendUserID = %d",
+			$userID,
+			$friendUserID);
+
+		\Asenine\DB::query($query);
+	};
+
+
 	if( isset($params->action) )
 	{
 		switch($params->action)
 		{
 			case 'befriend':
-				$query = \Asenine\DB::prepareQuery("INSERT IGNORE INTO
-					Cordless_UserFriends (
-						userID,
-						friendUserID
-					) VALUES(
-						%d,
-						%d)",
-					$User->userID,
-					$Friend->userID);
+				$beFriend($User->userID, $Friend->userID);
+			break;
 
-				\Asenine\DB::query($query);
+			case 'toggle':
+				if( in_array($Friend->userID, $User->getFriendsUserIDs()) )
+					$unFriend($User->userID, $Friend->userID);
+				else
+					$beFriend($User->userID, $Friend->userID);
 			break;
 
 			case 'unfriend':
-				$query = \Asenine\DB::prepareQuery("DELETE FROM
-						Cordless_UserFriends
-					WHERE
-						userID = %d
-						AND friendUserID = %d",
-					$User->userID,
-					$Friend->userID);
-
-				\Asenine\DB::query($query);
+				$unFriend($User->userID, $Friend->userID);
 			break;
 		}
 	}
@@ -46,6 +64,7 @@ function APIMethod($User, $params)
 	return array(
 		'friendUserID' => $Friend->userID,
 		'username' => $Friend->username,
-		'isFriend' => in_array($Friend->userID, $User->getFriendsUserIDs())
+		'isFriend' => ($isFriend = in_array($Friend->userID, $User->getFriendsUserIDs())),
+		'message' => sprintf($isFriend ? _('You are now friends with %s') : _('You have unfriended %s'), $Friend->username)
 	);
 }

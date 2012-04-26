@@ -16,6 +16,10 @@ echo Element\Library::head(false ? str_replace('%USERNAME%', $Friend->username, 
 	if( $User->isFriend($Friend->userID) ) echo " isFriend";
 	?>">
 
+	<section class="control">
+		<a href="<? echo apiLink('User.Friend', array('action' => 'toggle', 'friendUserID' => $Friend->userID)); ?>" class="apiCall">Befriend/Unfriend</a>
+	</section>
+
 	<section class="status">
 		<ul>
 			<li><? echo htmlspecialchars(sprintf(_("Tracks in Library: %s"), formatCount($userTrackCount))); ?></li>
