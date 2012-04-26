@@ -31,18 +31,3 @@
 .userTrack .control.playqueue .removeItem {
 	background-image: url('../img/UserTrack_Icon_Remove.png');
 }
-
-
-.userTrack.isOwner .control .starToggle,
-.userTrack.isAccessible .control .takeOwnership,
-.userTrack.isAccessible .control .queuePlay,
-.userTrack.isAccessible .control .queueNext,
-.userTrack.isAccessible .control .queueLast {
-	display: block;
-}
-
-.userTrack.isOwner .control .takeOwnership {
-	display: none;
-}
-
-

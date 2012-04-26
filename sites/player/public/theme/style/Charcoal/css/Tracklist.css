@@ -28,6 +28,20 @@
 	margin-right: 6px;
 }
 
+
+.tracklist .userTrack.isOwner .control .starToggle,
+.tracklist .userTrack.isAccessible .control .takeOwnership,
+.tracklist .userTrack.isAccessible .control .queuePlay,
+.tracklist .userTrack.isAccessible .control .queueNext,
+.tracklist .userTrack.isAccessible .control .queueLast {
+	display: block;
+}
+
+.tracklist .userTrack.isOwner .control .takeOwnership {
+	display: none;
+}
+
+
 .tracklist>.control .queueLast {
 	background: url('../img/Tracklist_Icon_QueueAppend.png');
 }
