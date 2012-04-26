@@ -16,5 +16,5 @@ $Fetcher->limit = min(isset($params->limit) ? (int)$params->limit : 20, 1000);
 
 
 echo
-	Element\Library::head($title ?: _('Recently Added')),
+	Element\Library::head($params->title ?: _('Recently Added')),
 	Element\Tracklist::createFromFetcher($Fetcher);
