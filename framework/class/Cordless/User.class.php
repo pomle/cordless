@@ -12,6 +12,9 @@ class User extends \Asenine\User
 
 	public static function loadFromDB($userIDs)
 	{
+		if( !$returnArray = is_array($userIDs) )
+			$userIDs = (array)$userIDs;
+
 		$users = parent::loadFromDB($userIDs);
 
 		$userIDs = array_keys($users);
@@ -48,7 +51,7 @@ class User extends \Asenine\User
 			}
 		}
 
-		return $users;
+		return $returnArray ? $users : reset($users);
 	}
 
 	public static function saveToDB(self $User)
