@@ -28,7 +28,7 @@ echo Element\Library::head(
 
 $imageURL = null;
 if( isset($UserTrack->Image) )
-	$imageURL = \Asenine\Media\Producer\Thumb::createFromHash($UserTrack->Image->mediaHash)->getCustom(200, 200, true);
+	$imageURL = getUserTrackImageURL($UserTrack->Image->mediaHash);
 
 ?>
 <form action="<? echo apiLink('UserTrack.Edit'); ?>" method="POST">
