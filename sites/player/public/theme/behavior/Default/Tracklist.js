@@ -101,7 +101,7 @@ $(function()
 			var userTrackID = $(this).closest('.userTrack').data('usertrackid');
 
 			if( e.ctrlKey )
-				window.location = "./api/?method=Stream&userTrackID=" + userTrackID;
+				window.location = "./api/?method=Stream&download=1&userTrackID=" + userTrackID;
 			else
 				Library.goTo('UserTrack-Control', {'userTrackID': userTrackID});
 		})
