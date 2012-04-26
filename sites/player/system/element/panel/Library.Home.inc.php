@@ -73,26 +73,7 @@ if( $isLastFmAvailable )
 	}
 	?>
 
-	<section class="browse">
-		<h3><? echo htmlspecialchars(_("Browse")); ?></h3>
-
-		<ul>
-			<li><? echo libraryLink(_("Albums"), 'Index-Albums'); ?></li>
-			<li><? echo libraryLink(_("Artists"), 'Index-Artists'); ?></li>
-			<li><? echo libraryLink(_("Playlists"), 'Index-Playlists'); ?></li>
-		</ul>
-
-		<ul>
-			<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime', 'limit=25'); ?></li>
-			<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime', 'limit=25'); ?></li>
-			<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime', 'limit=25'); ?></li>
-		</ul>
-
-		<ul>
-			<li><? echo libraryLink(_("Friends"), 'Index-Friends'); ?></li>
-			<li><? echo libraryLink(_("SmartPlaylists"), 'SmartPlaylists'); ?></li>
-		</ul>
-	</section>
+	<? require DIR_ELEMENT . 'Block.Library.Browse.inc.php'; ?>
 
 	<section class="misc">
 		<h3><? echo htmlspecialchars(_("Misc")); ?></h3>

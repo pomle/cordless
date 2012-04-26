@@ -16,9 +16,6 @@ $userTrackCount = DB::queryAndFetchOne($query);
 $query = DB::prepareQuery("SELECT SUM(playcount) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $User->userID);
 $userPlayCountTotal = DB::queryAndFetchOne($query);
 
-
-$qs = sprintf('userID=%d', $User->userID);
-
 ?>
 <div class="userOverview">
 
@@ -29,25 +26,9 @@ $qs = sprintf('userID=%d', $User->userID);
 		</ul>
 	</section>
 
-	<section class="browse">
-		<h3><? echo htmlspecialchars(_("Browse")); ?></h3>
-
-		<ul>
-			<li><? echo libraryLink(_("Albums"), 'Index-Albums', $qs); ?></li>
-			<li><? echo libraryLink(_("Artists"), 'Index-Artists', $qs); ?></li>
-			<li><? echo libraryLink(_("Playlists"), 'Index-Playlists', $qs); ?></li>
-		</ul>
-
-		<ul>
-			<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime', $qs); ?></li>
-			<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime', $qs); ?></li>
-			<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime', $qs); ?></li>
-		</ul>
-
-		<ul>
-			<li><? echo libraryLink(_("Friends"), 'Index-Friends', $qs); ?></li>
-			<li><? echo libraryLink(_("SmartPlaylists"), 'SmartPlaylists', $qs); ?></li>
-		</ul>
-	</section>
+	<?
+	$userID = $User->userID;
+	require DIR_ELEMENT . 'Block.Library.Browse.inc.php';
+	?>
 
 </div>
