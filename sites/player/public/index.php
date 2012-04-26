@@ -76,7 +76,7 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 
 		<div class="inner">
 
-			<form action="./ajax/Panel.php?type=Library&amp;name=Tracks-Search" method="get" id="search">
+			<form action="<? echo libraryURL('Search'); ?>" method="get" id="search">
 				<div class="search">
 					<input type="text" name="q" value="<? if( isset($_COOKIE['searchQuery']) ) echo htmlspecialchars($_GET['searchQuery']); ?>">
 				</div>
