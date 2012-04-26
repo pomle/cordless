@@ -11,7 +11,7 @@ function APIMethod($User, $params)
 	$forceDownload = ( isset($params->download) && (bool)$params->download );
 
 	$playFormat = $User->getSetting('Stream_Play_Format');
-	$downloadFormat = $User->getSetting('Stream_Play_Format');
+	$downloadFormat = $User->getSetting('Stream_Download_Format');
 
 
 	if( isset($params->format) )
@@ -56,7 +56,13 @@ function APIMethod($User, $params)
 
 		case 'raw':
 			$File = $UserTrack->Track->Audio->File;
-			serveFilePartial($File->location, $File->name, $File->mime);
+
+			if( preg_match('/\.(mp3|ogg|mp4|wav)$/i', $File->name, $match) )
+				$fileName = sprintf('%s.%s', $UserTrack, strtolower($match[1]));
+			else
+				$fileName = $File->name;
+
+			serveFilePartial($File->location, $fileName, $File->mime);
 			die();
 		break;
 
@@ -83,4 +89,5 @@ function APIMethod($User, $params)
 	header("X-Cordless-Title: " . $UserTrack->title);
 
 	serveFilePartial($fileName, $fileTitle, $contentType);
+	die();
 }
