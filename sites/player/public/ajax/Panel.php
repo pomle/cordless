@@ -23,6 +23,9 @@ try
 
 	$params = (object)array_merge($_GET, $_POST);
 
+	if( !isset($params->title) )
+		$params->title = null;
+
 	loadPanel($_GET['type'], $_GET['name'], $params);
 }
 catch(PanelException $e)
