@@ -10,3 +10,5 @@ if( !isset($_SESSION['User']) || !$_SESSION['User'] instanceof User || isset($_P
 	$_SESSION['User'] = User::login($username, $password, $authtoken) ?: new User();
 }
 $User = $_SESSION['User'];
+
+define('USER_ID', $User->userID);

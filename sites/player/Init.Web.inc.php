@@ -23,7 +23,6 @@ $js = array();
 session_start();
 require DIR_SITE_SYSTEM . 'init/User.inc.php';
 
-define('USER_ID', $User->userID);
 
 if( !defined('NO_LOGIN') || constant('NO_LOGIN') !== true )
 {
