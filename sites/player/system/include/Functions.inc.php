@@ -35,6 +35,11 @@ function getLastFM()
 	return false;
 }
 
+function getUserTrackImageURL($mediaHash)
+{
+	return \Asenine\Media\Producer\Thumb::createFromHash($mediaHash)->getCustom(200, 200, true);
+}
+
 function getUserTrackItemImageURL($mediaHash)
 {
 	try
