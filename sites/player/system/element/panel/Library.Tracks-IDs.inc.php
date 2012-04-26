@@ -1,26 +1,34 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+$userID = isset($params->userID) ? $params->userID : USER_ID;
 
-try
+if( isset($params->id_f) && isset($params->id_t) )
 {
-	if( isset($_GET['id_f'], $_GET['id_t']) )
-	{
-		echo Element\Library::head(_("Advanced Track List"), sprintf(_("ID Interval (%d/%d)"), $_GET['id_f'], $_GET['id_t']));
+	$idF = $params->id_f;
+	$idT = $params->id_t;
 
-		$query = DB::prepareQuery("SELECT ID FROM Cordless_UserTracks WHERE userID = %d AND ID BETWEEN %d AND %d", $User->userID, $_GET['id_f'], $_GET['id_t']);
+	$subtitle = sprintf(_("ID Interval (%d/%d)"), $idF, $idT);
 
-		$Fetch = new Fetch\UserTrack($User);
-		$userTracks = $Fetch->queryToUserTracks($query);
-	}
-
-	if( !isset($userTracks) || count($userTracks) == 0 )
-		throw New \Exception(_("No tracks found"));
-
-	echo Element\Tracklist::createFromUserTracks($userTracks);
+	$query = \Asenine\DB::prepareQuery("SELECT
+			ID
+		FROM
+			Cordless_UserTracks
+		WHERE
+			userID = %d
+			AND ID BETWEEN %d AND %d",
+		$User->userID,
+		$idF,
+		$idT);
 }
-catch(\Exception $e)
+else
 {
-	echo Element\Message::error( $e->getMessage() );
+	throw new PanelException("Missing arguments");
 }
+
+$Fetch = new Fetch\UserTrack($User);
+$userTracks = $Fetch->queryToUserTracks($query);
+
+echo
+	Element\Library::head(_("Advanced Track List"), $subtitle),
+	Element\Tracklist::createFromUserTracks($userTracks);

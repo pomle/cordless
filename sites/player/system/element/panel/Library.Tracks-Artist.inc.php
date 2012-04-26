@@ -1,27 +1,14 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
+if( !isset($params->artist) )
+	throw new PanelException('No artist name given');
 
-try
-{
-	if( !isset($_GET['artist']) )
-		throw New \Exception('No artist name given');
+$artist = $params->artist;
 
-	$artist = $_GET['artist'];
+$Fetch = new Fetch\UserTrack($User, 'byArtist', $artist);
+$userTracks = $Fetch();
 
-	echo Element\Library::head($artist);
-
-	$Fetch = new Fetch\UserTrack($User, 'byArtist', $artist);
-
-	$userTracks = $Fetch();
-
-	if( count($userTracks) == 0 )
-		throw New \Exception(sprintf(_("No matches found for \"%s\""), htmlspecialchars($artist)));
-
-	echo Element\Tracklist::createFromUserTracks($userTracks);
-}
-catch(\Exception $e)
-{
-	echo Element\Message::error($e->getMessage());
-}
+echo
+	Element\Library::head($artist),
+	Element\Tracklist::createFromUserTracks($userTracks);
