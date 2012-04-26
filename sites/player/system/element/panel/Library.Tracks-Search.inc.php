@@ -17,13 +17,13 @@ if( preg_match('/^cordless:(.+):(.+)$/U', $search, $match) )
 			if( !$params->userID = \Asenine\User\Dataset::getUserID($arg) )
 				throw new PanelException(str_replace('%USERNAME%', $arg, _('User "%USERNAME%" not found')));
 
-			libraryPanel('User-Overview');
+			libraryPanel('User-Overview', $params);
 			exit;
 		break;
 
 		case 'usertrack':
 			$params->userTrackID = (int)$arg;
-			libraryPanel('UserTrack-Control');
+			libraryPanel('UserTrack-Control', $params);
 			exit;
 		break;
 	}
