@@ -1,23 +1,20 @@
 <?
 namespace Cordless;
 
-use \Asenine\DB;
-
-global $params;
-
-if( !isset($params->userID) || !$User = User::loadFromDB($params->userID) )
+if( !isset($params->userID) || !$Friend = User::loadFromDB($params->userID) )
 	throw new PanelException('User not found');
 
-echo Element\Library::head(false ? str_replace('%USERNAME%', $User->username, _('Home of %USERNAME%')) : $User->username);
+$query = \Asenine\DB::prepareQuery("SELECT COUNT(*) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $Friend->userID);
+$userTrackCount = \Asenine\DB::queryAndFetchOne($query);
 
-$query = DB::prepareQuery("SELECT COUNT(*) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $User->userID);
-$userTrackCount = DB::queryAndFetchOne($query);
+$query = \Asenine\DB::prepareQuery("SELECT SUM(playcount) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $Friend->userID);
+$userPlayCountTotal = \Asenine\DB::queryAndFetchOne($query);
 
-$query = DB::prepareQuery("SELECT SUM(playcount) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $User->userID);
-$userPlayCountTotal = DB::queryAndFetchOne($query);
-
+echo Element\Library::head(false ? str_replace('%USERNAME%', $Friend->username, _('Home of %USERNAME%')) : $Friend->username);
 ?>
-<div class="userOverview">
+<div class="userOverview<?
+	if( $User->isFriend($Friend->userID) ) echo " isFriend";
+	?>">
 
 	<section class="status">
 		<ul>
@@ -27,7 +24,7 @@ $userPlayCountTotal = DB::queryAndFetchOne($query);
 	</section>
 
 	<?
-	$userID = $User->userID;
+	$userID = $Friend->userID;
 	require DIR_ELEMENT . 'Block.Library.Browse.inc.php';
 	?>
 
