@@ -94,9 +94,20 @@ class User extends \Asenine\User
 		return \Asenine\DB::queryAndFetchArray($query);
 	}
 
+	public function getFriendsUserIDs()
+	{
+		$query = \Asenine\DB::prepareQuery("SELECT friendUserID FROM Cordless_UserFriends WHERE userID = %d", $this->userID);
+		return \Asenine\DB::queryAndFetchArray($query);
+	}
+
 	public function getSetting($key)
 	{
 		return parent::getSetting("Cordless." . $key);
+	}
+
+	public function isFriend($friendUserID)
+	{
+		return in_array($friendUserID, $this->getFriendsUserIDs());
 	}
 
 	public function isUserIDAccessible($userID)
