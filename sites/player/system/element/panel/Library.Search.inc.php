@@ -11,17 +11,18 @@ try
 
 	$search = $params->q;
 
-	if( preg_match('/^cordless:(.+):(.+)$/U', $search, $match) )
+	if( preg_match('/^(.+):(.+)$/U', $search, $match) )
 	{
 		list(, $action, $arg) = $match;
 
 		switch( strtolower($action) )
 		{
 			case 'user':
-				if( !$params->userID = \Asenine\User\Dataset::getUserID($arg) )
-					throw new PanelException(str_replace('%USERNAME%', $arg, _('User "%USERNAME%" not found')));
+				if( $params->userID = \Asenine\User\Dataset::getUserID($arg) )
+					libraryPanel('User-Overview', $params);
 
-				libraryPanel('User-Overview', $params);
+				$params->search = $arg;
+				libraryPanel('Index-Friends', $params);
 				exit;
 			break;
 
