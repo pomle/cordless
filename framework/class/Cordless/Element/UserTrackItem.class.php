@@ -5,6 +5,7 @@ class UserTrackItem
 {
 	public
 		$userTrackID,
+		$trackID,
 		$title,
 		$artist,
 		$imageURL,
@@ -20,6 +21,8 @@ class UserTrackItem
 			$Artist = $UserTrack->Track->artists[0];
 			$UTI->artistID = $Artist->artistID;
 		}
+
+		$UTI->trackID = $UserTrack->trackID;
 
 		$UTI->isOwner = $UserTrack->isOwner;
 		$UTI->isAccessible = $UserTrack->isAccessible;
@@ -52,6 +55,7 @@ class UserTrackItem
 			if( $this->isStarred ) echo " isStarred";
 			?>"
 			data-usertrackid="<? echo $this->userTrackID; ?>"
+			data-trackid="<? echo $this->trackID; ?>"
 			data-artist="<? echo htmlspecialchars($this->artist); ?>"
 			data-title="<? echo htmlspecialchars($this->title); ?>"
 			>
