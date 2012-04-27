@@ -8,10 +8,10 @@ echo Element\Library::head(false ? str_replace('%USERNAME%', $User->username, _(
 $query = DB::prepareQuery("SELECT COUNT(*) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $User->userID);
 $userTrackCount = DB::queryAndFetchOne($query);
 
-$query = DB::prepareQuery("SELECT SUM(playcount) FROM Cordless_UserTracks ut WHERE ut.userID = %u", $User->userID);
+$query = DB::prepareQuery("SELECT COUNT(*) FROM Cordless_UserTrackPlays utp WHERE utp.userID = %u", $User->userID);
 $userPlayCountTotal = DB::queryAndFetchOne($query);
 
-$query = DB::prepareQuery("SELECT SUM(utp.duration) FROM Cordless_UserTracks ut JOIN Cordless_UserTrackPlays utp ON utp.userTrackID = ut.ID WHERE ut.userID = %u", $User->userID);
+$query = DB::prepareQuery("SELECT SUM(utp.duration) FROM Cordless_UserTrackPlays utp WHERE utp.userID = %u", $User->userID);
 $userPlayDurationTotal = DB::queryAndFetchOne($query);
 
 $isLastFmAvailable = (bool)LAST_FM_API_KEY;

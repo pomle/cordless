@@ -206,37 +206,6 @@ class UserTrack
 		return $returnArray ? $userTracks : reset($userTracks);
 	}
 
-	public static function registerPlays($userTrackIDs, $uts, $duration = 0)
-	{
-		$userTrackIDs = (array)$userTrackIDs;
-
-		if( count($userTrackIDs) > 0 )
-		{
-			$query = "INSERT INTO Cordless_UserTrackPlays (userTrackID, timeCreated, duration) VALUES";
-			foreach($userTrackIDs as $userTrackID)
-				$query .= DB::prepareQuery("(%d, %d, %d),", $userTrackID, $uts, $duration);
-
-			$query = rtrim($query, ',');
-			DB::query($query);
-
-
-			$query = DB::prepareQuery("UPDATE
-					Cordless_UserTracks
-				SET
-					timeLastPlayed = %d,
-					playCount = playCount + %d
-				WHERE
-					ID IN %a",
-				$uts,
-				1,
-				$userTrackIDs);
-
-			DB::query($query);
-		}
-
-		return true;
-	}
-
 	public static function removeFromDB(self $UserTrack)
 	{
 		$userTrackID = $UserTrack->userTrackID;
@@ -366,7 +335,43 @@ class UserTrack
 
 	public function registerPlay($duration = 0)
 	{
-		return ( self::registerPlays($this->userTrackID, time(), $duration) );
+		$uts = time();
+
+		$query = DB::prepareQuery("INSERT INTO
+			Cordless_UserTrackPlays (
+				userID,
+				trackID,
+				userTrackID,
+				timeCreated,
+				duration
+			) VALUES(
+				%d,
+				%d,
+				%d,
+				%d,
+				%d)",
+			$this->userID,
+			$this->trackID,
+			$this->userTrackID,
+			$uts ?: time(),
+			$duration);
+
+		DB::query($query);
+
+		$query = DB::prepareQuery("UPDATE
+				Cordless_UserTracks
+			SET
+				timeLastPlayed = %d,
+				playCount = playCount + %d
+			WHERE
+				ID = %d",
+			$uts,
+			1,
+			$this->userTrackID);
+
+		DB::query($query);
+
+		return $this;
 	}
 
 	public function setImage(\Asenine\Media\Type\Image $Image)
