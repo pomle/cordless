@@ -41,7 +41,7 @@ echo Element\Library::head(_('Artists'));
 			echo '<ul>';
 		}
 
-		printf('<li>%s (%d)</li>', libraryLink(htmlspecialchars($artist['name']), 'Tracks-Artist', 'artist=' . urlencode($artist['name'])), $artist['trackCount']);
+		printf('<li>%s (%d)</li>', libraryLink(htmlspecialchars($artist['name']), 'Tracks-Artist', array('artist' => $artist['name'], 'userID' => $userID)), $artist['trackCount']);
 
 		if( $i == $len ) echo '</ul>';
 	}
