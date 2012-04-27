@@ -17,11 +17,15 @@ class UserTrack
 	public
 		$userID,
 		$trackID,
+		$isAccessible = false,
+		$isOwner = false,
+		$isStarred = false,
 		$filename,
 		$artist,
 		$title,
-		$isStarred,
-		$isOwner;
+		$album,
+		$trackNo;
+
 
 
 	public static function addStars(Array $userTrackIDs)
@@ -118,6 +122,8 @@ class UserTrack
 				ut.filename,
 				ut.artist,
 				ut.title,
+				a.title AS album,
+				at.trackNo,
 				(NOT uts.userTrackID IS NULL) AS isStarred,
 				(ut.userID = %d) AS isOwner,
 				((ut.userID = %d) OR (NOT uf.friendUserID IS NULL)) AS isAccessible
@@ -125,6 +131,8 @@ class UserTrack
 				Cordless_UserTracks ut
 				LEFT JOIN Cordless_UserTracksStarred uts ON uts.userTrackID = ut.ID
 				LEFT JOIN Cordless_UserFriends uf ON uf.userID = ut.userID AND uf.friendUserID = %d
+				LEFT JOIN Cordless_AlbumTracks at ON at.trackID = ut.trackID
+				LEFT JOIN Cordless_Albums a ON a.ID = at.albumID
 			WHERE
 				ut.ID IN %a",
 			$clientUserID,
@@ -149,8 +157,11 @@ class UserTrack
 			$UserTrack->playcount = (int)$userTrack['playcount'];
 
 			$UserTrack->filename = $userTrack['filename'];
+
 			$UserTrack->artist = $userTrack['artist'];
 			$UserTrack->title = $userTrack['title'];
+			$UserTrack->album = $userTrack['album'];
+			$UserTrack->trackNo = (int)$userTrack['trackNo'] ?: null;
 
 			$UserTrack->isStarred = (bool)$userTrack['isStarred'];
 			$UserTrack->isOwner = (bool)$userTrack['isOwner'];
