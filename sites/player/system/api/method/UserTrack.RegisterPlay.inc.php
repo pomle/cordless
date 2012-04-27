@@ -22,11 +22,13 @@ function APIMethod($User, $params)
 
 	$artist = $UserTrack->artist;
 	$title = $UserTrack->title;
+	$album = $UserTrack->album;
+	$trackNo = $UserTrack->trackNo;
 
 
 	if( $lastFM_doScrobble && isset($User->last_fm_username, $User->last_fm_key) && ($User->last_fm_scrobble === true) && ($LastFM = getLastFM()) )
 	{
-		$xml = $LastFM->sendScrobble($User->last_fm_key, $timePlayStart, $artist, $title, $duration);
+		$xml = $LastFM->sendScrobble($User->last_fm_key, $timePlayStart, $artist, $title, $duration, $album);
 
 		if( !$xml->xpath('/lfm[@status="ok"]') )
 		{
