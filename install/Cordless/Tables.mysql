@@ -400,11 +400,17 @@ DROP TABLE IF EXISTS `Cordless_UserTrackPlays`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Cordless_UserTrackPlays` (
-  `userTrackID` int(10) unsigned NOT NULL,
+  `userID` int(10) unsigned NOT NULL,
+  `trackID` int(10) unsigned NOT NULL,
+  `userTrackID` int(10) unsigned DEFAULT NULL,
   `timeCreated` int(10) unsigned NOT NULL,
   `duration` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `userTrackID` (`userTrackID`),
-  CONSTRAINT `Cordless_UserTrackPlays_ibfk_1` FOREIGN KEY (`userTrackID`) REFERENCES `Cordless_UserTracks` (`ID`) ON DELETE CASCADE
+  KEY `trackID` (`trackID`),
+  KEY `userID` (`userID`),
+  CONSTRAINT `Cordless_UserTrackPlays_ibfk_1` FOREIGN KEY (`userTrackID`) REFERENCES `Cordless_UserTracks` (`ID`) ON DELETE SET NULL,
+  CONSTRAINT `Cordless_UserTrackPlays_ibfk_2` FOREIGN KEY (`trackID`) REFERENCES `Cordless_Tracks` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `Cordless_UserTrackPlays_ibfk_3` FOREIGN KEY (`userID`) REFERENCES `Asenine_Users` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
