@@ -181,11 +181,11 @@ class UserTrack
 		### Search own and friends libraries and always prefers owned tracks
 
 		$query = DB::prepareQuery("SELECT
-				IFNULL(GROUP_CONCAT(uto.ID), ut.ID) AS userTrackID
+				IFNULL(ut_owner.ID, ut.ID) AS userTrackID
 			FROM
 				Cordless_UserTracks ut
-				LEFT JOIN Cordless_UserTracks uto ON uto.ID = ut.ID AND ut.userID = %d
 				JOIN Cordless_Tracks t ON t.ID = ut.trackID
+				LEFT JOIN Cordless_UserTracks ut_owner ON ut_owner.trackID = t.ID AND ut_owner.userID = %d
 				JOIN Cordless_TrackArtists ta ON ta.trackID = t.ID
 				JOIN Cordless_Artists a ON a.ID = ta.artistID
 			WHERE
@@ -197,8 +197,8 @@ class UserTrack
 			GROUP BY
 				t.ID
 			ORDER BY
-				CAST( IFNULL(GROUP_CONCAT(uto.playcount), ut.playcount) AS SIGNED ) DESC",
-			$userIDs,
+				IFNULL(ut_owner.playcount, ut.playcount) DESC",
+			$this->userID,
 			$userIDs,
 			$string,
 			$string);
