@@ -116,7 +116,10 @@ function AudioController( PlayQueue , api_url )
 			if( oAudio.ended )
 			{
 				if( !self.playlistNext() )
+				{
 					self.playbackStop();
+					self.trackEnd();
+				}
 			}
 		}
 
@@ -285,6 +288,20 @@ function AudioController( PlayQueue , api_url )
 		return true;
 	}
 
+	this.trackEnd = function()
+	{
+		if( this.isTrackStarted )
+		{
+			var Track = this.getTrack(); // Save track values before they are reset
+
+			this.isTrackStarted = false;
+			this.trackPlayedTime = 0;
+			this.trackStartTime = null;
+
+			this.eventTrackEnded(Track);
+		}
+	}
+
 	this.trackUnload = function()
 	{
 		if( !this.isTrackLoaded )
@@ -295,19 +312,12 @@ function AudioController( PlayQueue , api_url )
 		this.isTrackReady = false;
 		this.isTrackLoaded = false;
 
-		if( this.isTrackStarted )
-		{
-			this.isTrackStarted = false;
-			this.eventTrackEnded( Track );
-		}
-
 		this.eventTrackUnloaded( Track );
 		this.eventDurationChanged( Track );
 
-		clearTimeout(timerTrackReady);
+		this.trackEnd();
 
-		this.trackPlayedTime = 0;
-		this.trackStartTime = null;
+		clearTimeout(timerTrackReady);
 
 		return true;
 	}

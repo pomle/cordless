@@ -112,8 +112,6 @@ $(function()
 
 	Cordless.Player.eventTrackUnloaded = function(Track)
 	{
-
-
 		eCordless.removeClass('isReady');
 
 		eTrackPosition.text( formatDuration(0) ).trigger('onUpdate');
