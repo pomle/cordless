@@ -145,7 +145,7 @@ class LastFM
 		}
 	}
 
-	public function sendScrobble($session_key, $uts, $artist, $track)
+	public function sendScrobble($session_key, $uts, $artist, $track, $duration = null, $album = null, $trackNo = null)
 	{
 		$params = array
 		(
@@ -153,6 +153,9 @@ class LastFM
 			'timestamp' => (string)$uts,
 			'artist' => $artist,
 			'track' => $track,
+			'duration' => sprintf('%d', $duration),
+			'album' => $album,
+			'trackNumber' => $trackNo,
 			'chosenByUser' => '1'
 		);
 
