@@ -85,7 +85,6 @@ $(function()
 		eTrackError.text('');
 
 		eCordless
-			.addClass('isBusy')
 			.data('playing-artist', Track.artist)
 			.data('playing-title', Track.title)
 			.trigger('onTrackLoaded')
@@ -122,6 +121,12 @@ $(function()
 		eTrackError.text('');
 
 		updateProgressBar(0);
+	}
+
+	Cordless.Player.eventTrackWaiting = function(Track)
+	{
+		eCordless
+			.addClass('isBusy');
 	}
 
 

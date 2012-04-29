@@ -70,6 +70,9 @@ function AudioController( PlayQueue , api_url )
 	this.eventTrackUnloaded = function(Track)
 	{}
 
+	this.eventTrackWaiting = function(Track)
+	{}
+
 
 	this.getTrack = function() // Returns a unified Track object
 	{
@@ -262,10 +265,10 @@ function AudioController( PlayQueue , api_url )
 		oAudio.src = url;
 		this.playingURL = url;
 
+		var isReadynessChecked = false;
+
 		var readyLoop = function()
 		{
-			//console.log('Waiting for duration');
-
 			if( isFinite(oAudio.duration) )
 			{
 				var Track = self.getTrack();
@@ -276,14 +279,20 @@ function AudioController( PlayQueue , api_url )
 
 				return true;
 			}
+
+			if( !isReadynessChecked )
+			{
+				isReadynessChecked = true;
+				self.eventTrackWaiting( self.getTrack() );
+			}
 			// Check for duration until track is ready every half second as long as track is loaded
 			//if( self.isTrackLoaded )
-			timerTrackReady = setTimeout(readyLoop, 500);
+			timerTrackReady = setTimeout(readyLoop, 200);
 
 			return false;
 		}
 
-		setTimeout(readyLoop, 1000); // Wait a second before going into loop
+		setTimeout(readyLoop, 500); // Initial wait before going into loop
 
 		return true;
 	}
