@@ -37,21 +37,11 @@ $(function()
 
 			Cordless.API.makeCall(
 				'UserTrack.Edit',
-				{'action': 'grab', 'userTrackID': userTrackID},
+				{'action': 'grab', 'userTrackID': userTrackID, 'returnHTML': true},
 				function(response)
 				{
-					var userTrackID = response.data.userTrackID;
-
-					$.ajax(
-					{
-						'url': Cordless.AJAX_URL + 'UserTrack.php',
-						'type': 'GET',
-						'data': {'userTrackID': userTrackID},
-						'success': function(response)
-						{
-							eUserTrack.replaceWith(response);
-						}
-					});
+					var userTrackHTML = response.data.userTrackHTML;
+					eUserTrack.replaceWith(userTrackHTML);
 				}
 			);
 		})

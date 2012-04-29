@@ -20,16 +20,24 @@ function APIMethod($User, $params)
 			$UserTrack = getUserTrack($params, $User, true, false);
 
 			if( $UserTrack_Owned = UserTrack::loadByTrack($User, $UserTrack->Track->trackID) )
-			{
 				$UserTrack = $UserTrack_Owned;
-			}
 			else
 			{
 				$UserTrack->takeOwnership($User);
 				UserTrack::saveToDB($UserTrack);
 			}
 
-			return array('userTrackID' => $UserTrack->userTrackID);
+			$userTrackHTML = null;
+			if( isset($params->returnHTML) && $params->returnHTML )
+			{
+				$UserTrack = UserTrack::loadFromDB($UserTrack->userTrackID, $User->userID); ### Load fresh from DB to get rid of all possible quirks from changing owner
+				$userTrackHTML = (string)Element\UserTrackItem::fromUserTrack($UserTrack);
+			}
+
+			return array(
+				'userTrackID' => $UserTrack->userTrackID,
+				'userTrackHTML' => $userTrackHTML
+			);
 		break;
 
 		case 'update':

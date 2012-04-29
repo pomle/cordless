@@ -17,9 +17,9 @@ class UserTrack
 	public
 		$userID,
 		$trackID,
-		$isAccessible = false,
-		$isOwner = false,
-		$isStarred = false,
+		$isAccessible,
+		$isOwner,
+		$isStarred,
 		$filename,
 		$artist,
 		$title,
