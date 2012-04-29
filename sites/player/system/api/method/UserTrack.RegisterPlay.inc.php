@@ -6,6 +6,7 @@ function APIMethod($User, $params)
 	$timeNow = time();
 	$cordless_doRegister = false;
 	$lastFM_wasScrobbled = false;
+	$lastFM_error = null;
 
 	$UserTrack = getUserTrack($params, $User, true, false);
 
@@ -28,20 +29,29 @@ function APIMethod($User, $params)
 
 	if( $lastFM_doScrobble && isset($User->last_fm_username, $User->last_fm_key) && ($User->last_fm_scrobble === true) && ($LastFM = getLastFM()) )
 	{
-		$xml = $LastFM->sendScrobble($User->last_fm_key, $timePlayStart, $artist, $title, $duration, $album);
-
-		if( !$xml->xpath('/lfm[@status="ok"]') )
+		try
 		{
-			$e = $xml->xpath('/lfm/error');
-			throw New APIException("Last.fm: " . (string)$e[0]);
-		}
+			$xml = $LastFM->sendScrobble($User->last_fm_key, $timePlayStart, $artist, $title, $duration, $album);
 
-		$lastFM_wasScrobbled = true;
+			if( !$xml->xpath('/lfm[@status="ok"]') )
+			{
+				$e = $xml->xpath('/lfm/error');
+				throw new \Asenine\API\LastFMException((string)$e[0]);
+			}
+
+			$lastFM_wasScrobbled = true;
+		}
+		catch(\Asenine\API\LastFMException $e)
+		{
+			$lastFM_wasScrobbled = false;
+			$lastFM_error = $e->getMessage();
+		}
 	}
 
 	return array(
 		'userTrackID' => $UserTrack->userTrackID,
 		'wasRegistered' => $cordless_doRegister,
-		'lastFM_wasScrobbled' => $lastFM_wasScrobbled
+		'lastFM_wasScrobbled' => $lastFM_wasScrobbled,
+		'lastFM_error' => $lastFM_error,
 	);
 }
