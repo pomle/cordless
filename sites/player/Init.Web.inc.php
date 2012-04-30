@@ -11,6 +11,8 @@ define('FOOTER', DIR_ELEMENT . 'Footer.inc.php');
 
 if( !isset($baseHref) ) $baseHref = './';
 
+$imageURL = URL_PLAYER . 'img/AppIcon.png';
+
 $pageTitle = 'Cordless';
 
 $css = array();
