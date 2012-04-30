@@ -31,16 +31,18 @@
 }
 
 #library button {
-	background: rgba(0, 138, 255, .6) url('../img/Button_Overlay.png') repeat-x;
-	border: 0 none;
-	border-radius: 10px 10px 10px 10px;
+	background-color: rgba(0, 138, 255, .6);
+	border: none;
+	border-radius: 4px;
 	color: rgba(255,255,255,.8);
 	cursor: pointer;
+	margin-right: 4px;
 	padding: 2px 6px;
 }
 
 #library button:hover {
-	box-shadow: 0 0 9px rgba(0,138,255,1);
+	background-color: rgba(0, 138, 255, .9);
+	box-shadow: 0 0 9px rgba(0,138,255,.2);
 	color: rgba(255,255,255,1);
 }
 
