@@ -57,7 +57,7 @@ $(function()
 			eTracks.addClass('isBusy');
 
 			$.ajax({
-				'url': './ajax/Tracklist.php?skipWhat=page&skipAmount=1&fetcher=' + encodeURIComponent(fetcher),
+				'url': Cordless.AJAX_URL + 'Tracklist.php?skipWhat=page&skipAmount=1&fetcher=' + encodeURIComponent(fetcher),
 				'type': 'GET',
 				'data': fetcher,
 				'dataType': 'html',
