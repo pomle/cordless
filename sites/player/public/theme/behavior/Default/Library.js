@@ -34,13 +34,6 @@ $(function()
 		Library.goToHistoryIndex(i);
 	});
 
-	$('#player')
-		.on("click", ".trackinfo .title", function(e) {
-			e.preventDefault();
-			Library.goTo("NowPlaying");
-		})
-		;
-
 	$('form#search').on('submit', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('action') + '&' + $(this).serialize();

@@ -160,4 +160,11 @@ $(function()
 	{
 		e.preventDefault();
 	});
+
+	eCordless
+		.on("click", ".trackinfo .title", function(e) {
+			e.preventDefault();
+			Cordless.Library.goTo('UserTrack-Control', {'userTrackID': Cordless.Player.playingUserTrackID});
+		})
+		;
 });
