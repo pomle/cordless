@@ -27,6 +27,7 @@ if( $isLastFmAvailable )
 <div class="home">
 
 	<section class="status">
+
 		<h3><img src="./img/Cordless_Last.fm-Icon.png" style="vertical-align: text-bottom;"> <? echo htmlspecialchars(_($User->username)); ?></h3>
 
 		<ul>
@@ -39,6 +40,7 @@ if( $isLastFmAvailable )
 		<ul>
 			<li><a href="./Logout.php"><? echo _("Logout"); ?></a></li>
 		</ul>
+
 	</section>
 
 	<?
@@ -73,9 +75,32 @@ if( $isLastFmAvailable )
 	}
 	?>
 
-	<? require DIR_ELEMENT . 'Block.Library.Browse.inc.php'; ?>
+	<section class="browse">
+
+		<h3><? echo htmlspecialchars(_("Browse")); ?></h3>
+
+		<ul>
+			<li><? echo libraryLink(_("Albums"), 'Index-Albums'); ?></li>
+			<li><? echo libraryLink(_("Artists"), 'Index-Artists'); ?></li>
+			<li><? echo libraryLink(_("Playlists"), 'Index-Playlists'); ?></li>
+			<li><? echo libraryLink(_("SmartPlaylists"), 'SmartPlaylists'); ?></li>
+		</ul>
+
+		<ul>
+			<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime'); ?></li>
+			<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime'); ?></li>
+			<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime'); ?></li>
+		</ul>
+
+		<ul>
+			<li><? echo libraryLink(_("Friends"), 'Index-Friends'); ?></li>
+			<li><? echo libraryLink(_("Network"), 'Network-Browse'); ?></li>
+		</ul>
+
+	</section>
 
 	<section class="misc">
+
 		<h3><? echo htmlspecialchars(_("Misc")); ?></h3>
 
 		<?
