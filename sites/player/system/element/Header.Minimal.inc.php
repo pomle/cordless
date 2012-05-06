@@ -15,4 +15,4 @@ global $baseHref;
 	?>
 </head>
 
-<body>
+<body class="minimal">

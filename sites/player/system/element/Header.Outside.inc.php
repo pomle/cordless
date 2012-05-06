@@ -8,7 +8,6 @@ if(
 	( isset($_GET['userTrackID']) && $UserTrack = UserTrack::loadFromDB($_GET['userTrackID']) )
 )
 {
-	$imageURL = null;
 	if( isset($UserTrack->Image) )
 		$imageURL = getUserTrackImageURL($UserTrack->Image->mediaHash);
 
@@ -19,5 +18,5 @@ include DIR_ELEMENT . 'Header.Minimal.inc.php';
 ?>
 <div class="content">
 	<div class="logo">
-		<a href="./"><img src="./img/Cordless-Logo-Frontpage.png"></a>
+		<a href="./"><img src="<? echo URL_PLAYER; ?>img/Cordless-Logo-Frontpage.png"></a>
 	</div>

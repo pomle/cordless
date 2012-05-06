@@ -1,6 +1,5 @@
 @font-face { font-family: Delicious; src: url('../font/delicious-roman.otf'); }
 @font-face { font-family: Delicious; font-weight: bold; src: url('../font/delicious-bold.otf'); }
-@font-face { font-family: SilkScreen; src: url('../font/SilkScreen.ttf'); }
 
 /* Clickables */
 a,
@@ -14,9 +13,13 @@ a,
 body {
 	color: #4f4f4f;
 	background: #0f0f0f url('../img/Noise_Dark.png') repeat;
-	font-family: Calibri, Arial, sans-serif;
+	font-family: Calibri, Helvetica, Arial, sans-serif;
 	font-size: 10pt;
 	margin: 0;
+}
+
+body.minimal {
+	font-size: 1.2em;
 }
 
 h1,

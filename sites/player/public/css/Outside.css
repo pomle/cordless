@@ -29,16 +29,16 @@
 }
 
 .content table {
-	margin: 1em 0;
+	margin: .4em 0;
 	width: 500px;
 }
 
 .content table td {
-	padding: 0.2em 0;
+	padding: 0.25em 0;
 }
 
 .content table label {
-	font-size: 14pt;
+
 }
 
 .content table input {
@@ -49,4 +49,9 @@
 .track img {
 	float: left;
 	margin: 0 1em 1em 0;
+}
+
+
+.content .login input {
+	font-size: 1em;
 }

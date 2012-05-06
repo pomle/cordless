@@ -6,7 +6,7 @@ if( isset($_POST['login']) )
 	echo Element\Page\Message::error(
 		_("Login Failed"),
 		_('And this extra page is to annoy you for being careless with your precious login details.')
-			. ' ' . sprintf('<a href="%sLogin.php">%s</a>', URL_PLAYER, htmlspecialchars(_("Try again?")))
+			. '<br/>' . sprintf('<a href="%s">%s</a>', URL_PLAYER . 'Login.php', htmlspecialchars(_("Try again?")))
 	);
 
 	die();
@@ -19,14 +19,15 @@ include DIR_ELEMENT . 'Header.Outside.inc.php';
 
 if( isset($_GET['userTrackID']) && $UserTrack = UserTrack::loadFromDB($_GET['userTrackID']) )
 {
-	$imageURL = null;
 	if( isset($UserTrack->Image) )
-		$imageURL = \Asenine\Media\Producer\Thumb::createFromHash($UserTrack->Image->mediaHash)->getCustom(200, 200, true);
+		$trackImageURL = \Asenine\Media\Producer\Thumb::createFromHash($UserTrack->Image->mediaHash)->getCustom(200, 200, true);
 
 	?>
 	<section class="track">
 
-		<img src="<? echo $imageURL; ?>">
+		<?
+		if( isset($trackImageURL) ) printf('<img src="%s">', $trackImageURL);
+		?>
 
 		<h1><? echo htmlspecialchars($UserTrack->title); ?></h1>
 		<h2><? echo htmlspecialchars($UserTrack->artist); ?></h2>
@@ -40,7 +41,7 @@ if( isset($_GET['userTrackID']) && $UserTrack = UserTrack::loadFromDB($_GET['use
 
 	<h1><? echo _("Login"); ?></h1>
 
-	<a href="./SignUp.php"><? echo _("I have an invite"), ' &raquo;'; ?></a>
+	<a href="<? echo URL_PLAYER; ?>SignUp.php"><? echo _("I have an invite"), ' &raquo;'; ?></a>
 
 	<form action="<? echo getenv('REQUEST_URI'); ?>" method="post">
 		<table class="login">
