@@ -19,7 +19,10 @@ try
 		{
 			case 'user':
 				if( $params->userID = \Asenine\User\Dataset::getUserID($arg) )
+				{
 					libraryPanel('User-Overview', $params);
+					exit;
+				}
 
 				$params->search = $arg;
 				libraryPanel('Index-Friends', $params);
