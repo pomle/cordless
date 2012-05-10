@@ -187,7 +187,9 @@
 	width: auto;
 }
 
-
+.tracklist .userTracks .fetchMore.isBusy {
+	background-image: url('../img/Tracklist_Tile_More_Busy.gif');
+}
 
 /* Compact Mode Overrides */
 .tracklistList .tracklist .userTrack {
