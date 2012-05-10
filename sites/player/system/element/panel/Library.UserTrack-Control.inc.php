@@ -54,7 +54,32 @@ if( isset($UserTrack->Image) )
 
 		<ul>
 			<li><a href="#" class="userTrackPlay" data-usertrackid="<? printf('%d', $UserTrack->userTrackID); ?>"><? echo _("Play Now"); ?></a></li>
-			<li><a href="<? echo URL_PLAYER, sprintf('?userTrackID=%d', $UserTrack->userTrackID); ?>"><? echo _("Direct Link"); ?></a></li>
+			<li><? echo libraryLink(_("Add to Playlist"), 'Index-Playlists', array('addTrackID' => $UserTrack->Track->trackID)); ?></li>
+			<li><a href="<? echo URL_PLAYER, sprintf('?userTrackID=%d', $UserTrack->userTrackID); ?>"><? echo _("External link"); ?></a></li>
+			<li>
+				<?
+				$dlParams = array('userTrackID' => $UserTrack->userTrackID, 'download' => true);
+				printf('<a href="%s">%s</a>', apiURL('Stream', $dlParams), _("Download"));
+
+
+				echo ' (';
+
+				$dlParams['format'] = 'raw';
+				printf('<a href="%s">%s</a>', apiURL('Stream', $dlParams), "Source");
+
+				echo '|';
+
+				$dlParams['format'] = 'ogg';
+				printf('<a href="%s">%s</a>', apiURL('Stream', $dlParams), "OGG");
+
+				echo '|';
+
+				$dlParams['format'] = 'mp3';
+				printf('<a href="%s">%s</a>', apiURL('Stream', $dlParams), "MP3");
+
+				echo ')';
+				?>
+			</li>
 		</ul>
 
 		<button type="submit" name="action" value="update" class="formTrigger"><? echo _("Save"); ?></button>
