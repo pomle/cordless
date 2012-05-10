@@ -8,6 +8,11 @@ function actionLink($text, $action)
 
 function apiLink($method, $params = null)
 {
+	return apiURL($method, $params);
+}
+
+function apiURL($method, $params = null)
+{
 	$getStr = '';
 	if( is_array($params) )
 		foreach($params as $key => $value)
