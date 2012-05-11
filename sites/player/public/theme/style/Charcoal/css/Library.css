@@ -250,3 +250,8 @@ nav.library .goTo .next {
 	background: transparent;
 	border: 0;
 }
+
+
+#library .search .albums .artists {
+	font-size: smaller;
+}

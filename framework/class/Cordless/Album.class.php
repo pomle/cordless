@@ -156,6 +156,12 @@ class Album
 		return $returnArray ? $albums : reset($albums);
 	}
 
+	public static function getIDsFromName($albumName)
+	{
+		$query = DB::prepareQuery("SELECT ID FROM Cordless_Albums WHERE title = %s", $albumName);
+		return DB::queryAndFetchArray($query);
+	}
+
 	public static function saveToDB($albums)
 	{
 		if( !is_array($albums) )
@@ -277,6 +283,17 @@ class Album
 		}
 
 		return false;
+	}
+
+	public function getArtists()
+	{
+		$artists = array();
+
+		foreach($this->tracks as $Track)
+			foreach($Track->artists as $Artist)
+				$artists[$Artist->artistID] = $Artist;
+
+		return $artists;
 	}
 
 	public function setImage(\Media\Image $Image)

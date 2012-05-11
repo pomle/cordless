@@ -58,7 +58,7 @@ class UserTrack
 		return $this->queryToUserTracks($query);
 	}
 
-	protected function byAlbum($name, Array $userIDs = null)
+	protected function byAlbum(Array $albumIDs, Array $userIDs = null)
 	{
 		$this->method = __FUNCTION__;
 		$this->args = func_get_args();
@@ -73,12 +73,12 @@ class UserTrack
 				ut.userID IN %a
 				AND
 				(
-					a.title = %s
+					a.ID IN %a
 				)
 			ORDER BY
 				at.trackNO ASC",
 			$userIDs ?: $this->userID,
-			$name);
+			$albumIDs);
 
 		return $this->queryToUserTracks($query);
 	}
