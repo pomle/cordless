@@ -47,9 +47,7 @@ class Artist
 
 	public static function loadByName($name)
 	{
-		$query = DB::prepareQuery("SELECT ID FROM Cordless_Artists WHERE name = %s", $name);
-		$artistID = DB::queryAndFetchOne($query);
-		return self::loadFromDB($artistID);
+		return self::loadFromDB( self::getIDsByName($name) );
 	}
 
 	public static function loadFromDB($artistIDs)
@@ -98,6 +96,13 @@ class Artist
 		unset($images);
 
 		return $returnArray ? $artists : reset($artists);
+	}
+
+	public static function getIDsByName($name)
+	{
+		$query = DB::prepareQuery("SELECT ID FROM Cordless_Artists WHERE name = %s", $name);
+		$artistIDs = DB::queryAndFetchArray($query);
+		return $artistIDs;
 	}
 
 	public static function saveToDB($artists)

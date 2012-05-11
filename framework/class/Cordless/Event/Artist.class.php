@@ -5,7 +5,7 @@ class Artist
 {
 	public static function createFromName($name)
 	{
-		if( !$Artist = \Cordless\Artist::loadByName($name) )
+		if( !$Artist = reset(\Cordless\Artist::loadByName($name)) )
 		{
 			$Artist = new \Cordless\Artist($name);
 
