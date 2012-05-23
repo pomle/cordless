@@ -23,19 +23,19 @@ function APIMethod($User, $params)
 	elseif( $playFormat )
 		$format = $playFormat;
 
-	// Try to identify what format to send by the ACCEPT header
+	### Try to identify what format to send by the ACCEPT header
 	elseif( isset($_SERVER['HTTP_ACCEPT']) && preg_match('%audio/(ogg|mp3)%', $_SERVER['HTTP_ACCEPT'], $match) )
 		$format = $match[1];
 
-	// If Opera or Firefox, send ogg
+	### If Opera or Firefox, send ogg
 	elseif( isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%(^Opera|Firefox)%', $_SERVER['HTTP_USER_AGENT'], $match) )
 		$format = 'ogg';
 
-	// Default to MP3
+	### Default to MP3
 	else
 		$format = 'mp3';
 
-
+	### Opera does not play nicely with our partial content stream for some reason. This fixes so that is plays anything at all.
 	if( isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%^Opera%', $_SERVER['HTTP_USER_AGENT'], $match) )
 		unset($_SERVER['HTTP_RANGE']);
 
@@ -54,6 +54,7 @@ function APIMethod($User, $params)
 			$ext = 'mp3';
 		break;
 
+		### Sends raw file from Media Library thus skipping next step
 		case 'raw':
 			$File = $UserTrack->Track->Audio->File;
 
