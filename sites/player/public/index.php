@@ -70,8 +70,8 @@ $bodyClass[] = $User->getSetting("WebUI_Global_Background_isLocked");
 	class="<? echo trim(join(' ', $bodyClass)); ?>"
 	data-cordless-ajax-url="<? echo htmlspecialchars(URL_AJAX); ?>"
 	data-cordless-api-url="<? echo htmlspecialchars(URL_API); ?>"
-	data-last-fm-api-key="<? echo htmlspecialchars(LAST_FM_API_KEY); ?>
-	">
+	data-last-fm-api-key="<? echo htmlspecialchars(LAST_FM_API_KEY); ?>"
+	>
 	<header id="control">
 
 		<div class="inner">
