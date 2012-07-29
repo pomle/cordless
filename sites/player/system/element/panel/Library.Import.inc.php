@@ -15,6 +15,8 @@ echo Element\Library::head(_("Advanced Track Import"));
 			<?
 			echo Element\Table::inputs()
 				->addRow(_("URL"), \Asenine\Element\Input::text('url')->size(64))
+				->addRow(_('Artist'), \Asenine\Element\Input::text('artist')->size(32))
+				->addRow(_('Title'), \Asenine\Element\Input::text('title')->size(32))
 				->addRow(_("Ignore Header"), \Asenine\Element\Input::checkbox('ignoreHeader'))
 				;
 			?>

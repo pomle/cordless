@@ -10,7 +10,36 @@ function APIMethod($User, $params)
 		throw New APIException(_("URL invalid"));
 
 	$url = $params->url;
+	$artist = isset($params->artist) && strlen($params->artist) ? $params->artist : null;
+	$title = isset($params->title) && strlen($params->title) ? $params->title : null;
+	$mimeType = false;
 
+
+	if( preg_match('%youtube.com%', $url) )
+	{
+		$YT = new \Cordless\Util\YouTubeVideoURLParser($url);
+		$url = reset($YT->urls);
+
+		$doc = new \DOMDocument();
+		@$doc->loadHTML($YT->html);
+
+		$xpath = new \DOMXpath($doc);
+
+		if( $str = $xpath->query("//meta[@name='title']")->item(0)->getAttribute('content') )
+		{
+			#throw new APIException($str);
+
+			$nodes = explode('-', $str);
+
+			if( count($nodes) == 2 )
+			{
+				$artist = $artist ?: trim($nodes[0]);
+				$title = $title ?: trim($nodes[1]);
+			}
+		}
+	}
+
+	### Fetch headers first
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_HEADER, true);
@@ -19,7 +48,6 @@ function APIMethod($User, $params)
 	$header = curl_exec($curl);
 	curl_close($curl);
 
-
 	$mimeType = preg_match("%^Content-Type:(.+/.+)(;|$)%mUi", $header, $match) ? trim($match[1]) : null;
 
 	if( !isset($params->ignoreHeader) || !$params->ignoreHeader )
@@ -27,12 +55,13 @@ function APIMethod($User, $params)
 		if( !$mimeType )
 			throw New APIException(_("Could not parse MIME type"));
 
-		$allowFormats = array('ogg', 'mpeg', 'mp3');
+		$allowTypes = array('audio', 'video');
+		$allowFormats = array('ogg', 'mpeg', 'mp3', 'mpeg3', 'mp4');
 
 		list($type, $format) = explode('/', $mimeType);
 
-		if( strtolower($type) != "audio" )
-			throw New APIException(sprintf(_('MIME type was "%s", expected audio/*'), $mimeType));
+		if( !in_array(strtolower($type), $allowTypes) )
+			throw New APIException(sprintf(_('MIME type was "%s", expected (%s)/*'), $mimeType, join('|', $allowTypes)));
 
 		if( !in_array(strtolower($format), $allowFormats) )
 			throw New APIException(sprintf(_('MIME format was "%s", expected */%s'), $mimeType, join('|', $allowFormats)));
@@ -43,7 +72,7 @@ function APIMethod($User, $params)
 		$File = \Asenine\File::fromURL($url);
 		$File->mime = $mimeType;
 
-		$UserTrack = Event\UserTrack::importFile($User, $File);
+		$UserTrack = Event\UserTrack::importFile($User, $File, trim($artist), trim($title));
 	}
 	catch(\Exception $e)
 	{
