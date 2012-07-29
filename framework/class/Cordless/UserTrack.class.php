@@ -57,6 +57,10 @@ class UserTrack
 		if( !isset($UserTrack->Track) )
 			throw new UserTrackException(sprintf("%s must have Track set", get_class($UserTrack)));
 
+		if( !isset($UserTrack->Track->trackID) )
+			Track::createInDB($UserTrack->Track);
+
+
 		$query = DB::prepareQuery("INSERT INTO
 			Cordless_UserTracks
 			(
@@ -207,7 +211,7 @@ class UserTrack
 				}
 
 				if( !isset($UserTrack->artist) )
-					$UserTrack->artist = $Track->getArtist();
+					$UserTrack->artist = $Track->getArtistName();
 
 				if( !isset($UserTrack->title) )
 					$UserTrack->title = (string)$Track;
@@ -246,6 +250,8 @@ class UserTrack
 
 		$timeModified = time();
 
+		$tracks = array();
+
 		$userTrack_Insert = "INSERT INTO Cordless_UserTracks (
 			ID,
 			image_mediaID,
@@ -273,6 +279,9 @@ class UserTrack
 
 		foreach($userTracks as $UserTrack)
 		{
+			if( !$UserTrack->Track->trackID )
+				$tracks[] = $UserTrack->Track;
+
 			if( !isset($UserTrack->userTrackID) )
 				self::createInDB($UserTrack);
 
@@ -283,6 +292,9 @@ class UserTrack
 				$UserTrack->artist,
 				$UserTrack->title) . ",";
 		}
+
+		if( count($tracks) > 0 )
+			Track::saveToDB($tracks);
 
 		$userTrack_InsertQuery = $userTrack_Insert . rtrim($userTrack_Values, ',') . $userTrack_Update;
 		DB::query($userTrack_InsertQuery);

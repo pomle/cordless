@@ -9,20 +9,13 @@ class Track
 
 		$ID3 = new \Cordless\ID3($filePath);
 
-		$tinfo['artist'] = $ID3->getArtist();
-		$tinfo['title'] = $ID3->getTitle();
-		$tinfo['album'] = $ID3->getAlbum();
-		$tinfo['year'] = $ID3->getYear();
-		$tinfo['position'] = $ID3->getTrackNumber();
+		$id3['artist'] = $ID3->getArtist();
+		$id3['title'] = $ID3->getTitle();
+		$id3['album'] = $ID3->getAlbum();
+		$id3['year'] = $ID3->getYear();
+		$id3['position'] = $ID3->getTrackNumber();
 
-
-		if( strlen($tinfo['title']) == 0 )
-			throw New \Exception(_('Track title could not be extracted'));
-
-		if( strlen($tinfo['artist']) == 0 )
-			throw New \Exception(_('Artist name could not be extracted'));
-
-		return self::createManual($Audio, $tinfo['artist'], $tinfo['title'], $tinfo['album'], $tinfo['year'], $tinfo['position']);
+		return self::createManual($Audio, $id3['artist'], $id3['title'], $id3['album'], $id3['year'], $id3['position']);
 	}
 
 	public static function createManual(\Asenine\Media\Type\Audio $Audio, $artist, $title, $album = null, $year = null, $trackNo = null)
@@ -42,13 +35,9 @@ class Track
 		else
 		{
 			if( $audioInfo = $Audio->getInfo() )
-			{
 				$Track->duration = (int)$audioInfo['duration'];
-			}
 
 			$Track->timeReleased = $year ? mktime(0, 0, 0, 1, 1, (int)$year) : null;
-
-			\Cordless\Track::saveToDB($Track);
 		}
 
 		$Track->trackNo = (int)$trackNo;

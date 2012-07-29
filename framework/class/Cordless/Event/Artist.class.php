@@ -11,8 +11,6 @@ class Artist
 
 			if( $Image = Artwork::createFromArtist($Artist) )
 				$Artist->setImage($Image);
-
-			\Cordless\Artist::saveToDB($Artist);
 		}
 
 		return $Artist;

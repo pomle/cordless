@@ -26,6 +26,13 @@ class Track
 		if( !isset($Track->Audio) || !isset($Track->Audio->mediaID) )
 			throw New TrackException("Track Audio mediaID must be set before creating database post");
 
+		foreach($Track->getArtists() as $Artist)
+		{
+			if( !isset($Artist->artistID) )
+				Artist::createInDB($Artist);
+		}
+
+
 		$timeCreated = time();
 
 		$query = DB::prepareQuery("INSERT INTO
@@ -235,11 +242,18 @@ class Track
 		$track_Values = '';
 		$trackArtists_Values = '';
 		$trackArtists_DeleteIDs = array();
+		$artists = array();
 
 		foreach($tracks as $index => $Track)
 		{
 			if( !$Track instanceof self )
 				throw New TrackException(sprintf('Track array index %s must be instance of %s', $index, __CLASS__));
+
+			### Find all artists that lack ID and prepare for passing to Artist-saver
+			foreach($Track->artists as $Artist)
+				if(!$Artist->artistID)
+					$artists[] = $Artist;
+
 
 			if( !isset($Track->trackID) )
 				self::createInDB($Track);
@@ -262,6 +276,11 @@ class Track
 					$Artist->artistID) . ",";
 			}
 		}
+
+		
+		if(count($artists) > 0)
+			Artist::saveToDB($artists);
+
 
 		$track_InsertQuery = $track_Insert . rtrim($track_Values, ',') . $track_Update;
 		DB::query($track_InsertQuery);
@@ -303,14 +322,19 @@ class Track
 		return $this;
 	}
 
-	public function getArtist()
+	public function getArtistName()
 	{
-		return join(", ", $this->artists);
+		return join(", ", $this->getArtists());
+	}
+
+	public function getArtists()
+	{
+		return $this->artists;
 	}
 
 	public function getName()
 	{
-		return sprintf('%s - %s', $this->getArtist(), $this->title);
+		return sprintf('%s - %s', $this->getArtistName(), $this->title);
 	}
 
 	public function setAudio(\Asenine\Media\Type\Audio $Audio)

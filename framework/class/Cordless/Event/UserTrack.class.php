@@ -3,7 +3,7 @@ namespace Cordless\Event;
 
 class UserTrack
 {
-	public static function importFile(\Cordless\User $User, \Asenine\File $File)
+	public static function importFile(\Cordless\User $User, \Asenine\File $File, $artist = null, $title = null)
 	{
 		if( !\Asenine\Media\Type\Audio::canHandleFile($File) )
 			throw new \Exception(_("Unsupported File =/"));
@@ -16,6 +16,21 @@ class UserTrack
 
 		$Track = Track::createFromAudio($Audio);
 
+
+		if($artist)
+			$Track->addArtist(Artist::createFromName($artist));
+
+		if($title)
+			$Track->title = $title;
+
+
+		if( strlen($Track->title) == 0 )
+			throw New \Exception(_('Missing track title'));
+
+		if( strlen($Track->getArtistName()) == 0 )
+			throw New \Exception(_('Missing artist name'));
+
+
 		### Check to see if track already in users library
 		$query = \Asenine\DB::prepareQuery("SELECT ID FROM Cordless_UserTracks WHERE userID = %u AND trackID = %u", $User->userID, $Track->trackID);
 		$userTrackID = (int)\Asenine\DB::queryAndFetchOne($query);
@@ -27,8 +42,8 @@ class UserTrack
 
 			$ID3 = new \Cordless\ID3($Audio->getFilePath());
 
-			$UserTrack->artist = $ID3->getArtist();
-			$UserTrack->title = $ID3->getTitle();
+			$UserTrack->artist = $artist ?: $ID3->getArtist();
+			$UserTrack->title = $title ?: $ID3->getTitle();
 
 			$UserTrack->filename = $File->name;
 
