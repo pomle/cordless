@@ -6,7 +6,7 @@ function formatDuration(seconds)
 	return minutes + ':' + zeroPad(seconds, 2);
 }
 
-function registerPlay( Track )
+function registerPlay(Track)
 {
 	Cordless.API.addCall('UserTrack.RegisterPlay', Track);
 }
