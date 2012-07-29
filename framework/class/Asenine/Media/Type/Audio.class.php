@@ -18,7 +18,7 @@ class Audio extends _Audible
 		if( is_null($streamInfo['audio']) ) return false;
 
 		### Reject streams with Video
-		if( !is_null($streamInfo['video']) ) return false;
+		#if( !is_null($streamInfo['video']) ) return false; 
 
 		return true;
 	}
