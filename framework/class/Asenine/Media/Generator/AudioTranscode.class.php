@@ -36,6 +36,7 @@ class AudioTranscode extends \Asenine\Media\Generator
 			$options = array
 			(
 				sprintf('-f %s', \escapeshellarg($this->format)),
+				'-vn', ### Turn off video
 				sprintf('-acodec %s', \escapeshellarg($this->codec)),
 				sprintf('-ab %u', $this->bitrate),
 				sprintf('-ar %u', $this->frequency),
