@@ -254,7 +254,6 @@ header .home {
 }
 
 #upload .queue .progress {
-	background-image: url('../img/Cordless_Scrubber.png');
 	height: 6px;
 	width: 0;
 
