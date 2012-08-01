@@ -2,7 +2,7 @@ $(function()
 {
 	var lockKeyboard = false;
 
-	var 
+	var
 		Player = Cordless.Player,
 		Library = Cordless.Library;
 
@@ -13,11 +13,13 @@ $(function()
 		switch(e.keyCode)
 		{
 			case 37: // Left Arrow
+			case 177: // MM Prev
 				e.preventDefault();
 				Player.playlistPrev();
 			break;
 
 			case 39: // Right Arrow
+			case 176: // MM Next
 				e.preventDefault();
 				Player.playlistNext();
 			break;
@@ -53,6 +55,7 @@ $(function()
 			break;
 
 			case 32: // Spacebar
+			case 179: // MM Play/Pause
 				e.preventDefault();
 				Player.playbackToggle();
 			break;
