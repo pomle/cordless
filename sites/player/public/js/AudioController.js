@@ -110,8 +110,6 @@ function AudioController( PlayQueue , api_url )
 				self.eventTrackStarted( self.getTrack() );
 			}
 
-			//console.log('Counting Time');
-
 			self.trackPlayedTime += (this.thisTime - this.lastTime) / 1000;
 
 			self.eventTimeChanged( self.getTrack() );
