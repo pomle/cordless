@@ -7,9 +7,10 @@ $(function()
 
 	$(window).on('resize', function()
 	{
+		var pxMargin = 130;
 		var winHeight = $(this).height();
-		sPlayQueue.css('height', (winHeight - 130) + 'px');
-		sUpload.css('max-height', (winHeight - 130) + 'px');
+		sPlayQueue.css('height', (winHeight - pxMargin) + 'px');
+		sUpload.css('max-height', (winHeight - pxMargin) + 'px');
 	})
 	.trigger('resize');
 
