@@ -121,9 +121,21 @@ function InterfaceController(ePlayer, ePlayqueue, eImport)
 
 	this.playqueueLockToggle = function()
 	{
-		var c = 'uploadLocked';
+		var c = 'playqueueLocked';
 		eInterface.toggleClass(c);
 		userSetting("WebUI_PlayQueue_Locked", eInterface.hasClass(c) ? c : '');
 		return this;
+	}
+
+	this.playqueueLock = function()
+	{
+		if( !eInterface.hasClass('playqueueLocked'))
+			this.playqueueLockToggle();
+	}
+
+	this.playqueueUnlock = function()
+	{
+		if( eInterface.hasClass('playqueueLocked'))
+			this.playqueueLockToggle();
 	}
 }
