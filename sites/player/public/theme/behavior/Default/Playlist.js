@@ -6,14 +6,14 @@ $(function()
 
 	$('#playqueue')
 		// Jump to Track in PlayQueue
-		.on("click", ".userTrack .title", function(e) {
+		.on("click", ".userTrack .title a, .userTrack .image", function(e) {
 			e.preventDefault();
 			var userTrack = $(this).closest('.userTrack');
 			Player.trackLoadItem(userTrack);
 			Player.playbackStart();
 		})
 
-		.on("click", ".userTrack .artist", function(e) {
+		.on("click", ".userTrack .artist a", function(e) {
 			e.preventDefault();
 			var artist = $(this).closest('.userTrack').data('artist');
 			Library.goTo('Tracks-Artist', {'artist': artist});

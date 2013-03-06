@@ -84,7 +84,7 @@
 }
 
 .tracklist .userTrack {
-	opacity: 0.7;
+	/*opacity: 1;*/
 }
 
 .tracklist .userTrack.isOwner {
@@ -240,11 +240,24 @@
 	margin: 0;
 }
 
-.tracklistList .tracklist .userTrack .meta>li /* .item*/ {
+.tracklistList .tracklist .userTrack .meta > .item {
 	font-size: 13px;
 	float: left;
 	margin: 3px 4px;
 	width: 25%;
+}
+
+.tracklistList .tracklist .userTrack .meta > .item.duration,
+.tracklistList .tracklist .userTrack .meta > .item.owner {
+	width: 5em;
+}
+
+.tracklistList .tracklist .userTrack .meta > .item.owner {
+	opacity: 0;
+}
+
+.tracklistList .tracklist .userTrack:hover .meta > .item.owner {
+	opacity: 1;
 }
 
 .tracklistList .tracklist .userTrack .meta .duration {

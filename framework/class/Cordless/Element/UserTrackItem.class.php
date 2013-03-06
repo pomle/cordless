@@ -27,7 +27,10 @@ class UserTrackItem
 		$UTI->isOwner = $UserTrack->isOwner;
 		$UTI->isAccessible = $UserTrack->isAccessible;
 		$UTI->isStarred = $UserTrack->isStarred;
+
 		$UTI->duration = $UserTrack->Track->duration;
+
+		$UTI->ownerUsername = $UserTrack->ownerUsername;
 
 		if( isset($UserTrack->Image) )
 			$UTI->imageURL = \Cordless\getUserTrackItemImageURL($UserTrack->Image->mediaHash);
@@ -77,15 +80,17 @@ class UserTrackItem
 			</div>
 
 			<ul class="meta">
-				<li>
-					<a class="item title"><? echo htmlspecialchars($this->title); ?></a>
+				<li class="item title">
+					<a><? echo htmlspecialchars($this->title); ?></a>
 				</li>
-				<li>
-					<a class="item artist"><? echo htmlspecialchars($this->artist); ?></a>
+				<li class="item artist">
+					<a><? echo htmlspecialchars($this->artist); ?></a>
 				</li>
-				<li>
-					<span class="item duration"><? echo isset($this->duration) ? \Cordless\formatDuration($this->duration) : ''; ?></span>
+				<li class="item duration">
+					<span><? echo isset($this->duration) ? \Cordless\formatDuration($this->duration) : ''; ?></span>
 				</li>
+				<li class="item owner">
+					<a><? echo htmlspecialchars($this->ownerUsername); ?></a>
 			</ul>
 
 		</div>
