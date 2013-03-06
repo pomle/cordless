@@ -78,24 +78,42 @@ if( $isLastFmAvailable )
 	<section class="browse">
 
 		<h3><? echo htmlspecialchars(_("Browse")); ?></h3>
+		
+		<section class="you">
 
-		<ul>
-			<li><? echo libraryLink(_("Albums"), 'Index-Albums'); ?></li>
-			<li><? echo libraryLink(_("Artists"), 'Index-Artists'); ?></li>
-			<li><? echo libraryLink(_("Playlists"), 'Index-Playlists'); ?></li>
-			<li><? echo libraryLink(_("SmartPlaylists"), 'SmartPlaylists'); ?></li>
-		</ul>
+			<h4><? echo htmlspecialchars(_('You')); ?></h4>
 
-		<ul>
-			<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime'); ?></li>
-			<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime'); ?></li>
-			<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime'); ?></li>
-		</ul>
+			<ul>
+				<li><? echo libraryLink(_("Albums"), 'Index-Albums'); ?></li>
+				<li><? echo libraryLink(_("Artists"), 'Index-Artists'); ?></li>
+				<li><? echo libraryLink(_("Playlists"), 'Index-Playlists'); ?></li>
+				<li><? echo libraryLink(_("SmartPlaylists"), 'SmartPlaylists'); ?></li>
+			</ul>
 
-		<ul>
-			<li><? echo libraryLink(_("Friends"), 'Index-Friends'); ?></li>
-			<li><? echo libraryLink(_("Network"), 'Network-Browse'); ?></li>
-		</ul>
+			<ul>
+				<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime'); ?></li>
+				<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime'); ?></li>
+				<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime'); ?></li>
+			</ul>
+
+		</section>
+
+
+		<section class="community">
+
+			<h4><? echo htmlspecialchars(_('Community')); ?></h4>
+
+			<ul>
+				<li><? echo libraryLink(_("Recently Added"), 'Tracks-AddTime', 'useFriends=1'); ?></li>
+				<li><? echo libraryLink(_("Recently Played"), 'Tracks-PlayTime', 'useFriends=1'); ?></li>
+				<li><? echo libraryLink(_("Recently Starred"), 'Tracks-StarTime', 'useFriends=1'); ?></li>
+			</ul>
+
+			<ul>
+				<li><? echo libraryLink(_("Friends"), 'Index-Friends'); ?></li>
+			</ul>
+
+		</section>
 
 	</section>
 
