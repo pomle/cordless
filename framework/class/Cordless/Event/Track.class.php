@@ -53,7 +53,7 @@ class Track
 
 				$Album->addTrack($Track);
 
-				\Cordless\Album::saveToDB($Album);
+				#\Cordless\Album::saveToDB($Album);
 
 				break;
 			}
