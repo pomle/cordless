@@ -5,7 +5,7 @@ use \Asenine\DB;
 
 try
 {
-	if( !isset($_GET['playlistID']) || !$Playlist = \Music\Playlist::loadFromDB($_GET['playlistID']) )
+	if( !isset($params->playlistID) || !$Playlist = Playlist::loadFromDB($params->playlistID) )
 		throw New \Exception('Invalid Playlist');
 
 	echo Element\Library::head($Playlist->title);
@@ -15,9 +15,23 @@ try
 	$userTracks = $Fetch();
 
 	if( count($userTracks) == 0 )
-		throw New \Exception(sprintf(_("Playlist seems empty"), htmlspecialchars($artist)));
+		throw New \Exception(_("Playlist seems empty"));
 
 	echo Element\Tracklist::createFromUserTracks($userTracks);
+
+	?>
+	<script type="text/javascript">
+		<?
+		if(isset($params->startPlaying) && $params->startPlaying)
+		{
+			?>
+			$('.tracklist .control .queueReplace').click();
+			Cordless.Interface.playqueueLock();
+			<?
+		}
+		?>
+	</script>
+	<?
 }
 catch(\Exception $e)
 {

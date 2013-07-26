@@ -20,12 +20,17 @@ $js[] = URL_PLAYER . 'js/LastFM.js';
 
 
 $goToURL = null;
+$startPlaying = (isset($_GET['startPlaying']) && $_GET['startPlaying']);
 
 if( isset($_GET['userTrackID']) )
 {
 	$userTrackID = (int)$_GET['userTrackID'];
-	$startPlaying = (isset($_GET['startPlaying']) && $_GET['startPlaying']);
 	$goToURL = libraryURL('UserTrack-Control', array('userTrackID' => $userTrackID, 'startPlaying' => $startPlaying));
+}
+elseif( isset($_GET['playlistID']) ) 
+{
+	$playlistID = (int)$_GET['playlistID'];
+	$goToURL = libraryURL('Tracks-Playlist', array('playlistID' => $playlistID, 'startPlaying' => $startPlaying));
 }
 
 

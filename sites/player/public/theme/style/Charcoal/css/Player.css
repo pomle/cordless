@@ -8,7 +8,7 @@ header #player {
 
 #player .scrubber {
 	display: block;
-	margin: 1px 0 4px 2px;
+	margin: 1px 0 4px 0;
 	/*height: 12px;*/
 }
 

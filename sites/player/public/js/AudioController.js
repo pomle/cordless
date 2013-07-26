@@ -22,7 +22,6 @@ function AudioController( PlayQueue , api_url )
 	this.Audio = oAudio;
 
 	var
-		internalTime = 0,
 		timerTrackReady,
 		timerMainLoop;
 
@@ -140,9 +139,7 @@ function AudioController( PlayQueue , api_url )
 
 	this.playlistSeek = function(index)
 	{
-		var
-			wasPlaying = this.isPlaying,
-			userTrack;
+		var	userTrack;
 
 		if( userTrack = PlayQueue.itemSeek(index) )
 			return self.trackLoadItem(userTrack);
@@ -182,9 +179,8 @@ function AudioController( PlayQueue , api_url )
 
 		try
 		{
-			internalTime = seconds;
 			if (this.isTrackReady) {
-				oAudio.currentTime = Math.min(internalTime, oAudio.duration);
+				oAudio.currentTime = Math.min(seconds, oAudio.duration);
 				this.eventTimeChanged( this.getTrack() );
 			}
 
@@ -263,8 +259,6 @@ function AudioController( PlayQueue , api_url )
 	{
 		this.trackUnload();
 
-		internalTime = 0;
-
 		oAudio.src = url;
 		this.playingURL = url;
 
@@ -274,8 +268,6 @@ function AudioController( PlayQueue , api_url )
 		{
 			if( isFinite(oAudio.duration) )
 			{
-				oAudio.currentTime = internalTime;
-
 				var Track = self.getTrack();
 
 				self.isTrackReady = true;
@@ -296,7 +288,7 @@ function AudioController( PlayQueue , api_url )
 			return false;
 		}
 
-		readyLoop();
+		setTimeout(readyLoop, 500);
 
 		return true;
 	}

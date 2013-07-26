@@ -90,7 +90,7 @@ $(function()
 			.trigger('onTrackLoaded')
 			;
 
-		userTrack.addClass('isCurrent').siblings().removeClass('isCurrent');
+		userTrack.addClass('isCurrent').trigger('onTrackLoaded').siblings().removeClass('isCurrent');
 
 		eCordless.find('.playingUserTrack').html(userTrack.clone());
 	}

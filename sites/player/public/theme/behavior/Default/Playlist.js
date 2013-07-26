@@ -2,9 +2,14 @@ $(function()
 {
 	var
 		Player = Cordless.Player,
-		Library = Cordless.Library;
+		Library = Cordless.Library,
+		playQueue = $('#playqueue');
 
-	$('#playqueue')
+	playQueue
+		.on("change", function(e) {
+			Cordless.API.makeCall('User.State', Cordless.getState());
+		})
+
 		// Jump to Track in PlayQueue
 		.on("click", ".userTrack .title a, .userTrack .image", function(e) {
 			e.preventDefault();
@@ -93,7 +98,14 @@ $(function()
 			e.preventDefault();
 			$(this).closest('.userTrack').remove();
 		})
-		;
+
+		.on("onTrackLoaded", ".userTrack", function(e) {
+			var userTrack = this;
+			var x = userTrack.offsetTop - userTrack.offsetHeight;
+			playQueue.find(".userTracks").animate({
+				scrollTop: x
+				}, 1000);
+		});
 });
 
 

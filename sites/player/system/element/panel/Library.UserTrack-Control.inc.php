@@ -55,7 +55,7 @@ if( isset($UserTrack->Image) )
 		<ul>
 			<li><a href="#" class="userTrackPlay" data-usertrackid="<? printf('%d', $UserTrack->userTrackID); ?>"><? echo _("Play Now"); ?></a></li>
 			<li><? echo libraryLink(_("Add to Playlist"), 'Index-Playlists', array('addTrackID' => $UserTrack->Track->trackID)); ?></li>
-			<li><a href="<? echo URL_PLAYER, sprintf('?userTrackID=%d', $UserTrack->userTrackID); ?>"><? echo _("External link"); ?></a></li>
+			<li><a href="<? echo URL_PLAYER, sprintf('?userTrackID=%d&startPlaying=1', $UserTrack->userTrackID); ?>"><? echo _("External link"); ?></a></li>
 			<li>
 				<?
 				$dlParams = array('userTrackID' => $UserTrack->userTrackID, 'download' => true);
@@ -89,7 +89,14 @@ if( isset($UserTrack->Image) )
 	</div>
 
 	<script type="text/javascript">
-		$('.userTrackEdit .userTrackPlay').click();
-		Cordless.Interface.playqueueLock();
+		<?
+		if(isset($params->startPlaying) && $params->startPlaying)
+		{
+			?>
+			$('.userTrackEdit .userTrackPlay').click();
+			Cordless.Interface.playqueueLock();
+			<?
+		}
+		?>
 	</script>
 </form>

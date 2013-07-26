@@ -22,7 +22,6 @@ function CordlessController()
 	{
 		var state = {
 			'playingIndex': null,
-			'playingPosition': null,
 			'playingCurrently': Cordless.Player.isPlaying,
 			'userTrackIDs': []
 		};
@@ -34,24 +33,11 @@ function CordlessController()
 		});
 
 		var playingIndex = userTracks.filter('.isCurrent').index();
-		if (playingIndex > -1)
-		{
+		if (playingIndex > -1) {
 			state['playingIndex'] = playingIndex;
-			state['playingPosition'] = Cordless.Player.getTrack().position;
 		}
 
 		return state;
-	}
-	
-	this.setState = function(state)
-	{
-		var PlayQueue = this.PlayQueue;
-
-		this.API.makeCall('UserTrack.HTML', {'userTrackIDs': state.userTrackIDs}, 
-			function(response) {
-				console.log(response);
-			}
-		);
 	}
 }
 
@@ -102,9 +88,6 @@ try
 						var userTrack = Cordless.PlayQueue.itemSeek(state.playingIndex);
 						if (Cordless.Player.trackLoadItem(userTrack)) {
 	
-							if (state.playingPosition) {
-								Cordless.Player.playbackSeekTime(state.playingPosition);
-							}
 							if (state.playingCurrently) {
 								Cordless.Player.playbackStart();
 							}

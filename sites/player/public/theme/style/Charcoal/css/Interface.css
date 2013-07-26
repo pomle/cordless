@@ -254,6 +254,7 @@ header .home {
 }
 
 #upload .queue .progress {
+	background-color: #1b87cb;
 	height: 6px;
 	width: 0;
 
