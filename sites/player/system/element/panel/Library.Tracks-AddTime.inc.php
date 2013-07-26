@@ -7,6 +7,8 @@ $timeEnd = isset($params->uts_t) ? $params->uts_t : null;
 
 if( isset($params->userID) )
 	$userIDs = array($params->userID);
+elseif( isset($params->useFriends) )
+	$userIDs = $User->getFriendUserIDs();
 else
 	$userIDs = array($User->userID);
 

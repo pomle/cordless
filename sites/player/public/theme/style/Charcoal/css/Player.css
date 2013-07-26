@@ -8,23 +8,23 @@ header #player {
 
 #player .scrubber {
 	display: block;
-	margin: 1px -2px 4px -2px;
+	margin: 1px 0 4px 2px;
 	/*height: 12px;*/
 }
 
 #player .scrubber .scrubArea {
 	background-color: #003b62;
-	background-image: url('../img/Cordless_ScrubArea.png');
+	/*background-image: url('../img/Cordless_ScrubArea.png');*/
 	border: solid 1px #232526;
-	border-radius: 5px;
+	/*border-radius: 5px;*/
 	overflow: hidden;
 }
 
 #player .scrubber .progress {
 	background-color: #1b87cb;
-	background-image: url('../img/Cordless_Scrubber.png');
+	/*background-image: url('../img/Cordless_Scrubber.png');*/
 	background-position: 100% 0;
-	border-radius: 5px;
+	/*border-radius: 5px;*/
 	height: 2px;
 	width: 0%;
 

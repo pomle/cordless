@@ -12,13 +12,13 @@ $(function()
 			Cordless.API.addCall(
 				'UserTrack.Star',
 				{'userTrackID': userTrackID, 'isStarred': Number(eUserTrack.hasClass('isStarred'))},
-				function(response)
+				function(data)
 				{
 					var userTrackID;
-					if( userTrackID = response.data.userTrackID )
+					if( userTrackID = data.userTrackID )
 					{
 						var eUserTracks = $('.userTrack.id' + userTrackID);
-						if( response.data.isStarred )
+						if( data.isStarred )
 							eUserTracks.addClass('isStarred');
 						else
 							eUserTracks.removeClass('isStarred');
@@ -38,9 +38,9 @@ $(function()
 			Cordless.API.makeCall(
 				'UserTrack.Edit',
 				{'action': 'grab', 'userTrackID': userTrackID, 'returnHTML': true},
-				function(response)
+				function(data)
 				{
-					var userTrackHTML = response.data.userTrackHTML;
+					var userTrackHTML = data.userTrackHTML;
 					eUserTrack.replaceWith(userTrackHTML);
 				}
 			);
@@ -54,9 +54,9 @@ $(function()
 			Cordless.API.makeCall(
 				'UserTrack.HTML',
 				{'userTrackIDs': userTrackID},
-				function(response)
+				function(data)
 				{
-					var userTrack = $(response.data[userTrackID]);
+					var userTrack = $(data[userTrackID]);
 					Cordless.PlayQueue.afterCurrent(userTrack);
 					if( Cordless.Player.trackLoadItem(userTrack) )
 						Cordless.Player.playbackStart();

@@ -138,7 +138,7 @@ class UserTrack
 				Cordless_UserTracks ut
 				LEFT JOIN Cordless_UserTrackPlays utp ON utp.userTrackID = ut.ID
 			WHERE
-				ut.userID = %d
+				ut.userID IN %a
 				AND (0 = %d OR utp.timeCreated BETWEEN %d AND %d)
 			GROUP BY
 				ut.ID
@@ -216,7 +216,7 @@ class UserTrack
 				Cordless_UserTracks ut
 				JOIN Cordless_UserTracksStarred uts ON uts.userTrackID = ut.ID
 			WHERE
-				ut.userID = %a
+				ut.userID IN %a
 				AND (0 = %d OR uts.timeCreated BETWEEN %d AND %d)
 			GROUP BY
 				ut.ID

@@ -3,6 +3,7 @@ namespace Cordless;
 
 require '../Init.Web.inc.php';
 
+$js[] = URL_PLAYER . 'js/jquery/jquery.bullseye.js';
 $js[] = URL_PLAYER . 'js/jquery/jquery.dropUpload.js';
 
 $js[] = URL_PLAYER . 'js/Functions.js';
@@ -21,7 +22,11 @@ $js[] = URL_PLAYER . 'js/LastFM.js';
 $goToURL = null;
 
 if( isset($_GET['userTrackID']) )
-	$goToURL = libraryURL('UserTrack-Control', array('userTrackID' => (int)$_GET['userTrackID']));
+{
+	$userTrackID = (int)$_GET['userTrackID'];
+	$startPlaying = (isset($_GET['startPlaying']) && $_GET['startPlaying']);
+	$goToURL = libraryURL('UserTrack-Control', array('userTrackID' => $userTrackID, 'startPlaying' => $startPlaying));
+}
 
 
 $style = $User->getSetting("WebUI_Theme_Style") ?: 'Charcoal';

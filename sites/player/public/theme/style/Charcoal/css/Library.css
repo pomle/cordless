@@ -5,6 +5,10 @@
 	margin: 70px 105px 20px 60px;
 	overflow: hidden;
 	padding: 10px 20px 20px 20px;
+
+	-moz-transition: margin-right ease .4s;
+	-o-transition: margin-right ease .4s;
+	-webkit-transition: margin-right ease .4s;
 }
 
 .playqueueLocked #library {

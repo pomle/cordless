@@ -22,6 +22,7 @@ function AudioController( PlayQueue , api_url )
 	this.Audio = oAudio;
 
 	var
+		internalTime = 0,
 		timerTrackReady,
 		timerMainLoop;
 
@@ -181,9 +182,11 @@ function AudioController( PlayQueue , api_url )
 
 		try
 		{
-			var goalTime = Math.min(seconds, oAudio.duration);
-			oAudio.currentTime = goalTime; // Will throw an error if not available
-			this.eventTimeChanged( this.getTrack() );
+			internalTime = seconds;
+			if (this.isTrackReady) {
+				oAudio.currentTime = Math.min(internalTime, oAudio.duration);
+				this.eventTimeChanged( this.getTrack() );
+			}
 
 			return true; // (oAudio.currentTime == goalTime); maybe?
 		}
@@ -260,6 +263,8 @@ function AudioController( PlayQueue , api_url )
 	{
 		this.trackUnload();
 
+		internalTime = 0;
+
 		oAudio.src = url;
 		this.playingURL = url;
 
@@ -269,6 +274,8 @@ function AudioController( PlayQueue , api_url )
 		{
 			if( isFinite(oAudio.duration) )
 			{
+				oAudio.currentTime = internalTime;
+
 				var Track = self.getTrack();
 
 				self.isTrackReady = true;
@@ -284,13 +291,12 @@ function AudioController( PlayQueue , api_url )
 				self.eventTrackWaiting( self.getTrack() );
 			}
 			// Check for duration until track is ready every half second as long as track is loaded
-			//if( self.isTrackLoaded )
-			timerTrackReady = setTimeout(readyLoop, 200);
+			timerTrackReady = setTimeout(readyLoop, 100);
 
 			return false;
 		}
 
-		setTimeout(readyLoop, 500); // Initial wait before going into loop
+		readyLoop();
 
 		return true;
 	}

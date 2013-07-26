@@ -19,6 +19,7 @@ function PanelController(type, canvas, trail)
 		if( !history[index] ) return false;
 
 		canvas.html(history[index].content);
+		canvas.trigger('update');
 		historyPointer = index;
 		updateTrail();
 

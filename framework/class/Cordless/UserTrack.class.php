@@ -128,11 +128,13 @@ class UserTrack
 				ut.title,
 				a.title AS album,
 				at.trackNo,
+				u.username AS ownerUsername,
 				(NOT uts.userTrackID IS NULL) AS isStarred,
 				(ut.userID = %d) AS isOwner,
 				((ut.userID = %d) OR (NOT uf.friendUserID IS NULL)) AS isAccessible
 			FROM
 				Cordless_UserTracks ut
+				JOIN Asenine_Users u ON u.ID = ut.userID
 				LEFT JOIN Cordless_UserTracksStarred uts ON uts.userTrackID = ut.ID
 				LEFT JOIN Cordless_UserFriends uf ON uf.userID = ut.userID AND uf.friendUserID = %d
 				LEFT JOIN Cordless_AlbumTracks at ON at.trackID = ut.trackID
@@ -170,6 +172,8 @@ class UserTrack
 			$UserTrack->isStarred = (bool)$userTrack['isStarred'];
 			$UserTrack->isOwner = (bool)$userTrack['isOwner'];
 			$UserTrack->isAccessible = (bool)$userTrack['isAccessible'];
+
+			$UserTrack->ownerUsername = $userTrack['ownerUsername'];
 
 			$userTracks[$UserTrack->userTrackID] = $UserTrack;
 

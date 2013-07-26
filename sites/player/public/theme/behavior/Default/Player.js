@@ -63,8 +63,8 @@ $(function()
 				Cordless.API.makeCall(
 					'Stream',
 					{'userTrackID': userTrackID, 'prepare': 1},
-					function(response) {
-						isNextTrackReady = response.data.isPrepared;
+					function(data) {
+						isNextTrackReady = data.isPrepared;
 					}
 				);
 			}

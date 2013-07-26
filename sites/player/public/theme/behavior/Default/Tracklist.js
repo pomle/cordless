@@ -5,8 +5,10 @@ $(function()
 		PlayQueue = Cordless.PlayQueue,
 		Library = Cordless.Library;
 
-	$('#library')
-		// User Tracklist as PlayQueue
+	var element = $('#library');
+
+	
+	element	// User Tracklist as PlayQueue
 		.on("click", ".tracklist>.control .queueReplace", function(e) {
 			e.preventDefault();
 			var userTracks = $(this).closest('.tracklist').find('.userTracks .userTrack.isAccessible').clone();
@@ -68,6 +70,7 @@ $(function()
 				'success': function(response)
 				{
 					eTracks.replaceWith(response);
+					revealTracks();
 					//$(window).scrollTop( $('body').height() );
 				}
 			});
@@ -110,6 +113,24 @@ $(function()
 		.on("click", ".userTrack .artist", function(e) {
 			var artist = $(this).closest('.userTrack').data('artist');
 			Library.goTo('Tracks-Artist', {'artist': artist});
-		});
+		})
+
+		.on("update", function() {
+			revealTracks();
+		})
 		;
+
+	$(window).on('scroll', function() {
+		revealTracks();
+	});
+
+	var revealTracks = function() {
+		var fetchMore = element.find('.tracklist .fetchMore').not('.revealed');
+		if (fetchMore.length) {
+			var w = $(window);
+			if (w.scrollTop() + w.height() > fetchMore.offset().top) {
+				fetchMore.addClass('revealed').trigger('click');
+			}
+		}
+	};
 });

@@ -15,6 +15,7 @@ function APIMethod($User, $params)
 
 	return array(
 		'userID' => $User->userID,
-		'username' => $User->username
+		'username' => $User->username,
+		'token' => session_id()
 	);
 }

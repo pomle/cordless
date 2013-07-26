@@ -87,8 +87,12 @@
 	margin: 2px 10px 0 0;
 }
 
-.playlist.compact .userTrack .meta>* {
+.playlist.compact .userTrack .meta .item {
 	display: inline;
+}
+
+.playlist .userTrack .meta .item.owner {
+	display: none;
 }
 
 .playlist .userTrack .title {
@@ -105,19 +109,21 @@
 }
 
 .playlist .userTrack.isCurrent {
-	background: #006eb2 url('../img/Playlist_Current.png') repeat-x;
+	/*background: #006eb2 url('../img/Playlist_Current.png') repeat-x;*/
+}
+
+.playlist .userTrack.isCurrent .item a {
+	color: #fff;
 }
 
 .playlist .userTrack.isCurrent .title {
-	color: rgba(0,0,0,.8);
 }
 
 .playlist .userTrack.isCurrent .artist {
-	color: rgba(0,0,0,.6);
 }
 
 .playlist .userTrack.isCurrent .duration {
-	color: rgba(0,0,0,.3);
+	color: #aaa;
 }
 
 

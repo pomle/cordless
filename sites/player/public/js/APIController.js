@@ -18,13 +18,21 @@ function APIController(api_endpoint_url)
 
 	this.makeCall = function(method, params, successCallback, completeCallback)
 	{
+		if (!params) {
+			params = {};
+		}
+
 		$.ajax({
 			'type': 'POST',
 			'url': api_endpoint_url + method,
 			'data': 'params=' + encodeURIComponent( JSON.stringify(params) ),
 			'dataType': 'json',
 			'error': function(jqXHR, textStatus, errorThrows) { console.log(textStatus); },
-			'success': successCallback || null,
+			'success': function(response) {
+				if (successCallback) {
+					successCallback(response.data, response.status);
+				}
+			},
 			'complete': completeCallback || null
 		});
 

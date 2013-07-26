@@ -6,6 +6,9 @@ function CordlessController()
 	this.AJAX_URL = ajax_url;
 	this.API_URL = api_url;
 
+	this.LAST_FM_API_KEY = $('#cordless').data('last-fm-api-key') || null;
+	this.LAST_FM_API_URL = this.LAST_FM_API_KEY ? 'http://ws.audioscrobbler.com/2.0/?api_key=' + this.LAST_FM_API_KEY : null;
+
 	this.API		= new APIController( api_url );
 	this.Interface	= new InterfaceController( $('#player'), $('#playqueue'), $('#upload') );
 	this.Library	= new PanelController('Library', $('#library>.content'), $('#library>.history>.trail'));
@@ -13,8 +16,43 @@ function CordlessController()
 	this.Player		= new AudioController( this.PlayQueue, api_url );
 	this.NowPlaying = new NowPlayingController( this.Player );
 
-	this.LAST_FM_API_KEY = $('#cordless').data('last-fm-api-key') || null;
-	this.LAST_FM_API_URL = this.LAST_FM_API_KEY ? 'http://ws.audioscrobbler.com/2.0/?api_key=' + this.LAST_FM_API_KEY : null;
+
+
+	this.getState = function()
+	{
+		var state = {
+			'playingIndex': null,
+			'playingPosition': null,
+			'playingCurrently': Cordless.Player.isPlaying,
+			'userTrackIDs': []
+		};
+
+		var userTracks = this.PlayQueue.getItems();
+
+		userTracks.each(function() {
+			state['userTrackIDs'].push($(this).data('usertrackid'));
+		});
+
+		var playingIndex = userTracks.filter('.isCurrent').index();
+		if (playingIndex > -1)
+		{
+			state['playingIndex'] = playingIndex;
+			state['playingPosition'] = Cordless.Player.getTrack().position;
+		}
+
+		return state;
+	}
+	
+	this.setState = function(state)
+	{
+		var PlayQueue = this.PlayQueue;
+
+		this.API.makeCall('UserTrack.HTML', {'userTrackIDs': state.userTrackIDs}, 
+			function(response) {
+				console.log(response);
+			}
+		);
+	}
 }
 
 
@@ -41,11 +79,41 @@ try
 
 		window.onunload = function(e)
 		{
-			Cordless.Player.trackUnload();
+			Cordless.API.makeCall('User.State', Cordless.getState());
 		}
 
-		if( goToURL = $('#library').data('gotourl') )
+		if( goToURL = $('#library').data('gotourl') ) {
 			Cordless.Library.goToURL(goToURL);
+		}
+		else {
+			Cordless.API.makeCall('User.State', null, function(state) {
+				
+				if (!state || !state.userTrackIDs) {
+					return false;
+				}
+				
+				Cordless.API.makeCall('UserTrack.HTML', {'userTrackIDs': state.userTrackIDs}, function(data) {
+
+					for (index in state.userTrackIDs) {
+						Cordless.PlayQueue.appendTo(data[state.userTrackIDs[index]]);
+					}
+
+					if (state.playingIndex) {
+						var userTrack = Cordless.PlayQueue.itemSeek(state.playingIndex);
+						if (Cordless.Player.trackLoadItem(userTrack)) {
+	
+							if (state.playingPosition) {
+								Cordless.Player.playbackSeekTime(state.playingPosition);
+							}
+							if (state.playingCurrently) {
+								Cordless.Player.playbackStart();
+							}
+						}
+					}					
+				});
+			});
+		}
+	
 	});
 }
 catch (e)

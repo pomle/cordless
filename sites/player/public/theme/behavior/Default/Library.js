@@ -16,7 +16,7 @@ $(function()
 		})
 		.on("click", 'a.apiCall', function(e) {
 			e.preventDefault();
-			$.get(this.href, function(response) { if( response.status === true ) alert(response.data.message); });
+			$.get(this.href, function(data, status) { if( status === true ) alert(response.data.message); });
 		})
 		;
 

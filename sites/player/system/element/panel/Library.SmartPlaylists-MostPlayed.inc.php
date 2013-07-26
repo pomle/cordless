@@ -63,6 +63,10 @@ if( $timeUntil )
 		}
 		?>
 	</ul>
+
+	<ul>
+		<li><? echo libraryLink($t = _('All time'), 'Tracks-PlayRank', sprintf('uts_f=%0d&uts_t=%d&title=%s', 0, time(), urlencode($t))); ?></li>
+	</ul>
 	<?
 }
 else

@@ -4,6 +4,8 @@ namespace Cordless;
 
 if( isset($params->userID) )
 	$userIDs = array($params->userID);
+elseif( isset($params->useFriends) )
+	$userIDs = $User->getFriendUserIDs();
 else
 	$userIDs = array($User->userID);
 

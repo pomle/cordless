@@ -87,4 +87,9 @@ if( isset($UserTrack->Image) )
 
 		<div class="response"></div>
 	</div>
+
+	<script type="text/javascript">
+		$('.userTrackEdit .userTrackPlay').click();
+		Cordless.Interface.playqueueLock();
+	</script>
 </form>
